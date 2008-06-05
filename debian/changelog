@@ -1,3 +1,9 @@
+python-freerange (0.9.3-1) unstable; urgency=low
+
+  * Added support for a last modified attribute on storage objects.
+
+ -- Eric Evans <eevans@racklabs.com>  Thu, 05 Jun 2008 15:15:46 -0500
+
 python-freerange (0.9.2-1) unstable; urgency=low
 
   * Added support for passing in additional headers to the read() and
