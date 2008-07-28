@@ -43,8 +43,31 @@ class ContainerNotEmpty(Exception):
     def __repr__(self):
         return "%s(%s)" % (self.__class__.__name__, self.container_name)
 
+class InvalidContainerName(Exception):
+    """
+    Raised for invalid storage container names.
+    """
+
+class InvalidObjectName(Exception):
+    """
+    Raised for invalid storage object names.
+    """
+    pass
+
 class InvalidUrl(Exception):
     """
     Not a valid url for use with this software.
+    """
+    pass
+
+class InvalidObjectSize(Exception):
+    """
+    Not a valid storage_object size attribute.
+    """
+    pass
+
+class IncompleteSend(Exception):
+    """
+    Raised when there is a insufficient amount of data to send.
     """
     pass

@@ -9,9 +9,11 @@ arbitrary metadata with them.
 
 import md5, StringIO, mimetypes, os, tempfile
 from urllib  import quote
-from errors  import ResponseError, NoSuchObject
+from errors  import ResponseError, NoSuchObject, InvalidObjectName, \
+                    InvalidObjectSize, IncompleteSend
 from socket  import timeout
 from consts  import user_agent
+from utils   import requires_name
 
 # Because HTTPResponse objects *have* to have read() called on them 
 # before they can be used again ...
@@ -42,22 +44,68 @@ class Object(object):
         if not self._initialize() and force_exists:
             raise NoSuchObject(self.name)
 
-    def read(self, size=-1, offset=0, hdrs=None):
+    @requires_name(InvalidObjectName)
+    def read(self, size=-1, offset=0, hdrs=None, buffer=None, callback=None):
         """
-        Returns the Object data. The optional size and offset arguments are 
-        reserved for a future enhancement and currently have no effect.
+        Read the content from the remote storage object.
+        
+        Keyword arguments:
+        size -- currently unimplemented
+        offset -- currently unimplemented
+        hdrs -- an optional dict of headers to send in the request
+        buffer -- an optional file-like object to write the content to
+        callback -- function to be used as a progress callback
+
+        By default this method will buffer the response in memory and
+        return it as a string. However, if a file-like object is passed
+        in using the buffer keyword, the response will be written to it
+        instead.
+        
+        A callback can be passed in for reporting on the progress of
+        the download. The callback should accept two integers, the first
+        will be for the amount of data written so far, the second for
+        the total size of the transfer. Note: This option is only
+        applicable when used in conjunction with the buffer option.
         """
         response = self.container.conn.make_request('GET', 
                 path = [self.container.name, self.name], hdrs = hdrs)
         if (response.status < 200) or (response.status > 299):
             buff = response.read()
             raise ResponseError(response.status, response.reason)
-        return response.read()
+        
+        if hasattr(buffer, 'write'):
+            scratch = response.read(8192)
+            transferred = 0
+            
+            while len(scratch) > 0:
+                buffer.write(scratch)
+                transferred += len(scratch)
+                if callable(callback):
+                    callback(transferred, self.size)
+                scratch = response.read(8192)
+            return None
+        else:
+            return response.read()
     
+    def save_to_filename(self, filename, callback=None):
+        """
+        Save the contents of the object to filename.
+        """
+        # Pedantry rocks!
+        try:
+            fobj = open(filename, 'wb')
+            self.read(buffer=fobj, callback=callback)
+        finally:
+            fobj.close()
+        
+    @requires_name(InvalidObjectName)
     def stream(self, chunksize=8192, hdrs=None):
         """
-        Returns a generator that can be used to iterate the Object data in 
-        chunks of size "chunksize", (defaults to 8K bytes).
+        Return a generator of the remote storage object data.
+        
+        Keyword arguments:
+        chunksize -- size in bytes yielded by the generator
+        hdrs -- an optional dict of headers to send in the request
         
         Warning: The HTTP response is only complete after this generator
         has raised a StopIteration. No other methods can be called until
@@ -74,10 +122,11 @@ class Object(object):
             buff = response.read(chunksize)
         # I hate you httplib
         buff = response.read()
-            
+    
+    @requires_name(InvalidObjectName)
     def sync_metadata(self):
         """
-        Writes all metadata for the Object.
+        Commits the metadata to the remote storage system.
         """
         if self.metadata:
             headers = self._make_headers()
@@ -89,20 +138,43 @@ class Object(object):
             if response.status != 202:
                 raise ResponseError(response.status, response.reason)
 
+    def __get_conn_for_write(self):
+        headers = self._make_headers()
+
+        headers['X-Storage-Token'] = self.container.conn.token
+
+        path = "/%s/%s/%s" % (self.container.conn.uri.rstrip('/'), \
+                quote(self.container.name), quote(self.name))
+
+        # Requests are handled a little differently for writes ...
+        http = self.container.conn._get_http_conn_instance()
+        
+        # TODO: more/better exception handling please
+        http.putrequest('PUT', path)
+        for hdr in headers:
+            http.putheader(hdr, headers[hdr])
+        http.putheader('User-Agent', user_agent)
+        http.endheaders()
+        return http
+            
     # pylint: disable-msg=W0622
+    @requires_name(InvalidObjectName)
     def write(self, data='', verify=True, callback=None):
         """
-        Write data to remote storage. Accepts either a string containing
-        the data to be written, or an open file object.
+        Write data to the remote storage system.
         
-        Server-side checksum verification can be disabled by passing a
-        value that will evaluate as False using the verify keyword 
-        argument. When the write is complete, the etag attribute will 
-        be populated with the value returned from the server, NOT one
-        calculated locally. Warning: When disabling verification, 
-        there is no guarantee that what you think was uploaded matches
-        what was actually stored. Use this optional carefully. You have
-        been warned.
+        Keyword arguments:
+        data -- the data to be written, a string or a file-like object
+        verify -- enable/disable server-side checksum verification
+        callback -- function to be used as a progress callback
+
+        By default, server-side verification is enabled, (verify=True), and
+        end-to-end verification is performed using an md5 checksum. When
+        verification is disabled, (verify=False), the etag attribute will 
+        be set to the value returned by the server, not one calculated 
+        locally. When disabling verification, there is no guarantee that 
+        what you think was uploaded matches what was actually stored. Use 
+        this optional carefully. You have been warned.
         
         A callback can be passed in for reporting on the progress of
         the upload. The callback should accept two integers, the first
@@ -134,23 +206,9 @@ class Object(object):
             if hasattr(data, 'name'):
                 type = mimetypes.guess_type(data.name)[0]
             self.content_type = type and type or 'application/octet-stream'
-        headers = self._make_headers()
 
-        headers['X-Storage-Token'] = self.container.conn.token
-
-        path = "/%s/%s/%s" % (self.container.conn.uri.rstrip('/'), \
-                quote(self.container.name), quote(self.name))
-
-        # Requests are handled a little differently here ...
-        http = self.container.conn._get_http_conn_instance()
-
-        # TODO: more/better exception handling please --------------------
-        http.putrequest('PUT', path)
-        for hdr in headers:
-            http.putheader(hdr, headers[hdr])
-        http.putheader('User-Agent', user_agent)
-        http.endheaders()
-
+        http = self.__get_conn_for_write()
+        
         response = None
         transfered = 0
 
@@ -181,6 +239,67 @@ class Object(object):
                 if hdr[0].lower() == 'etag':
                     self._etag = hdr[1]
 
+    @requires_name(InvalidObjectName)
+    def send(self, iterable):
+        """
+        Write data to the remote storage system using a generator.
+        
+        Arguments:
+        iterable -- a generator which yields the content to upload
+        
+        You must set the size attribute of the instance prior to calling
+        this method. Failure to do so will result in an 
+        InvalidObjectSize exception.
+        
+        If the generator raises StopIteration prior to yielding the 
+        right number of bytes, an IncompleteSend exception is raised.
+        
+        If the content_type attribute is not set then a value of
+        application/octet-stream will be used.
+        
+        Server-side verification will be performed if an md5 checksum is 
+        assigned to the etag property before calling this method, 
+        otherwise no verification will be performed, (verification
+        can be performed afterward though by using the etag attribute
+        which is set to the value returned by the server).
+        """
+        if not isinstance(self.size, (int, long)):
+            raise InvalidObjectSize(self.size)
+        
+        # This method implicitly diables verification
+        if not self._etag_override:
+            self._etag = None
+        
+        if not self.content_type:
+            self.content_type = 'application/octet-stream'
+            
+        http = self.__get_conn_for_write()
+        
+        response = None
+        transferred = 0
+
+        try:
+            for chunk in iterable:
+                http.send(chunk)
+                transferred += len(chunk)
+            # If the generator didn't yield enough data, stop, drop, and roll.
+            if transferred < self.size:
+                raise IncompleteSend()
+            response = http.getresponse()
+            buff = response.read()
+        except timeout, err:
+            if response:
+                # pylint: disable-msg=E1101
+                buff = response.read()
+            raise err
+        
+        if (response.status < 200) or (response.status > 299):
+            raise ResponseError(response.status, response.reason)
+
+        for hdr in response.getheaders():
+            if hdr[0].lower() == 'etag':
+                self._etag = hdr[1]
+            
     def load_from_filename(self, filename, verify=True, callback=None):
         """
         Put the contents of the named file into remote storage.
@@ -193,6 +312,9 @@ class Object(object):
         """
         Initialize the Object with values from the remote service, (if any).
         """
+        if not self.name:
+            return False
+        
         response = self.container.conn.make_request(
                 'HEAD', [self.container.name, self.name]
         )
