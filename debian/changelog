@@ -1,3 +1,11 @@
+python-freerange (1.0.0) unstable; urgency=low
+
+  * support ranges
+  * HEAD on account for size/count
+  * copyright information
+
+ -- Jay Farrimond <jay.farrimond@rackspace.com>  Tue,  9 Sep 2008 00:35:04 -0500
+
 python-freerange (0.9.6-1) unstable; urgency=low
 
   * #221: a read() method more consistent with write()
