@@ -123,7 +123,8 @@ class ObjectTest(unittest.TestCase):
 
         obj.name = 'a'*(object_name_limit+1) # too-long string
         self.assertRaises(InvalidObjectName, obj.read)
-        self.assertRaises(InvalidObjectName, obj.stream)
+        gen = obj.stream()
+        self.assertRaises(InvalidObjectName, gen.next)
         self.assertRaises(InvalidObjectName, obj.sync_metadata)
         self.assertRaises(InvalidObjectName, obj.write, '')
 

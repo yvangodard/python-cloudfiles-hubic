@@ -7,5 +7,5 @@ setup(
     description='CloudFiles client library for python',
     author='Racklabs',
     url='https://www.mosso.com/',
-    packages=['cloudfiles']
+    packages=['cloudfiles','freerange']
 )
