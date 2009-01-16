@@ -1,1 +1,0 @@
-from cloudfiles.errors import *
