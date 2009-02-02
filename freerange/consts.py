@@ -1,4 +1,5 @@
 """ See COPYING for license information. """
+from cloudfiles.consts import *
 
 __version__ = "1.0.0"
 user_agent = "Freerange/%s" % __version__
