@@ -132,7 +132,7 @@ class Container(object):
             raise ResponseError(response.status, response.reason)
 
     @requires_name(InvalidContainerName)        
-    def log_retention(self, log_retention=consts.default_log_retention):
+    def log_retention(self, log_retention=consts.cdn_log_retention):
         """
         Enable CDN log retention on the container. If enabled logs will be
         periodically (at unpredictable intervals) compressed and uploaded to
@@ -147,9 +147,9 @@ class Container(object):
         """
         if not self.conn.cdn_enabled:
             raise CDNNotEnabled()
-        hdrs = {'X-Log-Retention': log_retention}
 
-        response = self.conn.cdn_request(request_method, [self.name], hdrs=hdrs)
+        hdrs = {'X-Log-Retention': log_retention}
+        response = self.conn.cdn_request('POST', [self.name], hdrs=hdrs)
         if (response.status < 200) or (response.status >= 300):
             raise ResponseError(response.status, response.reason)
 
