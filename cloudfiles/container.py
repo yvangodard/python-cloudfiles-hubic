@@ -37,6 +37,8 @@ class Container(object):
     @ivar cdn_ttl: the time-to-live of the CDN's public cache of this container
             (cached, use make_public to alter)
     @type cdn_ttl: number
+    @ivar cdn_log_retention: retention of the logs in the container.
+    @type cdn_log_retention: bool
 
     @undocumented: _fetch_cdn_data
     @undocumented: _list_objects_raw
@@ -68,6 +70,7 @@ class Container(object):
         self.size_used = size
         self.cdn_uri = None
         self.cdn_ttl = None
+        self.cdn_log_retention = None
         if connection.cdn_enabled:
             self._fetch_cdn_data()
 
@@ -83,7 +86,9 @@ class Container(object):
                     self.cdn_uri = hdr[1]
                 if hdr[0].lower() == 'x-ttl':
                     self.cdn_ttl = int(hdr[1])
-
+                if hdr[0].lower() == 'x-log-retention':
+                    self.cdn_log_retention = hdr[1] == "True" and True or False
+                    
     @requires_name(InvalidContainerName)
     def make_public(self, ttl=consts.default_cdn_ttl):
         """
@@ -126,6 +131,30 @@ class Container(object):
         if (response.status < 200) or (response.status >= 300):
             raise ResponseError(response.status, response.reason)
 
+    @requires_name(InvalidContainerName)        
+    def log_retention(self, log_retention=consts.default_log_retention):
+        """
+        Enable CDN log retention on the container. If enabled logs will be
+        periodically (at unpredictable intervals) compressed and uploaded to
+        a ".CDN_ACCESS_LOGS" container in the form of
+        "container_name.YYYY-MM-DD-HH.gz". Requires CDN be enabled on the
+        account.
+
+        >>> container.log_retention(True)
+
+        @param log_retention: Enable or disable logs retention.
+        @type log_retention: bool
+        """
+        if not self.conn.cdn_enabled:
+            raise CDNNotEnabled()
+        hdrs = {'X-Log-Retention': log_retention}
+
+        response = self.conn.cdn_request(request_method, [self.name], hdrs=hdrs)
+        if (response.status < 200) or (response.status >= 300):
+            raise ResponseError(response.status, response.reason)
+
+        self.cdn_log_retention = log_retention
+        
     def is_public(self):
         """
         Returns a boolean indicating whether or not this container is

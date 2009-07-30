@@ -52,6 +52,10 @@ Marking a Container as CDN-enabled/public with a TTL of 30 days
     >>> my_dog.public_uri()
     'http://cdn.cloudfiles.mosso.com/c1234/fido.jpg'
 
+Set the logs retention on CDN-enabled/public Container
+
+    >>> pic_container.log_retention(True)
+
 See COPYING for license information.
 """
 
