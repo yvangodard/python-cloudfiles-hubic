@@ -521,7 +521,7 @@ class Object(object):
         >>> container1.make_public()
         >>> container1.create_object('file.txt').write('testing')
         >>> container1['file.txt'].public_uri()
-        'http://cdn.cloudfiles.mosso.com/c61/file.txt'
+        'http://c00061.cdn.cloudfiles.rackspacecloud.com/file.txt'
 
         @return: the public URI for this object
         @rtype: str

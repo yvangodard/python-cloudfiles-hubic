@@ -180,7 +180,7 @@ class Container(object):
         accessible via the CDN.
 
         >>> connection['container1'].public_uri()
-        'http://cdn.cloudfiles.mosso.com/c61'
+        'http://c00061.cdn.cloudfiles.rackspacecloud.com'
 
         @rtype: str
         @return: the public URI for this container

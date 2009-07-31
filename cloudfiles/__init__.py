@@ -48,9 +48,9 @@ Marking a Container as CDN-enabled/public with a TTL of 30 days
 
     >>> pic_container.make_public(2592000)
     >>> pic_container.public_uri()
-    'http://cdn.cloudfiles.mosso.com/c1234/'
+    'http://c0001234.cdn.cloudfiles.rackspacecloud.com'
     >>> my_dog.public_uri()
-    'http://cdn.cloudfiles.mosso.com/c1234/fido.jpg'
+    'http://c0001234.cdn.cloudfiles.rackspacecloud.com/fido.jpg'
 
 Set the logs retention on CDN-enabled/public Container
 
