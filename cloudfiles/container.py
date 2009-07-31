@@ -137,7 +137,7 @@ class Container(object):
         Enable CDN log retention on the container. If enabled logs will be
         periodically (at unpredictable intervals) compressed and uploaded to
         a ".CDN_ACCESS_LOGS" container in the form of
-        "container_name.YYYY-MM-DD-HH.gz". Requires CDN be enabled on the
+        "container_name.YYYYMMDDHH-XXXX.gz". Requires CDN be enabled on the
         account.
 
         >>> container.log_retention(True)
