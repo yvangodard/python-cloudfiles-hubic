@@ -8,7 +8,12 @@ arbitrary metadata with them.
 See COPYING for license information.
 """
 
-import md5, StringIO, mimetypes, os, tempfile
+import md5
+import StringIO
+import mimetypes
+import os
+import tempfile
+
 from urllib  import quote
 from errors  import ResponseError, NoSuchObject, \
                     InvalidObjectName, InvalidObjectSize, \
