@@ -8,7 +8,10 @@ arbitrary metadata with them.
 See COPYING for license information.
 """
 
-import md5
+try:
+	from hashlib import md5
+except ImportError:
+	from md5 import md5
 import StringIO
 import mimetypes
 import os
@@ -303,7 +306,7 @@ class Object(object):
 
         response = None
         transfered = 0
-        running_checksum = md5.md5()
+        running_checksum = md5()
 
         buff = data.read(4096)
         try:
@@ -510,7 +513,7 @@ class Object(object):
         """
         Given an open file object, returns the md5 hexdigest of the data.
         """
-        checksum = md5.new()
+        checksum = md5()
         buff = fobj.read(4096)
         while buff:
             checksum.update(buff)
