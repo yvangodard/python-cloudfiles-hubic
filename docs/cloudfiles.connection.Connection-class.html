@@ -62,17 +62,17 @@
 <h1 class="epydoc">Class Connection</h1><p class="nomargin-top"><span class="codelink"><a href="cloudfiles.connection-pysrc.html#Connection">source&nbsp;code</a></span></p>
 <center>
 <center>  <map id="uml_class_diagram_for_cloudfil" name="uml_class_diagram_for_cloudfil">
-<area shape="rect" href="cloudfiles.connection.Connection&#45;class.html#__init__" title="Accepts keyword arguments for Mosso username and api key." alt="" coords="17,36,377,55"/>
-<area shape="rect" href="cloudfiles.connection.Connection&#45;class.html#get_info" title="Return tuple for number of containers and total bytes in the account" alt="" coords="17,55,377,74"/>
-<area shape="rect" href="cloudfiles.connection.Connection&#45;class.html#create_container" title="Given a container name, returns a Container item, creating a new Container &#160;if one does not already exist." alt="" coords="17,74,377,92"/>
-<area shape="rect" href="cloudfiles.connection.Connection&#45;class.html#delete_container" title="Given a container name, delete it." alt="" coords="17,92,377,111"/>
-<area shape="rect" href="cloudfiles.connection.Connection&#45;class.html#get_all_containers" title="Returns a Container item result set." alt="" coords="17,111,377,130"/>
-<area shape="rect" href="cloudfiles.connection.Connection&#45;class.html#get_container" title="Return a single Container item for the given Container." alt="" coords="17,130,377,148"/>
-<area shape="rect" href="cloudfiles.connection.Connection&#45;class.html#list_public_containers" title="Returns a list of containers that have been published to the CDN." alt="" coords="17,148,377,167"/>
-<area shape="rect" href="cloudfiles.connection.Connection&#45;class.html#list_containers_info" title="Returns a list of Containers, including object count and size." alt="" coords="17,167,377,186"/>
-<area shape="rect" href="cloudfiles.connection.Connection&#45;class.html#list_containers" title="Returns a list of Containers." alt="" coords="17,186,377,204"/>
-<area shape="rect" href="cloudfiles.connection.Connection&#45;class.html#__getitem__" title="Container objects can be grabbed from a connection using index syntax." alt="" coords="17,204,377,223"/>
-<area shape="rect" href="cloudfiles.connection.Connection&#45;class.html" title="Manages the connection to the storage system and serves as a factory for Container instances." alt="" coords="16,11,379,224"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#__init__" title="Accepts keyword arguments for Mosso username and api key." alt="" coords="17,36,372,55"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#get_info" title="Return tuple for number of containers and total bytes in the account" alt="" coords="17,55,372,73"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#create_container" title="Given a container name, returns a Container item, creating a new Container &#160;if one does not already exist." alt="" coords="17,73,372,92"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#delete_container" title="Given a container name, delete it." alt="" coords="17,92,372,111"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#get_all_containers" title="Returns a Container item result set." alt="" coords="17,111,372,129"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#get_container" title="Return a single Container item for the given Container." alt="" coords="17,129,372,148"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#list_public_containers" title="Returns a list of containers that have been published to the CDN." alt="" coords="17,148,372,167"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#list_containers_info" title="Returns a list of Containers, including object count and size." alt="" coords="17,167,372,185"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#list_containers" title="Returns a list of Containers." alt="" coords="17,185,372,204"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#__getitem__" title="Container objects can be grabbed from a connection using index syntax." alt="" coords="17,204,372,223"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html" title="Manages the connection to the storage system and serves as a factory for Container instances." alt="" coords="16,11,373,224"/>
 </map>
   <img src="uml_class_diagram_for_cloudfil.gif" alt='' usemap="#uml_class_diagram_for_cloudfil" ismap="ismap" class="graph-without-title" />
 </center>
@@ -174,6 +174,8 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="cloudfiles.connection.Connection-class.html#get_all_containers" class="summary-sig-name">get_all_containers</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">limit</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">marker</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">**parms</span>)</span><br />
       Returns a Container item result set.</td>
           <td align="right" valign="top">
@@ -449,6 +451,8 @@
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">get_all_containers</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">limit</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">marker</span>=<span class="sig-default">None</span>,
         <span class="sig-arg">**parms</span>)</span>
   </h3>
   </td><td align="right" valign="top"
@@ -670,7 +674,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Mar  6 07:40:57 2009
+    Generated by Epydoc 3.0.1 on Thu Aug 27 16:06:04 2009
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

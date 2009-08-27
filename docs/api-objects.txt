@@ -1,9 +1,7 @@
 cloudfiles	cloudfiles-module.html
 cloudfiles.get_connection	cloudfiles-module.html#get_connection
 cloudfiles.connection	cloudfiles.connection-module.html
-cloudfiles.connection.json_loads	cloudfiles.fjson-module.html#_loads
 cloudfiles.container	cloudfiles.container-module.html
-cloudfiles.container.json_loads	cloudfiles.fjson-module.html#_loads
 cloudfiles.errors	cloudfiles.errors-module.html
 cloudfiles.fjson	cloudfiles.fjson-module.html
 cloudfiles.fjson._loads	cloudfiles.fjson-module.html#_loads
@@ -38,9 +36,11 @@ cloudfiles.container.Container.object_count	cloudfiles.container.Container-class
 cloudfiles.container.Container.cdn_ttl	cloudfiles.container.Container-class.html#cdn_ttl
 cloudfiles.container.Container.__getitem__	cloudfiles.container.Container-class.html#__getitem__
 cloudfiles.container.Container.create_object	cloudfiles.container.Container-class.html#create_object
+cloudfiles.container.Container.cdn_log_retention	cloudfiles.container.Container-class.html#cdn_log_retention
 cloudfiles.container.Container.public_uri	cloudfiles.container.Container-class.html#public_uri
 cloudfiles.container.Container.list_objects_info	cloudfiles.container.Container-class.html#list_objects_info
 cloudfiles.container.Container.make_private	cloudfiles.container.Container-class.html#make_private
+cloudfiles.container.Container.log_retention	cloudfiles.container.Container-class.html#log_retention
 cloudfiles.container.Container.is_public	cloudfiles.container.Container-class.html#is_public
 cloudfiles.container.Container.name	cloudfiles.container.Container-class.html#name
 cloudfiles.container.Container.make_public	cloudfiles.container.Container-class.html#make_public
