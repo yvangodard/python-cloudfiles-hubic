@@ -1,0 +1,15 @@
+Document: python-cloudfiles
+Title: Rackspace Cloud Files PHP API.
+Author: Rackspace
+Abstract: Rackspace Cloud Files PHP API.
+ The Rackspace Cloud Files is an affordable, redundant, scalable, and
+ dynamic storage service offering. The core storage system is designed
+ to provide a safe, secure, automatically re-sizing and network accessible
+ way to store data. You can store an unlimited quantity of files and each
+ one can be as large as 5 gigabytes. Users can store as much as they want
+ and pay only for storage space they actually use.
+Section: Programming/Python
+
+Format: HTML
+Index: /usr/share/doc/python-cloudfiles/html/index.html
+Files: /usr/share/doc/python-cloudfiles/html/*.html
