@@ -9,19 +9,18 @@ See COPYING for license information.
 """
 
 try:
-	from hashlib import md5
+    from hashlib import md5
 except ImportError:
-	from md5 import md5
+    from md5 import md5
 import StringIO
 import mimetypes
 import os
-import tempfile
 
 from urllib  import quote
 from errors  import ResponseError, NoSuchObject, \
-                    InvalidObjectName, InvalidObjectSize, \
-                    InvalidMetaName, InvalidMetaValue, \
-                    IncompleteSend
+                    InvalidObjectName, IncompleteSend, \
+                    InvalidMetaName, InvalidMetaValue
+
 from socket  import timeout
 import consts
 from utils   import requires_name
