@@ -26,12 +26,17 @@ Working with result sets:
     bannana
     >>>
 
-Setting the argument servicenet=True to get_conection will use the Rackspace ServiceNet network :
+Setting the argument servicenet=True to get_conection will use the
+Rackspace ServiceNet network to access Cloud Files (and not the public
+network) :
 
     >>> import cloudfiles
     >>> conn = cloudfiles.get_connection('jsmith', '1234567890', servicenet=True)
     >>> conn.connection_args[0]
     'snet-storage4.clouddrive.com'
+
+If you define the environment variable RACKSPACE_SERVICENET it will automatically
+connect via the servicenet network.
 
 Creating Containers and adding Objects to them:
 

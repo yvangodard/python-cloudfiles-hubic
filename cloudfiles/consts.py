@@ -1,6 +1,6 @@
 """ See COPYING for license information. """
 
-__version__ = "1.5.0"
+__version__ = "1.5.1"
 user_agent = "python-cloudfiles/%s" % __version__
 default_authurl = 'https://api.mosso.com/auth'
 default_cdn_ttl = 86400

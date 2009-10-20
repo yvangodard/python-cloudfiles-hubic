@@ -9,6 +9,7 @@ See COPYING for license information.
 """
 
 import  socket
+import  os
 from    urllib    import quote
 from    httplib   import HTTPSConnection, HTTPConnection, HTTPException
 from    container import Container, ContainerResults
@@ -58,6 +59,13 @@ class Connection(object):
         self.token = None
         self.debuglevel = int(kwargs.get('debuglevel', 0))
         self.servicenet = kwargs.get('servicenet', False)
+
+        # if the environement variable RACKSPACE_SERVICENET is set (to anything)
+        # it will automatically set servicenet=True
+        if not 'servicenet' in kwargs \
+                and 'RACKSPACE_SERVICENET' in os.environ:
+            self.servicenet = True
+        
         socket.setdefaulttimeout = int(kwargs.get('timeout', 5))
         self.auth = kwargs.has_key('auth') and kwargs['auth'] or None
         
