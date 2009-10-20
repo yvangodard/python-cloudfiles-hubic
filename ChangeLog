@@ -1,0 +1,11 @@
+2009-10-20  Chmouel Boudjnah  <chmouel.boudjnah@rackspace.co.uk>
+
+	* 1.5.1: if the environement variable RACKSPACE_SERVICENET is set
+	         to anything) it will automatically set servicenet=True.
+
+2009-10-20  Chmouel Boudjnah  <chmouel.boudjnah@rackspace.co.uk>
+
+	* 1.5.0: Add support of servicenet if you add servicenet=True to
+	         get_connection it will use Rackspace network servicenet.
+
+
