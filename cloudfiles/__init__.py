@@ -26,6 +26,13 @@ Working with result sets:
     bannana
     >>>
 
+Setting the argument servicenet=True to get_conection will use the Rackspace ServiceNet network :
+
+    >>> import cloudfiles
+    >>> conn = cloudfiles.get_connection('jsmith', '1234567890', servicenet=True)
+    >>> conn.connection_args[0]
+    'snet-storage4.clouddrive.com'
+
 Creating Containers and adding Objects to them:
 
     >>> pic_container = conn.create_container('pictures')

@@ -79,6 +79,16 @@ class ConnectionTest(unittest.TestCase):
         Test to see if the account has only one container
         """
         self.assert_(self.conn.get_info()[0] == 3)
+    
+    @printdoc
+    def test_servicenet_cnx(self):
+        """
+        Test connection to servicenet.
+        """
+        auth = Auth('jsmith', 'qwerty')
+        conn = Connection(auth=auth, servicenet=True)
+        self.assert_(conn.connection_args[0].startswith("snet-"))
+
 
     def setUp(self):
         self.auth = Auth('jsmith', 'qwerty')

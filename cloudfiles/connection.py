@@ -40,12 +40,15 @@ class Connection(object):
         """
         Accepts keyword arguments for Mosso username and api key.
         Optionally, you can omit these keywords and supply an
-        Authentication object using the auth keyword.
+        Authentication object using the auth keyword. Setting the argument
+        servicenet to True will make use of Rackspace servicenet network.
         
         @type username: str
         @param username: a Mosso username
         @type api_key: str
         @param api_key: a Mosso API key
+        @ivar servicenet: Use Rackspace servicenet to access Cloud Files.
+        @type cdn_log_retention: bool
         """
         self.cdn_enabled = False
         self.cdn_args = None
@@ -54,6 +57,7 @@ class Connection(object):
         self.connection = None
         self.token = None
         self.debuglevel = int(kwargs.get('debuglevel', 0))
+        self.servicenet = kwargs.get('servicenet', False)
         socket.setdefaulttimeout = int(kwargs.get('timeout', 5))
         self.auth = kwargs.has_key('auth') and kwargs['auth'] or None
         
@@ -71,6 +75,7 @@ class Connection(object):
         Authenticate and setup this instance with the values returned.
         """
         (url, self.cdn_url, self.token) = self.auth.authenticate()
+        url = self._set_storage_url(url)
         self.connection_args = parse_url(url)
         self.conn_class = self.connection_args[3] and HTTPSConnection or \
                                                       HTTPConnection
@@ -78,6 +83,11 @@ class Connection(object):
         if self.cdn_url:
             self.cdn_connect()
 
+    def _set_storage_url(self, url):
+        if self.servicenet:
+            return "https://snet-%s" % url.replace("https://", "")
+        return url
+            
     def cdn_connect(self):
         """
         Setup the http connection instance for the CDN service.
