@@ -18,6 +18,7 @@ cloudfiles.connection.Connection._authenticate	cloudfiles.connection.Connection-
 cloudfiles.connection.Connection.list_containers_info	cloudfiles.connection.Connection-class.html#list_containers_info
 cloudfiles.connection.Connection.list_public_containers	cloudfiles.connection.Connection-class.html#list_public_containers
 cloudfiles.connection.Connection.__getitem__	cloudfiles.connection.Connection-class.html#__getitem__
+cloudfiles.connection.Connection._set_storage_url	cloudfiles.connection.Connection-class.html#_set_storage_url
 cloudfiles.connection.Connection.get_container	cloudfiles.connection.Connection-class.html#get_container
 cloudfiles.connection.Connection.create_container	cloudfiles.connection.Connection-class.html#create_container
 cloudfiles.connection.ConnectionPool	cloudfiles.connection.ConnectionPool-class.html
