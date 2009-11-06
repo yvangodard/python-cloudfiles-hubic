@@ -1,19 +1,20 @@
-
 import unittest
 from cloudfiles.authentication import BaseAuthentication as Auth
 from misc import printdoc
+
 
 class AuthenticationTest(unittest.TestCase):
     """
     Freerange Authentication class tests.
     """
+
     def test_get_uri(self):
         """
         Validate authentication uri construction.
         """
         self.assert_(self.auth.uri == "auth", \
                "authentication URL was not properly constructed")
-        
+
     @printdoc
     def test_authenticate(self):
         """
@@ -21,7 +22,7 @@ class AuthenticationTest(unittest.TestCase):
         """
         self.assert_(self.auth.authenticate() == (None, None, None), \
                "authenticate() did not return a two-tuple")
-        
+
     @printdoc
     def test_headers(self):
         """
@@ -31,9 +32,10 @@ class AuthenticationTest(unittest.TestCase):
                "storage user header not properly assigned")
         self.assert_(self.auth.headers['x-auth-key'] == 'xxxxxxxx', \
                "storage password header not properly assigned")
-        
+
     def setUp(self):
         self.auth = Auth('jsmith', 'xxxxxxxx')
+
     def tearDown(self):
         del self.auth
 

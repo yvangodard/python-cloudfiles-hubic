@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 import unittest
 from cloudfiles  import Connection, Container, Object
 from cloudfiles.authentication import MockAuthentication as Auth
@@ -8,10 +6,12 @@ from cloudfiles.consts import container_name_limit
 from fakehttp   import CustomHTTPConnection
 from misc       import printdoc
 
+
 class ContainerTest(unittest.TestCase):
     """
     Freerange Container class tests.
     """
+
     @printdoc
     def test_create_object(self):
         """
@@ -53,7 +53,7 @@ class ContainerTest(unittest.TestCase):
         Iterate an ObjectResults and verify that it returns Object instances.
         Validate that the count() and index() methods work as expected.
         """
-        objects = self.container.get_objects(prefix='object', limit=3, 
+        objects = self.container.get_objects(prefix='object', limit=3,
                                              offset=3, path='/')
         for storage_object in objects:
             self.assert_(isinstance(storage_object, Object))
@@ -66,7 +66,7 @@ class ContainerTest(unittest.TestCase):
         Verify that Container.list_objects_info() returns a list object.
         """
         self.assert_(isinstance(self.container.list_objects(), list))
-        
+
     @printdoc
     def test_list_objects(self):
         """
@@ -103,7 +103,7 @@ class ContainerTest(unittest.TestCase):
         """
         Ensure you can't assign an invalid name.
         """
-        basket = Container(self.conn) 
+        basket = Container(self.conn)
         try:
             basket.name = 'yougivelove/abadname'
             self.fail("InvalidContainerName exception not raised!")
@@ -122,13 +122,14 @@ class ContainerTest(unittest.TestCase):
         Verify that methods do not accept invalid container names.
         """
         self.assertRaises(InvalidObjectName, self.container.delete_object, '')
-            
+
     def setUp(self):
         self.auth = Auth('jsmith', 'qwerty')
         self.conn = Connection(auth=self.auth)
         self.conn.conn_class = CustomHTTPConnection
         self.conn.http_connect()
         self.container = self.conn.get_container('container1')
+
     def tearDown(self):
         del self.container
         del self.conn

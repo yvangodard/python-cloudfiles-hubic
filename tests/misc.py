@@ -1,5 +1,5 @@
-
 from sys import stdout
+
 
 def printdoc(f):
     if f.__doc__:
@@ -12,7 +12,8 @@ def printdoc(f):
         stdout.write('  ' + (74 * "~") + '\n')
 
         words = list()
-        for l in f.__doc__.splitlines(): words += l.split()
+        for l in f.__doc__.splitlines():
+            words += l.split()
 
         lines = list()
         buff = ' '

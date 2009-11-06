@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 import unittest
 from misc       import printdoc
 from fakehttp   import CustomHTTPConnection

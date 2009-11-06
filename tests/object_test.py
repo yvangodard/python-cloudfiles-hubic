@@ -1,6 +1,5 @@
-#!/usr/bin/python
-
-import unittest, md5
+import unittest
+import md5
 from cloudfiles        import Object, Connection
 from cloudfiles.errors import ResponseError, InvalidObjectName,\
                               InvalidMetaName, InvalidMetaValue
@@ -12,10 +11,12 @@ from misc              import printdoc
 from tempfile          import mktemp
 import os
 
+
 class ObjectTest(unittest.TestCase):
     """
     Freerange Object class tests.
     """
+
     @printdoc
     def test_read(self):
         """
@@ -26,7 +27,7 @@ class ObjectTest(unittest.TestCase):
     @printdoc
     def test_read_pass_headers(self):
         """
-        Test an Object's ability to read when it has 
+        Test an Object's ability to read when it has
         extra headers passed in.
         """
         hdrs = {}
@@ -49,7 +50,7 @@ class ObjectTest(unittest.TestCase):
         Simple sanity test of Object.write()
         """
         self.storage_object.write('the rain in spain ...')
-        
+
     @printdoc
     def test_send(self):
         """Sanity test of Object.send()."""
@@ -73,7 +74,7 @@ class ObjectTest(unittest.TestCase):
         """
         path = os.path.join(os.path.dirname(__file__), 'samplefile.txt')
         self.storage_object.load_from_filename(path)
-        
+
     @printdoc
     def test_save_to_filename(self):
         """Sanity test of Object.save_to_filename()."""
@@ -90,7 +91,7 @@ class ObjectTest(unittest.TestCase):
     @printdoc
     def test_compute_md5sum(self):
         """
-        Verify that the Object.compute_md5sum() class method returns an 
+        Verify that the Object.compute_md5sum() class method returns an
         accurate md5 sum value.
         """
         f = open('/bin/ls', 'r')
@@ -103,7 +104,7 @@ class ObjectTest(unittest.TestCase):
             self.assert_(sum1 == sum2, "%s != %s" % (sum1, sum2))
         finally:
             f.close()
-            
+
     @printdoc
     def test_bad_name(self):
         """
@@ -114,7 +115,7 @@ class ObjectTest(unittest.TestCase):
         self.assertRaises(InvalidObjectName, obj.stream)
         self.assertRaises(InvalidObjectName, obj.sync_metadata)
         self.assertRaises(InvalidObjectName, obj.write, '')
-        
+
         obj.name = ''    # name is zero-length string
         self.assertRaises(InvalidObjectName, obj.read)
         self.assertRaises(InvalidObjectName, obj.stream)
@@ -140,22 +141,24 @@ class ObjectTest(unittest.TestCase):
         """
         # too-long name
         self.storage_object.metadata['a'*(meta_name_limit+1)] = 'test'
-        self.assertRaises(InvalidMetaName, 
+        self.assertRaises(InvalidMetaName,
                           self.storage_object.sync_metadata)
         del(self.storage_object.metadata['a'*(meta_name_limit+1)])
 
         # too-long value
-        self.storage_object.metadata['a'*(meta_name_limit)] = 'a'*(meta_value_limit+1)
-        self.assertRaises(InvalidMetaValue, 
+        self.storage_object.metadata['a'*(meta_name_limit)] = \
+                                     'a'*(meta_value_limit+1)
+        self.assertRaises(InvalidMetaValue,
                           self.storage_object.sync_metadata)
- 
+
     @printdoc
     def test_account_size(self):
         """
-        Test to see that the total bytes on the account is size of the samplefile
+        Test to see that the total bytes on the account is size of
+        the samplefile
         """
         self.assert_(self.conn.get_info()[1] == 234)
-       
+
     def setUp(self):
         self.auth = Auth('jsmith', 'qwerty')
         self.conn = Connection(auth=self.auth)
@@ -163,6 +166,7 @@ class ObjectTest(unittest.TestCase):
         self.conn.http_connect()
         self.container = self.conn.get_container('container1')
         self.storage_object = self.container.get_object('object1')
+
     def tearDown(self):
         del self.storage_object
         del self.container
