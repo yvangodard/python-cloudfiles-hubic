@@ -42,6 +42,9 @@ class Container(object):
     @ivar cdn_acl_user_agent: enable ACL restriction by User Agent
     for this container.
     @type cdn_acl_user_agent: str
+    @ivar cdn_acl_referrer: enable ACL restriction by Referrer
+    for this container.
+    @type cdn_acl_referrer: str
     
     @undocumented: _fetch_cdn_data
     @undocumented: _list_objects_raw
@@ -75,6 +78,7 @@ class Container(object):
         self.cdn_ttl = None
         self.cdn_log_retention = None
         self.cdn_acl_user_agent = None
+        self.cdn_acl_referrer = None
         if connection.cdn_enabled:
             self._fetch_cdn_data()
 
@@ -94,6 +98,8 @@ class Container(object):
                     self.cdn_log_retention = hdr[1] == "True" and True or False
                 if hdr[0].lower() == 'x-user-agent-acl':
                     self.cdn_acl_user_agent = hdr[1]
+                if hdr[0].lower() == 'x-referrer-acl':
+                    self.cdn_acl_referrer = hdr[1]
                 
                     
     @requires_name(InvalidContainerName)
@@ -157,6 +163,27 @@ class Container(object):
             raise ResponseError(response.status, response.reason)
 
         self.cdn_acl_user_agent = cdn_acl_user_agent
+
+    @requires_name(InvalidContainerName)        
+    def acl_referrer(self, cdn_acl_referrer=consts.cdn_acl_referrer):
+        """
+        Enable ACL restriction by referrer for this container.
+
+        >>> container.acl_referrer("http://www.example.com")
+
+        @param cdn_acl_user_agent: Set the referrer ACL
+        @type cdn_acl_user_agent: str
+        """
+        if not self.conn.cdn_enabled:
+            raise CDNNotEnabled()
+
+        hdrs = {'X-Referrer-ACL': cdn_acl_referrer}
+        response = self.conn.cdn_request('POST', [self.name], hdrs=hdrs)
+        if (response.status < 200) or (response.status >= 300):
+            raise ResponseError(response.status, response.reason)
+
+        self.cdn_acl_referrer = cdn_acl_referrer
+
         
     @requires_name(InvalidContainerName)        
     def log_retention(self, log_retention=consts.cdn_log_retention):
