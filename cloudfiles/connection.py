@@ -22,13 +22,14 @@ import  consts
 from    authentication import Authentication
 from    fjson     import json_loads
 
-# Because HTTPResponse objects *have* to have read() called on them 
+# Because HTTPResponse objects *have* to have read() called on them
 # before they can be used again ...
 # pylint: disable-msg=W0612
 
+
 class Connection(object):
     """
-    Manages the connection to the storage system and serves as a factory 
+    Manages the connection to the storage system and serves as a factory
     for Container instances.
 
     @undocumented: cdn_connect
@@ -37,19 +38,23 @@ class Connection(object):
     @undocumented: make_request
     @undocumented: _check_container_name
     """
+
     def __init__(self, username=None, api_key=None, **kwargs):
         """
         Accepts keyword arguments for Mosso username and api key.
         Optionally, you can omit these keywords and supply an
         Authentication object using the auth keyword. Setting the argument
         servicenet to True will make use of Rackspace servicenet network.
-        
+
         @type username: str
         @param username: a Mosso username
         @type api_key: str
         @param api_key: a Mosso API key
-        @ivar servicenet: Use Rackspace servicenet to access Cloud Files.
+        @type servicenet: bool
+        @param servicenet: Use Rackspace servicenet to access Cloud Files.
         @type cdn_log_retention: bool
+        @param cdn_log_retention: set logs retention for this cdn enabled
+        container.
         """
         self.cdn_enabled = False
         self.cdn_args = None
@@ -60,24 +65,24 @@ class Connection(object):
         self.debuglevel = int(kwargs.get('debuglevel', 0))
         self.servicenet = kwargs.get('servicenet', False)
 
-        # if the environement variable RACKSPACE_SERVICENET is set (to anything)
-        # it will automatically set servicenet=True
+        # if the environement variable RACKSPACE_SERVICENET is set (to
+        # anything) it will automatically set servicenet=True
         if not 'servicenet' in kwargs \
                 and 'RACKSPACE_SERVICENET' in os.environ:
             self.servicenet = True
-        
+
         socket.setdefaulttimeout = int(kwargs.get('timeout', 5))
-        self.auth = kwargs.has_key('auth') and kwargs['auth'] or None
-        
+        self.auth = 'auth' in kwargs and kwargs['auth'] or None
+
         if not self.auth:
             authurl = kwargs.get('authurl', consts.default_authurl)
             if username and api_key and authurl:
                 self.auth = Authentication(username, api_key, authurl)
             else:
                 raise TypeError("Incorrect or invalid arguments supplied")
-        
+
         self._authenticate()
-        
+
     def _authenticate(self):
         """
         Authenticate and setup this instance with the values returned.
@@ -95,7 +100,7 @@ class Connection(object):
         if self.servicenet:
             return "https://snet-%s" % url.replace("https://", "")
         return url
-            
+
     def cdn_connect(self):
         """
         Setup the http connection instance for the CDN service.
@@ -123,11 +128,12 @@ class Connection(object):
 
         path = '/%s/%s' % \
                  (self.uri.rstrip('/'), '/'.join([quote(i) for i in path]))
-        headers = {'Content-Length': len(data), 'User-Agent': consts.user_agent, 
+        headers = {'Content-Length': len(data),
+                   'User-Agent': consts.user_agent,
                    'X-Auth-Token': self.token}
         if isinstance(hdrs, dict):
             headers.update(hdrs)
-        
+
         # Send the request
         self.cdn_connection.request(method, path, data, headers)
 
@@ -148,25 +154,26 @@ class Connection(object):
 
         return response
 
-
     def make_request(self, method, path=[], data='', hdrs=None, parms=None):
         """
         Given a method (i.e. GET, PUT, POST, etc), a path, data, header and
-        metadata dicts, and an optional dictionary of query parameters, 
+        metadata dicts, and an optional dictionary of query parameters,
         performs an http request.
         """
         path = '/%s/%s' % \
                  (self.uri.rstrip('/'), '/'.join([quote(i) for i in path]))
-        
+
         if isinstance(parms, dict) and parms:
             query_args = \
-                ['%s=%s' % (quote(x),quote(str(y))) for (x,y) in parms.items()]
+                ['%s=%s' % (quote(x),
+                            quote(str(y))) for (x, y) in parms.items()]
             path = '%s?%s' % (path, '&'.join(query_args))
-            
-        headers = {'Content-Length': len(data), 'User-Agent': consts.user_agent, 
+
+        headers = {'Content-Length': len(data),
+                   'User-Agent': consts.user_agent,
                    'X-Auth-Token': self.token}
         isinstance(hdrs, dict) and headers.update(hdrs)
-        
+
         def retry_request():
             '''Re-connect and re-try a failed request once'''
             self.http_connect()
@@ -178,7 +185,7 @@ class Connection(object):
             response = self.connection.getresponse()
         except HTTPException:
             response = retry_request()
-            
+
         if response.status == 401:
             self._authenticate()
             response = retry_request()
@@ -234,7 +241,7 @@ class Connection(object):
         @return: an object representing the newly created container
         """
         self._check_container_name(container_name)
-        
+
         response = self.make_request('PUT', [container_name])
         buff = response.read()
         if (response.status < 200) or (response.status > 299):
@@ -253,10 +260,10 @@ class Connection(object):
         if isinstance(container_name, Container):
             container_name = container_name.name
         self._check_container_name(container_name)
-        
+
         response = self.make_request('DELETE', [container_name])
         buff = response.read()
-        
+
         if (response.status == 409):
             raise ContainerNotEmpty(container_name)
         elif (response.status < 200) or (response.status > 299):
@@ -306,12 +313,12 @@ class Connection(object):
         @return: an object representing the container
         """
         self._check_container_name(container_name)
-        
+
         response = self.make_request('HEAD', [container_name])
         count = size = None
         for hdr in response.getheaders():
             if hdr[0].lower() == 'x-container-object-count':
-                try:    
+                try:
                     count = int(hdr[1])
                 except ValueError:
                     count = 0
@@ -417,6 +424,7 @@ class Connection(object):
         """
         return self.get_container(key)
 
+
 class ConnectionPool(Queue):
     """
     A thread-safe connection pool object.
@@ -424,6 +432,7 @@ class ConnectionPool(Queue):
     This component isn't required when using the cloudfiles library, but it may
     be useful when building threaded applications.
     """
+
     def __init__(self, username=None, api_key=None, **kwargs):
         auth = kwargs.get('auth', None)
         self.timeout = kwargs.get('timeout', 5)
