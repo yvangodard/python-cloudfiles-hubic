@@ -1,3 +1,7 @@
+2009-11-13  Chmouel Boudjnah  <chmouel.boudjnah@rackspace.co.uk>
+
+	* 1.6.0: Add cdn acl by referrer and by user agent feature.
+
 2009-10-20  Chmouel Boudjnah  <chmouel.boudjnah@rackspace.co.uk>
 
 	* 1.5.1: if the environement variable RACKSPACE_SERVICENET is set

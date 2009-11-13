@@ -63,25 +63,27 @@
 <center>
 <center>  <map id="uml_class_diagram_for_cloudfil_3" name="uml_class_diagram_for_cloudfil_3">
 <area shape="rect" href="cloudfiles.container.Container-class.html#name" title="the container&#39;s name (generally treated as read&#45;only)" alt="" coords="17,28,431,47"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#cdn_log_retention" title="retention of the logs in the container." alt="" coords="17,47,431,65"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#cdn_ttl" title="the time&#45;to&#45;live of the CDN&#39;s public cache of this container (cached, use &#160;make_public to alter)" alt="" coords="17,65,431,84"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#object_count" title="the number of objects in this container (cached)" alt="" coords="17,84,431,103"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#size_used" title="the sum of the sizes of all objects in this container (cached)" alt="" coords="17,103,431,121"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#__init__" title="Containers will rarely if ever need to be instantiated directly by the &#160;user." alt="" coords="17,124,431,143"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#make_public" title="Either publishes the current container to the CDN or updates its CDN &#160;attributes." alt="" coords="17,143,431,161"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#make_private" title="Disables CDN access to this container." alt="" coords="17,161,431,180"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#log_retention" title="Enable CDN log retention on the container." alt="" coords="17,180,431,199"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#is_public" title="Returns a boolean indicating whether or not this container is publically &#160;accessible via the CDN." alt="" coords="17,199,431,217"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#public_uri" title="Return the URI for this container, if it is publically accessible via the &#160;CDN." alt="" coords="17,217,431,236"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#create_object" title="Return an Object instance, creating it if necessary." alt="" coords="17,236,431,255"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#get_objects" title="Return a result set of all Objects in the Container." alt="" coords="17,255,431,273"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#get_object" title="Return an Object instance for an existing storage object." alt="" coords="17,273,431,292"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#list_objects_info" title="Return information about all objects in the Container." alt="" coords="17,292,431,311"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#list_objects" title="Return names of all Objects in the Container." alt="" coords="17,311,431,329"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#__getitem__" title="cloudfiles.container.Container.__getitem__" alt="" coords="17,329,431,348"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#__str__" title="str(x)" alt="" coords="17,348,431,367"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html#delete_object" title="Permanently remove a storage object." alt="" coords="17,367,431,385"/>
-<area shape="rect" href="cloudfiles.container.Container-class.html" title="Container object and Object instance factory." alt="" coords="16,11,432,387"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#cdn_acl_referrer" title="enable ACL restriction by Referrer for this container." alt="" coords="17,47,431,65"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#cdn_acl_user_agent" title="enable ACL restriction by User Agent for this container." alt="" coords="17,65,431,84"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#cdn_log_retention" title="retention of the logs in the container." alt="" coords="17,84,431,103"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#cdn_ttl" title="the time&#45;to&#45;live of the CDN&#39;s public cache of this container (cached, use &#160;make_public to alter)" alt="" coords="17,103,431,121"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#object_count" title="the number of objects in this container (cached)" alt="" coords="17,121,431,140"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#size_used" title="the sum of the sizes of all objects in this container (cached)" alt="" coords="17,140,431,159"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#__init__" title="Containers will rarely if ever need to be instantiated directly by the &#160;user." alt="" coords="17,161,431,180"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#make_public" title="Either publishes the current container to the CDN or updates its CDN &#160;attributes." alt="" coords="17,180,431,199"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#make_private" title="Disables CDN access to this container." alt="" coords="17,199,431,217"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#acl_user_agent" title="Enable ACL restriction by User Agent for this container." alt="" coords="17,217,431,236"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#acl_referrer" title="Enable ACL restriction by referrer for this container." alt="" coords="17,236,431,255"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#log_retention" title="Enable CDN log retention on the container." alt="" coords="17,255,431,273"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#is_public" title="Returns a boolean indicating whether or not this container is publically &#160;accessible via the CDN." alt="" coords="17,273,431,292"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#public_uri" title="Return the URI for this container, if it is publically accessible via the &#160;CDN." alt="" coords="17,292,431,311"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#create_object" title="Return an Object instance, creating it if necessary." alt="" coords="17,311,431,329"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#get_objects" title="Return a result set of all Objects in the Container." alt="" coords="17,329,431,348"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#get_object" title="Return an Object instance for an existing storage object." alt="" coords="17,348,431,367"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#list_objects_info" title="Return information about all objects in the Container." alt="" coords="17,367,431,385"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#list_objects" title="Return names of all Objects in the Container." alt="" coords="17,385,431,404"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html#delete_object" title="Permanently remove a storage object." alt="" coords="17,423,431,441"/>
+<area shape="rect" href="cloudfiles.container.Container-class.html" title="Container object and Object instance factory." alt="" coords="16,11,432,443"/>
 </map>
   <img src="uml_class_diagram_for_cloudfil_3.gif" alt='' usemap="#uml_class_diagram_for_cloudfil_3" ismap="ismap" class="graph-without-title" />
 </center>
@@ -149,6 +151,42 @@
           <td><span class="summary-sig"><a href="cloudfiles.container.Container-class.html#make_private" class="summary-sig-name">make_private</a>(<span class="summary-sig-arg">*args</span>,
         <span class="summary-sig-arg">**kwargs</span>)</span><br />
       Disables CDN access to this container.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="cloudfiles.container.Container-class.html#acl_user_agent" class="summary-sig-name">acl_user_agent</a>(<span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Enable ACL restriction by User Agent for this container.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="cloudfiles.container.Container-class.html#acl_referrer" class="summary-sig-name">acl_referrer</a>(<span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Enable ACL restriction by referrer for this container.</td>
           <td align="right" valign="top">
             
             
@@ -398,6 +436,22 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">str</span>
+    </td><td class="summary">
+        <a name="cdn_acl_referrer"></a><span class="summary-name">cdn_acl_referrer</span><br />
+      enable ACL restriction by Referrer for this container.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">str</span>
+    </td><td class="summary">
+        <a name="cdn_acl_user_agent"></a><span class="summary-name">cdn_acl_user_agent</span><br />
+      enable ACL restriction by User Agent for this container.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">bool</span>
     </td><td class="summary">
         <a name="cdn_log_retention"></a><span class="summary-name">cdn_log_retention</span><br />
@@ -542,6 +596,66 @@
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span>container.make_private()</pre>
   <dl class="fields">
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@requires_name(InvalidContainerName)</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="acl_user_agent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">acl_user_agent</span>(<span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Enable ACL restriction by User Agent for this container.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>container.acl_user_agent(<span class="py-string">&quot;Mozilla&quot;</span>)</pre>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>cdn_acl_user_agent</code></strong> (str) - Set the user agent ACL</li>
+    </ul></dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@requires_name(InvalidContainerName)</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="acl_referrer"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">acl_referrer</span>(<span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Enable ACL restriction by referrer for this container.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>container.acl_referrer(<span class="py-string">&quot;http://www.example.com&quot;</span>)</pre>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>cdn_acl_user_agent</code></strong> (str) - Set the referrer ACL</li>
+    </ul></dd>
     <dt>Decorators:</dt>
     <dd><ul class="nomargin-top">
         <li><code>@requires_name(InvalidContainerName)</code></li>
@@ -973,7 +1087,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Tue Oct 20 19:16:34 2009
+    Generated by Epydoc 3.0.1 on Fri Nov 13 14:58:17 2009
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

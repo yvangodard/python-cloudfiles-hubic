@@ -5,6 +5,7 @@ cloudfiles.container	cloudfiles.container-module.html
 cloudfiles.errors	cloudfiles.errors-module.html
 cloudfiles.fjson	cloudfiles.fjson-module.html
 cloudfiles.fjson._loads	cloudfiles.fjson-module.html#_loads
+cloudfiles.fjson.__warningregistry__	cloudfiles.fjson-module.html#__warningregistry__
 cloudfiles.fjson.json_loads	cloudfiles.fjson-module.html#json_loads
 cloudfiles.fjson.comments	cloudfiles.fjson-module.html#comments
 cloudfiles.storage_object	cloudfiles.storage_object-module.html
@@ -31,13 +32,17 @@ cloudfiles.container.Container.delete_object	cloudfiles.container.Container-clas
 cloudfiles.container.Container.list_objects	cloudfiles.container.Container-class.html#list_objects
 cloudfiles.container.Container.get_object	cloudfiles.container.Container-class.html#get_object
 cloudfiles.container.Container.__str__	cloudfiles.container.Container-class.html#__str__
+cloudfiles.container.Container.acl_user_agent	cloudfiles.container.Container-class.html#acl_user_agent
+cloudfiles.container.Container.acl_referrer	cloudfiles.container.Container-class.html#acl_referrer
 cloudfiles.container.Container.__init__	cloudfiles.container.Container-class.html#__init__
 cloudfiles.container.Container.size_used	cloudfiles.container.Container-class.html#size_used
 cloudfiles.container.Container.object_count	cloudfiles.container.Container-class.html#object_count
+cloudfiles.container.Container.cdn_acl_user_agent	cloudfiles.container.Container-class.html#cdn_acl_user_agent
 cloudfiles.container.Container.cdn_ttl	cloudfiles.container.Container-class.html#cdn_ttl
 cloudfiles.container.Container.__getitem__	cloudfiles.container.Container-class.html#__getitem__
 cloudfiles.container.Container.create_object	cloudfiles.container.Container-class.html#create_object
 cloudfiles.container.Container.cdn_log_retention	cloudfiles.container.Container-class.html#cdn_log_retention
+cloudfiles.container.Container.cdn_acl_referrer	cloudfiles.container.Container-class.html#cdn_acl_referrer
 cloudfiles.container.Container.public_uri	cloudfiles.container.Container-class.html#public_uri
 cloudfiles.container.Container.list_objects_info	cloudfiles.container.Container-class.html#list_objects_info
 cloudfiles.container.Container.make_private	cloudfiles.container.Container-class.html#make_private
