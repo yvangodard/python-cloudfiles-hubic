@@ -15,9 +15,9 @@ Working with result sets:
     >>>     print container.name
     fruit
     vegitables
-    >>> print container[0].name
+    >>> print containers[0].name
     fruit
-    >>> fruit_container = container[0]
+    >>> fruit_container = containers[0]
     >>> objects = fruit_container.get_objects()
     >>> for storage_object in objects:
     >>>     print storage_object.name
