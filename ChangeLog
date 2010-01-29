@@ -1,3 +1,6 @@
+2009-01-29  Chmouel Boudjnah  <chmouel.boudjnah@rackspace.co.uk>
+   * 1.7.0: Adjust api auth to rackspacecloud not mosso (jdickinson).
+
 2009-11-13  Chmouel Boudjnah  <chmouel.boudjnah@rackspace.co.uk>
 
 	* 1.6.0: Add cdn acl by referrer and by user agent feature.
