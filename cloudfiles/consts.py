@@ -2,7 +2,7 @@
 
 __version__ = "1.6.0"
 user_agent = "python-cloudfiles/%s" % __version__
-default_authurl = 'https://api.mosso.com/auth'
+default_authurl = 'https://auth.api.rackspacecloud.com/v1.0'
 default_cdn_ttl = 86400
 cdn_log_retention = False
 cdn_acl_user_agent = ""
