@@ -71,7 +71,7 @@ class Connection(object):
                 and 'RACKSPACE_SERVICENET' in os.environ:
             self.servicenet = True
 
-        socket.setdefaulttimeout = int(kwargs.get('timeout', 5))
+        socket.setdefaulttimeout(int(kwargs.get('timeout', 5)))
         self.auth = 'auth' in kwargs and kwargs['auth'] or None
 
         if not self.auth:
