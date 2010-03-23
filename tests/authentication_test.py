@@ -12,7 +12,7 @@ class AuthenticationTest(unittest.TestCase):
         """
         Validate authentication uri construction.
         """
-        self.assert_(self.auth.uri == "auth", \
+        self.assert_(self.auth.uri == "v1.0", \
                "authentication URL was not properly constructed")
 
     @printdoc
