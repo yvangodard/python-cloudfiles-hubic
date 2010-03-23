@@ -83,45 +83,43 @@ class TrackerSocket(FakeSocket):
                            '"hash":"4281c348eaf83e70ddce0e07221c3d28",'
                            '"bytes":14,'
                            '"content_type":"application\/octet-stream",'
-                           '"last_modified":"2007-03-04 20:32:17"},\n')
+                           '"last_modified":"2007-03-04 20:32:17"}')
             objects.append('{"name":"object2",'
                            '"hash":"b039efe731ad111bc1b0ef221c3849d0",'
                            '"bytes":64,'
                            '"content_type":"application\/octet-stream",'
-                           '"last_modified":"2007-03-04 20:32:17"},\n')
+                           '"last_modified":"2007-03-04 20:32:17"}')
             objects.append('{"name":"object3",'
                            '"hash":"4281c348eaf83e70ddce0e07221c3d28",'
                            '"bytes":14,'
                            '"content_type":"application\/octet-stream",'
-                           '"last_modified":"2007-03-04 20:32:17"},\n')
+                           '"last_modified":"2007-03-04 20:32:17"}')
             objects.append('{"name":"object4",'
                            '"hash":"b039efe731ad111bc1b0ef221c3849d0",'
                            '"bytes":64,'
                            '"content_type":"application\/octet-stream",'
-                           '"last_modified":"2007-03-04 20:32:17"},\n')
+                           '"last_modified":"2007-03-04 20:32:17"}')
             objects.append('{"name":"object5",'
                            '"hash":"4281c348eaf83e70ddce0e07221c3d28",'
                            '"bytes":14,'
                            '"content_type":"application\/octet-stream",'
-                           '"last_modified":"2007-03-04 20:32:17"},\n')
+                           '"last_modified":"2007-03-04 20:32:17"}')
             objects.append('{"name":"object6",'
                            '"hash":"b039efe731ad111bc1b0ef221c3849d0",'
                            '"bytes":64,'
                            '"content_type":"application\/octet-stream",'
-                           '"last_modified":"2007-03-04 20:32:17"},\n')
+                           '"last_modified":"2007-03-04 20:32:17"}')
             objects.append('{"name":"object7",'
                            '"hash":"4281c348eaf83e70ddce0e07221c3d28",'
                            '"bytes":14,'
                            '"content_type":"application\/octet-stream",'
-                           '"last_modified":"2007-03-04 20:32:17"},\n')
+                           '"last_modified":"2007-03-04 20:32:17"}')
             objects.append('{"name":"object8",'
                            '"hash":"b039efe731ad111bc1b0ef221c3849d0",'
                            '"bytes":64,'
                            '"content_type":"application\/octet-stream",'
-                           '"last_modified":"2007-03-04 20:32:17"},\n')
-            objects = objects[left:right]
-            objects.insert(0, '[\n')
-            objects.append(']\n')
+                           '"last_modified":"2007-03-04 20:32:17"}')
+            output = '[\n%s\n]\n' % (',\n'.join(objects[left:right]))
         elif args.has_key('format') and args['format'] == 'xml':
             objects = []
             objects.append('<object><name>object1</name>'
@@ -176,14 +174,16 @@ class TrackerSocket(FakeSocket):
             objects.insert(0, '<?xml version="1.0" encoding="UTF-8"?>\n')
             objects.insert(1, '<container name="test_container_1"\n')
             objects.append('</container>\n')
+            output = ''.join(objects)
         else:
             objects = ['object%s\n' % i for i in range(1,9)]
             objects = objects[left:right]
+            output = ''.join(objects)
 
         # prefix/path don't make much sense given our test data
         if args.has_key('prefix') or args.has_key('path'):
             pass
-        return ''.join(objects)
+        return output
 
     def render_GET(self, path, args):
         # Special path that returns 404 Not Found
