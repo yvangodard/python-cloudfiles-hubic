@@ -1,25 +1,30 @@
-2009-04-02 Chmouel Boudjnah  <chmouel.boudjnah@rackspace.co.uk>
-  * 1.7.1: 
-  		  - Properly set socket timeout (prestontimmons).
-  		  - fixed bug in auth server connection (notmyname).
-		  - Fix unit tests (sorenh).
-		  - Regenerate properly documentation (exlt).
+2009-04-02  Michael Shuler  <mshuler@rackspace.com>
+
+    * 1.7.2: Version bump to rebuild release after merge
+
+2009-04-02  Chmouel Boudjnah  <chmouel.boudjnah@rackspace.co.uk>
+
+    * 1.7.1: Properly set socket timeout (prestontimmons).
+             fixed bug in auth server connection (notmyname).
+             Fix unit tests (sorenh).
+             Regenerate properly documentation (exlt).
 
 2009-01-29  Chmouel Boudjnah  <chmouel.boudjnah@rackspace.co.uk>
-   * 1.7.0: Adjust api auth to rackspacecloud not mosso (jdickinson).
+
+    * 1.7.0: Adjust api auth to rackspacecloud not mosso (jdickinson).
 
 2009-11-13  Chmouel Boudjnah  <chmouel.boudjnah@rackspace.co.uk>
 
-	* 1.6.0: Add cdn acl by referrer and by user agent feature.
+    * 1.6.0: Add cdn acl by referrer and by user agent feature.
 
 2009-10-20  Chmouel Boudjnah  <chmouel.boudjnah@rackspace.co.uk>
 
-	* 1.5.1: if the environement variable RACKSPACE_SERVICENET is set
-	         to anything) it will automatically set servicenet=True.
+    * 1.5.1: if the environement variable RACKSPACE_SERVICENET is set
+             to anything) it will automatically set servicenet=True.
 
 2009-10-20  Chmouel Boudjnah  <chmouel.boudjnah@rackspace.co.uk>
 
-	* 1.5.0: Add support of servicenet if you add servicenet=True to
-	         get_connection it will use Rackspace network servicenet.
+    * 1.5.0: Add support of servicenet if you add servicenet=True to
+             get_connection it will use Rackspace network servicenet.
 
-
+# vim:set ai sw=4 ts=4 tw=0 expandtab:
