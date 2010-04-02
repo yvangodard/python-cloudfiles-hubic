@@ -1,3 +1,10 @@
+2009-04-02 Chmouel Boudjnah  <chmouel.boudjnah@rackspace.co.uk>
+  * 1.7.1: 
+  		  - Properly set socket timeout (prestontimmons).
+  		  - fixed bug in auth server connection (notmyname).
+		  - Fix unit tests (sorenh).
+		  - Regenerate properly documentation (exlt).
+
 2009-01-29  Chmouel Boudjnah  <chmouel.boudjnah@rackspace.co.uk>
    * 1.7.0: Adjust api auth to rackspacecloud not mosso (jdickinson).
 
