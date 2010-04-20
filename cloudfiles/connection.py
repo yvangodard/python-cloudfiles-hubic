@@ -145,7 +145,7 @@ class Connection(object):
 
         try:
             response = self.cdn_connection.getresponse()
-        except HTTPException:
+        except (socket.error, IOError, HTTPException):
             response = retry_request()
 
         if response.status == 401:
@@ -183,7 +183,7 @@ class Connection(object):
         try:
             self.connection.request(method, path, data, headers)
             response = self.connection.getresponse()
-        except HTTPException:
+        except (socket.error, IOError, HTTPException):
             response = retry_request()
 
         if response.status == 401:
