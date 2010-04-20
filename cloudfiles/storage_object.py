@@ -162,8 +162,8 @@ class Object(object):
         @param callback: function to be used as a progress callback
         @type callback: callable(transferred, size)
         """
+        fobj = open(filename, 'wb')
         try:
-            fobj = open(filename, 'wb')
             self.read(buffer=fobj, callback=callback)
         finally:
             fobj.close()
