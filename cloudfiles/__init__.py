@@ -42,7 +42,7 @@ Creating Containers and adding Objects to them:
 
     >>> pic_container = conn.create_container('pictures')
     >>> my_dog = pic_container.create_object('fido.jpg')
-    >>> my_dog.load_from_file('images/IMG-0234.jpg')
+    >>> my_dog.load_from_filename('images/IMG-0234.jpg')
     >>> text_obj = pic_container.create_object('sample.txt')
     >>> text_obj.write('This is not the object you are looking for.\\n')
     >>> text_obj.read()
