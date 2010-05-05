@@ -10,6 +10,7 @@ See COPYING for license information.
 
 import urllib
 from httplib  import HTTPSConnection, HTTPConnection, HTTPException
+import httplib
 from utils    import parse_url
 from errors   import ResponseError, AuthenticationError, AuthenticationFailed
 from consts   import user_agent, default_authurl
@@ -25,7 +26,7 @@ class BaseAuthentication(object):
         self.headers['x-auth-key'] = api_key
         self.headers['User-Agent'] = user_agent
         (self.host, self.port, self.uri, self.is_ssl) = parse_url(self.authurl)
-        self.conn_class = self.is_ssl and HTTPSConnection or HTTPConnection
+        self.conn_class = self.is_ssl and THTTPSConnection or THTTPConnection
         
     def authenticate(self):
         """
@@ -85,5 +86,31 @@ class Authentication(BaseAuthentication):
                     "authentication service.")
         
         return (storage_url, cdn_url, auth_token)
+
+class THTTPConnection(HTTPConnection):
+
+   def connect(self):
+       HTTPConnection.connect(self)
+       self.sock.settimeout(5)
+
+
+class THTTP(httplib.HTTP):
+   _connection_class = THTTPConnection
+
+   def set_timeout(self, timeout):
+       self._conn.timeout = timeout
+class THTTPSConnection(HTTPSConnection):
+
+   def connect(self):
+       HTTPSConnection.connect(self)
+       self.sock.settimeout(5)
+
+
+class THTTPS(httplib.HTTPS):
+   _connection_class = THTTPSConnection
+
+   def set_timeout(self, timeout):
+       self._conn.timeout = timeout
+
     
 # vim:set ai ts=4 sw=4 tw=0 expandtab:
