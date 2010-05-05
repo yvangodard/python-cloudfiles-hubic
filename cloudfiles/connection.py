@@ -12,6 +12,7 @@ import  socket
 import  os
 from    urllib    import quote
 from    httplib   import HTTPSConnection, HTTPConnection, HTTPException
+import  httplib
 from    container import Container, ContainerResults
 from    utils     import parse_url
 from    errors    import ResponseError, NoSuchContainer, ContainerNotEmpty, \
@@ -71,7 +72,6 @@ class Connection(object):
                 and 'RACKSPACE_SERVICENET' in os.environ:
             self.servicenet = True
 
-        socket.setdefaulttimeout(int(kwargs.get('timeout', 5)))
         self.auth = 'auth' in kwargs and kwargs['auth'] or None
 
         if not self.auth:
@@ -90,8 +90,8 @@ class Connection(object):
         (url, self.cdn_url, self.token) = self.auth.authenticate()
         url = self._set_storage_url(url)
         self.connection_args = parse_url(url)
-        self.conn_class = self.connection_args[3] and HTTPSConnection or \
-                                                      HTTPConnection
+        self.conn_class = self.connection_args[3] and THTTPSConnection or \
+                                                      THTTPConnection
         self.http_connect()
         if self.cdn_url:
             self.cdn_connect()
@@ -106,7 +106,7 @@ class Connection(object):
         Setup the http connection instance for the CDN service.
         """
         (host, port, cdn_uri, is_ssl) = parse_url(self.cdn_url)
-        conn_class = is_ssl and HTTPSConnection or HTTPConnection
+        conn_class = is_ssl and THTTPSConnection or THTTPConnection
         self.cdn_connection = conn_class(host, port)
         self.cdn_enabled = True
 
@@ -185,7 +185,6 @@ class Connection(object):
             response = self.connection.getresponse()
         except (socket.error, IOError, HTTPException):
             response = retry_request()
-
         if response.status == 401:
             self._authenticate()
             response = retry_request()
@@ -464,5 +463,29 @@ class ConnectionPool(Queue):
             Queue.put(self, (time(), connobj), block=0)
         except Full:
             del connobj
+class THTTPConnection(HTTPConnection):
+
+   def connect(self):
+       HTTPConnection.connect(self)
+       self.sock.settimeout(5)
+
+
+class THTTP(httplib.HTTP):
+   _connection_class = THTTPConnection
+
+   def set_timeout(self, timeout):
+       self._conn.timeout = timeout
+class THTTPSConnection(HTTPSConnection):
+
+   def connect(self):
+       HTTPSConnection.connect(self)
+       self.sock.settimeout(5)
+
+
+class THTTPS(httplib.HTTPS):
+   _connection_class = THTTPSConnection
+
+   def set_timeout(self, timeout):
+       self._conn.timeout = timeout
 
 # vim:set ai sw=4 ts=4 tw=0 expandtab:

@@ -1,3 +1,6 @@
+2010-05-05 Conrad Weidenkeller <cweidenkeller@rackspace.com>
+    * 1.7.3: Subclassed HTTP and HTTPS connection allowing for instance based socket timeouts. 
+
 2009-04-02  Michael Shuler  <mshuler@rackspace.com>
 
     * 1.7.2: Version bump to rebuild release after merge
