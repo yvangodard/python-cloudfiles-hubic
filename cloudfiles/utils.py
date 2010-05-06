@@ -4,6 +4,7 @@ import re
 from urlparse  import urlparse
 from errors    import InvalidUrl
 from consts    import object_name_limit
+from httplib   import HTTPConnection,HTTPSConnection,HTTP,HTTPS
 
 def parse_url(url):
     """
@@ -45,3 +46,27 @@ def requires_name(exc_class):
         decorator.parent_func = f
         return decorator
     return wrapper
+
+class THTTPConnection(HTTPConnection):
+    def __init__(host,port,timeout):
+        HTTPConnection.__init__(self,host,port)
+   	self.timeout = timeout
+    def connect(self):
+        HTTPConnection.connect(self)
+        self.sock.settimeout(self.timeout)
+class THTTP(HTTP):
+    _connection_class = THTTPConnection
+    def set_timeout(self, timeout):
+        self._conn.timeout = timeout
+class THTTPSConnection(HTTPSConnection):
+    def __init__(host,port,timeout):
+        HTTPSConnection.__init__(self.host,port)
+        self.timeout = timeout
+    def connect(self):
+        HTTPSConnection.connect(self)
+        self.sock.settimeout(self.timeout)
+class THTTPS(HTTPS):
+    _connection_class = THTTPSConnection
+    def set_timeout(self, timeout):
+        self._conn.timeout = timeout
+

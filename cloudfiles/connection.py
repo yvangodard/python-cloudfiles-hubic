@@ -12,9 +12,8 @@ import  socket
 import  os
 from    urllib    import quote
 from    httplib   import HTTPSConnection, HTTPConnection, HTTPException
-import  httplib
 from    container import Container, ContainerResults
-from    utils     import parse_url
+from    utils     import parse_url, THTTPConnection, THTTPSConnection
 from    errors    import ResponseError, NoSuchContainer, ContainerNotEmpty, \
                          InvalidContainerName, CDNNotEnabled
 from    Queue     import Queue, Empty, Full
@@ -22,7 +21,7 @@ from    time      import time
 import  consts
 from    authentication import Authentication
 from    fjson     import json_loads
-
+from    sys       import version_info
 # Because HTTPResponse objects *have* to have read() called on them
 # before they can be used again ...
 # pylint: disable-msg=W0612
@@ -40,7 +39,7 @@ class Connection(object):
     @undocumented: _check_container_name
     """
 
-    def __init__(self, username=None, api_key=None, **kwargs):
+    def __init__(self, username=None, api_key=None,timeout=5 , **kwargs):
         """
         Accepts keyword arguments for Mosso username and api key.
         Optionally, you can omit these keywords and supply an
@@ -65,6 +64,7 @@ class Connection(object):
         self.token = None
         self.debuglevel = int(kwargs.get('debuglevel', 0))
         self.servicenet = kwargs.get('servicenet', False)
+	self.timeout = timeout
 
         # if the environement variable RACKSPACE_SERVICENET is set (to
         # anything) it will automatically set servicenet=True
@@ -90,8 +90,14 @@ class Connection(object):
         (url, self.cdn_url, self.token) = self.auth.authenticate()
         url = self._set_storage_url(url)
         self.connection_args = parse_url(url)
-        self.conn_class = self.connection_args[3] and THTTPSConnection or \
-                                                      THTTPConnection
+     
+    
+	if version_info[0] <= 2 and version_info[1] < 6:
+		self.conn_class = self.connection_args[3] and THTTPSConnection or \
+	                                                      THTTPConnection
+        else:
+		self.conn_class = self.connection_args[3] and HTTPSConnection or \
+        	                                              HTTPConnection
         self.http_connect()
         if self.cdn_url:
             self.cdn_connect()
@@ -106,8 +112,11 @@ class Connection(object):
         Setup the http connection instance for the CDN service.
         """
         (host, port, cdn_uri, is_ssl) = parse_url(self.cdn_url)
-        conn_class = is_ssl and THTTPSConnection or THTTPConnection
-        self.cdn_connection = conn_class(host, port)
+	if version_info[0] <= 2 and version_info[1] < 6:
+            self.conn_class = is_ssl and THTTPSConnection or THTTPConnection
+        else:
+            self.conn_class = is_ssl and HTTPSConnection or HTTPConnection
+        self.cdn_connection = self.conn_class(host, port, timeout=self.timeout)
         self.cdn_enabled = True
 
     def http_connect(self):
@@ -115,7 +124,11 @@ class Connection(object):
         Setup the http connection instance.
         """
         (host, port, self.uri, is_ssl) = self.connection_args
-        self.connection = self.conn_class(host, port=port)
+	if version_info[0] <= 2 and version_info[1] < 6:
+            self.conn_class = is_ssl and THTTPSConnection or THTTPConnection
+        else:
+            self.conn_class = is_ssl and HTTPSConnection or HTTPConnection
+        self.connection = self.conn_class(host, port=port, timeout=self.timeout)
         self.connection.set_debuglevel(self.debuglevel)
 
     def cdn_request(self, method, path=[], data='', hdrs=None):
@@ -463,29 +476,4 @@ class ConnectionPool(Queue):
             Queue.put(self, (time(), connobj), block=0)
         except Full:
             del connobj
-class THTTPConnection(HTTPConnection):
-
-   def connect(self):
-       HTTPConnection.connect(self)
-       self.sock.settimeout(5)
-
-
-class THTTP(httplib.HTTP):
-   _connection_class = THTTPConnection
-
-   def set_timeout(self, timeout):
-       self._conn.timeout = timeout
-class THTTPSConnection(HTTPSConnection):
-
-   def connect(self):
-       HTTPSConnection.connect(self)
-       self.sock.settimeout(5)
-
-
-class THTTPS(httplib.HTTPS):
-   _connection_class = THTTPSConnection
-
-   def set_timeout(self, timeout):
-       self._conn.timeout = timeout
-
 # vim:set ai sw=4 ts=4 tw=0 expandtab:

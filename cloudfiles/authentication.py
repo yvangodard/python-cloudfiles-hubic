@@ -10,23 +10,27 @@ See COPYING for license information.
 
 import urllib
 from httplib  import HTTPSConnection, HTTPConnection, HTTPException
-import httplib
-from utils    import parse_url
+from utils    import parse_url, THTTPConnection, THTTPSConnection
 from errors   import ResponseError, AuthenticationError, AuthenticationFailed
 from consts   import user_agent, default_authurl
+from sys      import version_info
 
 class BaseAuthentication(object):
     """
     The base authentication class from which all others inherit.
     """
-    def __init__(self, username, api_key, authurl=default_authurl):
+    def __init__(self, username, api_key, authurl=default_authurl, timeout=5):
         self.authurl = authurl
         self.headers = dict()
         self.headers['x-auth-user'] = username
         self.headers['x-auth-key'] = api_key
         self.headers['User-Agent'] = user_agent
+	self.timeout = timeout
         (self.host, self.port, self.uri, self.is_ssl) = parse_url(self.authurl)
-        self.conn_class = self.is_ssl and THTTPSConnection or THTTPConnection
+	if version_info[0] <= 2 and version_info[1] < 6:
+            self.conn_class = self.is_ssl and THTTPSConnection or THTTPConnection
+	else: 
+            self.conn_class = self.is_ssl and HTTPSConnection or HTTPConnection
         
     def authenticate(self):
         """
@@ -54,7 +58,7 @@ class Authentication(BaseAuthentication):
         Initiates authentication with the remote service and returns a 
         two-tuple containing the storage system URL and session token.
         """
-        conn = self.conn_class(self.host, self.port)
+        conn = self.conn_class(self.host, self.port, timeout=self.timeout)
         conn.request('GET', '/'+self.uri, headers=self.headers)
         response = conn.getresponse()
         buff = response.read()
@@ -87,30 +91,4 @@ class Authentication(BaseAuthentication):
         
         return (storage_url, cdn_url, auth_token)
 
-class THTTPConnection(HTTPConnection):
-
-   def connect(self):
-       HTTPConnection.connect(self)
-       self.sock.settimeout(5)
-
-
-class THTTP(httplib.HTTP):
-   _connection_class = THTTPConnection
-
-   def set_timeout(self, timeout):
-       self._conn.timeout = timeout
-class THTTPSConnection(HTTPSConnection):
-
-   def connect(self):
-       HTTPSConnection.connect(self)
-       self.sock.settimeout(5)
-
-
-class THTTPS(httplib.HTTPS):
-   _connection_class = THTTPSConnection
-
-   def set_timeout(self, timeout):
-       self._conn.timeout = timeout
-
-    
 # vim:set ai ts=4 sw=4 tw=0 expandtab:
