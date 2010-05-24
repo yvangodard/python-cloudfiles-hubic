@@ -59,6 +59,7 @@ class Authentication(BaseAuthentication):
         two-tuple containing the storage system URL and session token.
         """
         conn = self.conn_class(self.host, self.port, timeout=self.timeout)
+	#conn = self.conn_class(self.host, self.port)
         conn.request('GET', '/'+self.uri, headers=self.headers)
         response = conn.getresponse()
         buff = response.read()

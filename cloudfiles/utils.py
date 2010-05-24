@@ -48,8 +48,8 @@ def requires_name(exc_class):
     return wrapper
 
 class THTTPConnection(HTTPConnection):
-    def __init__(host,port,timeout):
-        HTTPConnection.__init__(self,host,port)
+    def __init__(self, host, port, timeout):
+        HTTPConnection.__init__(self, host, port)
    	self.timeout = timeout
     def connect(self):
         HTTPConnection.connect(self)
@@ -58,9 +58,10 @@ class THTTP(HTTP):
     _connection_class = THTTPConnection
     def set_timeout(self, timeout):
         self._conn.timeout = timeout
+
 class THTTPSConnection(HTTPSConnection):
-    def __init__(host,port,timeout):
-        HTTPSConnection.__init__(self.host,port)
+    def __init__(self, host, port, timeout):
+        HTTPSConnection.__init__(self, host,port)
         self.timeout = timeout
     def connect(self):
         HTTPSConnection.connect(self)
