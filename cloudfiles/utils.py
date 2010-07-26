@@ -4,7 +4,7 @@ import re
 from urlparse  import urlparse
 from errors    import InvalidUrl
 from consts    import object_name_limit
-from httplib   import HTTPConnection,HTTPSConnection,HTTP,HTTPS
+from httplib   import HTTPConnection,HTTPSConnection,HTTP
 
 def parse_url(url):
     """
@@ -66,7 +66,7 @@ class THTTPSConnection(HTTPSConnection):
     def connect(self):
         HTTPSConnection.connect(self)
         self.sock.settimeout(self.timeout)
-class THTTPS(HTTPS):
+class THTTPS(HTTP):
     _connection_class = THTTPSConnection
     def set_timeout(self, timeout):
         self._conn.timeout = timeout
