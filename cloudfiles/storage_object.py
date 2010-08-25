@@ -341,7 +341,7 @@ class Object(object):
                     self._etag = hdr[1]
     
     @requires_name(InvalidObjectName)
-    def copy(self, container, name):
+    def copy_to(self, container_name, name):
         """
         Copy an object's contents to another location.
         """
@@ -349,12 +349,12 @@ class Object(object):
         self._name_check()
         self._name_check(name)
         
-        # This method implicitly diables verification
+        # This method implicitly disables verification.
         if not self._etag_override:
             self._etag = None
-        headers = self._make_headers()
         
-        headers['Destination'] = "%s/%s" % (container, name)
+        headers = self._make_headers()
+        headers['Destination'] = "%s/%s" % (container_name, name)
         headers['Content-Length'] = 0
         response = self.container.conn.make_request(
                    'COPY', [self.container.name, self.name], hdrs=headers, data='')
@@ -362,6 +362,39 @@ class Object(object):
         
         if response.status < 200 or response.status > 299:
             raise ResponseError(response.status, response.reason)
+        
+        # Reset the etag to what the server returns.
+        for hdr in response.getheaders():
+            if hdr[0].lower() == 'etag':
+                self._etag = hdr[1]
+    
+    @requires_name(InvalidObjectName)
+    def copy_from(self, container_name, name):
+        """
+        Copy another object's contents to this object.
+        """
+        
+        self._name_check()
+        self._name_check(name)
+        
+        # This method implicitly disables verification.
+        if not self._etag_override:
+            self._etag = None
+        
+        headers = self._make_headers()
+        headers['X-Copy-From'] = "%s/%s" % (container_name, name)
+        headers['Content-Length'] = 0
+        response = self.container.conn.make_request(
+                   'PUT', [self.container.name, self.name], hdrs=headers, data='')
+        buff = response.read()
+        
+        if response.status < 200 or response.status > 299:
+            raise ResponseError(response.status, response.reason)
+        
+        # Reset the etag to what the server returns.
+        for hdr in response.getheaders():
+            if hdr[0].lower() == 'etag':
+                self._etag = hdr[1]
 
     @requires_name(InvalidObjectName)
     def send(self, iterable):
@@ -403,7 +436,7 @@ class Object(object):
                 raise StopIteration()
             iterable = file_iterator(iterable)
 
-        # This method implicitly diables verification
+        # This method implicitly disables verification.
         if not self._etag_override:
             self._etag = None
 
