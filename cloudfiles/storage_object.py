@@ -218,7 +218,7 @@ class Object(object):
         self._name_check()
         if self.metadata:
             headers = self._make_headers()
-            headers['Content-Length'] = 0
+            headers['Content-Length'] = "0"
             response = self.container.conn.make_request(
                 'POST', [self.container.name, self.name], hdrs=headers, data=''
             )
@@ -493,7 +493,7 @@ class Object(object):
         respective instance attributes.
         """
         headers = {}
-        headers['Content-Length'] = self.size and self.size or 0
+        headers['Content-Length'] = str(self.size) and str(self.size) or "0"
         if self._etag: headers['ETag'] = self._etag
 
         if self.content_type: headers['Content-Type'] = self.content_type

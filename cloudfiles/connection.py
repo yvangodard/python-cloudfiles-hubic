@@ -141,7 +141,7 @@ class Connection(object):
 
         path = '/%s/%s' % \
                  (self.uri.rstrip('/'), '/'.join([quote(i) for i in path]))
-        headers = {'Content-Length': len(data),
+        headers = {'Content-Length': str(len(data)),
                    'User-Agent': consts.user_agent,
                    'X-Auth-Token': self.token}
         if isinstance(hdrs, dict):
@@ -182,7 +182,7 @@ class Connection(object):
                             quote(str(y))) for (x, y) in parms.items()]
             path = '%s?%s' % (path, '&'.join(query_args))
 
-        headers = {'Content-Length': len(data),
+        headers = {'Content-Length': str(len(data)),
                    'User-Agent': consts.user_agent,
                    'X-Auth-Token': self.token}
         isinstance(hdrs, dict) and headers.update(hdrs)
