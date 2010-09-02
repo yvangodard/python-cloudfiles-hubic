@@ -493,7 +493,7 @@ class Object(object):
         respective instance attributes.
         """
         headers = {}
-        headers['Content-Length'] = str(self.size) and str(self.size) or "0"
+        headers['Content-Length'] = ( str(self.size) and str(self.size) != "0" ) and str(self.size) or "0"
         if self._etag: headers['ETag'] = self._etag
 
         if self.content_type: headers['Content-Type'] = self.content_type
