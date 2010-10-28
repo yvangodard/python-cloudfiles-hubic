@@ -93,10 +93,10 @@ class Connection(object):
      
     
         if version_info[0] <= 2 and version_info[1] < 6:
-                self.conn_class = self.connection_args[3] and THTTPSConnection or \
+            self.conn_class = self.connection_args[3] and THTTPSConnection or \
                                                               THTTPConnection
         else:
-                self.conn_class = self.connection_args[3] and HTTPSConnection or \
+            self.conn_class = self.connection_args[3] and HTTPSConnection or \
                                                               HTTPConnection
         self.http_connect()
         if self.cdn_url:
@@ -112,10 +112,6 @@ class Connection(object):
         Setup the http connection instance for the CDN service.
         """
         (host, port, cdn_uri, is_ssl) = parse_url(self.cdn_url)
-        if version_info[0] <= 2 and version_info[1] < 6:
-            self.conn_class = is_ssl and THTTPSConnection or THTTPConnection
-        else:
-            self.conn_class = is_ssl and HTTPSConnection or HTTPConnection
         self.cdn_connection = self.conn_class(host, port, timeout=self.timeout)
         self.cdn_enabled = True
 
@@ -124,10 +120,6 @@ class Connection(object):
         Setup the http connection instance.
         """
         (host, port, self.uri, is_ssl) = self.connection_args
-        if version_info[0] <= 2 and version_info[1] < 6:
-            self.conn_class = is_ssl and THTTPSConnection or THTTPConnection
-        else:
-            self.conn_class = is_ssl and HTTPSConnection or HTTPConnection
         self.connection = self.conn_class(host, port=port, timeout=self.timeout)
         self.connection.set_debuglevel(self.debuglevel)
 

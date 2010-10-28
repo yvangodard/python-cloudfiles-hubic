@@ -1,5 +1,8 @@
 import unittest
-import md5
+try:
+    from hashlib import md5
+except ImportError:
+    from md5 import md5
 from cloudfiles        import Object, Connection
 from cloudfiles.errors import ResponseError, InvalidObjectName,\
                               InvalidMetaName, InvalidMetaValue
@@ -95,7 +98,7 @@ class ObjectTest(unittest.TestCase):
         accurate md5 sum value.
         """
         f = open('/bin/ls', 'r')
-        m = md5.new()
+        m = md5()
         m.update(f.read())
         sum1 = m.hexdigest()
         f.seek(0)
