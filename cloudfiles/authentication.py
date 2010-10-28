@@ -25,11 +25,11 @@ class BaseAuthentication(object):
         self.headers['x-auth-user'] = username
         self.headers['x-auth-key'] = api_key
         self.headers['User-Agent'] = user_agent
-	self.timeout = timeout
+        self.timeout = timeout
         (self.host, self.port, self.uri, self.is_ssl) = parse_url(self.authurl)
-	if version_info[0] <= 2 and version_info[1] < 6:
+        if version_info[0] <= 2 and version_info[1] < 6:
             self.conn_class = self.is_ssl and THTTPSConnection or THTTPConnection
-	else: 
+        else: 
             self.conn_class = self.is_ssl and HTTPSConnection or HTTPConnection
         
     def authenticate(self):
@@ -59,7 +59,7 @@ class Authentication(BaseAuthentication):
         two-tuple containing the storage system URL and session token.
         """
         conn = self.conn_class(self.host, self.port, timeout=self.timeout)
-	#conn = self.conn_class(self.host, self.port)
+        #conn = self.conn_class(self.host, self.port)
         conn.request('GET', '/'+self.uri, headers=self.headers)
         response = conn.getresponse()
         buff = response.read()

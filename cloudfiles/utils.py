@@ -50,7 +50,7 @@ def requires_name(exc_class):
 class THTTPConnection(HTTPConnection):
     def __init__(self, host, port, timeout):
         HTTPConnection.__init__(self, host, port)
-   	self.timeout = timeout
+        self.timeout = timeout
     def connect(self):
         HTTPConnection.connect(self)
         self.sock.settimeout(self.timeout)

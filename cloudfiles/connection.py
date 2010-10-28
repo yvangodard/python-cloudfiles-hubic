@@ -64,7 +64,7 @@ class Connection(object):
         self.token = None
         self.debuglevel = int(kwargs.get('debuglevel', 0))
         self.servicenet = kwargs.get('servicenet', False)
-	self.timeout = timeout
+        self.timeout = timeout
 
         # if the environement variable RACKSPACE_SERVICENET is set (to
         # anything) it will automatically set servicenet=True
@@ -92,12 +92,12 @@ class Connection(object):
         self.connection_args = parse_url(url)
      
     
-	if version_info[0] <= 2 and version_info[1] < 6:
-		self.conn_class = self.connection_args[3] and THTTPSConnection or \
-	                                                      THTTPConnection
+        if version_info[0] <= 2 and version_info[1] < 6:
+                self.conn_class = self.connection_args[3] and THTTPSConnection or \
+                                                              THTTPConnection
         else:
-		self.conn_class = self.connection_args[3] and HTTPSConnection or \
-        	                                              HTTPConnection
+                self.conn_class = self.connection_args[3] and HTTPSConnection or \
+                                                              HTTPConnection
         self.http_connect()
         if self.cdn_url:
             self.cdn_connect()
@@ -112,7 +112,7 @@ class Connection(object):
         Setup the http connection instance for the CDN service.
         """
         (host, port, cdn_uri, is_ssl) = parse_url(self.cdn_url)
-	if version_info[0] <= 2 and version_info[1] < 6:
+        if version_info[0] <= 2 and version_info[1] < 6:
             self.conn_class = is_ssl and THTTPSConnection or THTTPConnection
         else:
             self.conn_class = is_ssl and HTTPSConnection or HTTPConnection
@@ -124,7 +124,7 @@ class Connection(object):
         Setup the http connection instance.
         """
         (host, port, self.uri, is_ssl) = self.connection_args
-	if version_info[0] <= 2 and version_info[1] < 6:
+        if version_info[0] <= 2 and version_info[1] < 6:
             self.conn_class = is_ssl and THTTPSConnection or THTTPConnection
         else:
             self.conn_class = is_ssl and HTTPSConnection or HTTPConnection

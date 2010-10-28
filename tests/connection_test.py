@@ -90,7 +90,7 @@ class ConnectionTest(unittest.TestCase):
     def test_socket_timeout(self):
         socket.setdefaulttimeout(21)
         self.conn.list_containers()
-	self.assert_(socket.getdefaulttimeout() == 21.0)
+        self.assert_(socket.getdefaulttimeout() == 21.0)
 
     def setUp(self):
         self.auth = Auth('jsmith', 'qwerty')
