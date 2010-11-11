@@ -97,7 +97,7 @@
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span>pic_container = conn.create_container(<span class="py-string">'pictures'</span>)
 <span class="py-prompt">&gt;&gt;&gt; </span>my_dog = pic_container.create_object(<span class="py-string">'fido.jpg'</span>)
-<span class="py-prompt">&gt;&gt;&gt; </span>my_dog.load_from_file(<span class="py-string">'images/IMG-0234.jpg'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span>my_dog.load_from_filename(<span class="py-string">'images/IMG-0234.jpg'</span>)
 <span class="py-prompt">&gt;&gt;&gt; </span>text_obj = pic_container.create_object(<span class="py-string">'sample.txt'</span>)
 <span class="py-prompt">&gt;&gt;&gt; </span>text_obj.write(<span class="py-string">'This is not the object you are looking for.\n'</span>)
 <span class="py-prompt">&gt;&gt;&gt; </span>text_obj.read()
