@@ -7,7 +7,7 @@ setup(
     name='cloudfiles',
     version=__version__,
     description='CloudFiles client library for python',
-    author='Racklabs',
-    url='https://www.mosso.com/',
+    author='Rackspace',
+    url='https://www.rackspacecloud.com/',
     packages=['cloudfiles']
 )

@@ -1,3 +1,7 @@
+2010-12-03 John Dickinson <john@johnandkaren.com>
+	* 1.7.4: Added delimiter query support
+			 Added settable user agent string
+
 2010-09-02 Chmouel Boudjnah <chmouel@chmouel.com>
     * Fix python2.7 error (github issue 7)
 

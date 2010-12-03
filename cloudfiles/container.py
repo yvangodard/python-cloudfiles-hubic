@@ -100,8 +100,7 @@ class Container(object):
                     self.cdn_acl_user_agent = hdr[1]
                 if hdr[0].lower() == 'x-referrer-acl':
                     self.cdn_acl_referrer = hdr[1]
-                
-                    
+
     @requires_name(InvalidContainerName)
     def make_public(self, ttl=consts.default_cdn_ttl):
         """
@@ -184,7 +183,6 @@ class Container(object):
 
         self.cdn_acl_referrer = cdn_acl_referrer
 
-        
     @requires_name(InvalidContainerName)        
     def log_retention(self, log_retention=consts.cdn_log_retention):
         """
@@ -208,7 +206,7 @@ class Container(object):
             raise ResponseError(response.status, response.reason)
 
         self.cdn_log_retention = log_retention
-        
+
     def is_public(self):
         """
         Returns a boolean indicating whether or not this container is
@@ -247,7 +245,7 @@ class Container(object):
     def create_object(self, object_name):
         """
         Return an L{Object} instance, creating it if necessary.
-        
+
         When passed the name of an existing object, this method will 
         return an instance of that object, otherwise it will create a
         new one.
@@ -270,7 +268,7 @@ class Container(object):
                     path=None, **parms):
         """
         Return a result set of all Objects in the Container.
-        
+
         Keyword arguments are treated as HTTP query parameters and can
         be used to limit the result set (see the API documentation).
 
@@ -300,7 +298,7 @@ class Container(object):
     def get_object(self, object_name):
         """
         Return an L{Object} instance for an existing storage object.
-        
+
         If an object with a name matching object_name does not exist
         then a L{NoSuchObject} exception is raised.
 
@@ -317,10 +315,10 @@ class Container(object):
 
     @requires_name(InvalidContainerName)
     def list_objects_info(self, prefix=None, limit=None, marker=None, 
-                          path=None, **parms):
+                          path=None, delimiter=None, **parms):
         """
         Return information about all objects in the Container.
-        
+
         Keyword arguments are treated as HTTP query parameters and can
         be used limit the result set (see the API documentation).
 
@@ -344,6 +342,8 @@ class Container(object):
         @type marker: str
         @param path: return all objects in "path"
         @type path: str
+        @param delimiter: use this character as a delimiter for subdirectories
+        @type delimiter: char
 
         @rtype: list({"name":"...", "hash":..., "size":..., "type":...})
         @return: a list of all container info as dictionaries with the
@@ -351,12 +351,12 @@ class Container(object):
         """
         parms['format'] = 'json'
         resp = self._list_objects_raw(
-            prefix, limit, marker, path, **parms)
+            prefix, limit, marker, path, delimiter, **parms)
         return json_loads(resp)
 
     @requires_name(InvalidContainerName)
     def list_objects(self, prefix=None, limit=None, marker=None, 
-                     path=None, **parms):
+                     path=None, delimiter=None, **parms):
         """
         Return names of all L{Object}s in the L{Container}.
         
@@ -374,23 +374,27 @@ class Container(object):
         @type marker: str
         @param path: return all objects in "path"
         @type path: str
+        @param delimiter: use this character as a delimiter for subdirectories
+        @type delimiter: char
 
         @rtype: list(str)
         @return: a list of all container names
         """
-        resp = self._list_objects_raw(prefix=prefix, limit=limit, 
-                                      marker=marker, path=path, **parms)
+        resp = self._list_objects_raw(prefix=prefix, limit=limit,
+                                      marker=marker, path=path,
+                                      delimiter=delimiter,**parms)
         return resp.splitlines()
 
     @requires_name(InvalidContainerName)
     def _list_objects_raw(self, prefix=None, limit=None, marker=None, 
-                          path=None, **parms):
+                          path=None, delimiter=None, **parms):
         """
         Returns a chunk list of storage object info.
         """
         if prefix: parms['prefix'] = prefix
         if limit: parms['limit'] = limit
         if marker: parms['marker'] = marker
+        if delimiter: parms['delimiter'] = delimiter
         if not path is None: parms['path'] = path # empty strings are valid
         response = self.conn.make_request('GET', [self.name], parms=parms)
         if (response.status < 200) or (response.status > 299):
@@ -408,7 +412,7 @@ class Container(object):
     def delete_object(self, object_name):
         """
         Permanently remove a storage object.
-        
+
         >>> container.list_objects()
         ['new_object', 'old_object']
         >>> container.delete_object('old_object')

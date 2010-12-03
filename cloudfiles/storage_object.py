@@ -241,7 +241,7 @@ class Object(object):
         http.putrequest('PUT', path)
         for hdr in headers:
             http.putheader(hdr, headers[hdr])
-        http.putheader('User-Agent', consts.user_agent)
+        http.putheader('User-Agent', self.container.conn.user_agent)
         http.endheaders()
         return http
 
@@ -394,7 +394,7 @@ class Object(object):
             del headers['Content-Length']
             headers['Transfer-Encoding'] = 'chunked'
         headers['X-Auth-Token'] = self.container.conn.token
-        headers['User-Agent'] = consts.user_agent
+        headers['User-Agent'] = self.container.conn.user_agent
         http = self.container.conn.connection
         http.putrequest('PUT', path)
         for key, value in headers.iteritems():

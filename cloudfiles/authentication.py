@@ -19,12 +19,13 @@ class BaseAuthentication(object):
     """
     The base authentication class from which all others inherit.
     """
-    def __init__(self, username, api_key, authurl=default_authurl, timeout=5):
+    def __init__(self, username, api_key, authurl=default_authurl, timeout=5,
+                 useragent=user_agent):
         self.authurl = authurl
         self.headers = dict()
         self.headers['x-auth-user'] = username
         self.headers['x-auth-key'] = api_key
-        self.headers['User-Agent'] = user_agent
+        self.headers['User-Agent'] = useragent
         self.timeout = timeout
         (self.host, self.port, self.uri, self.is_ssl) = parse_url(self.authurl)
         if version_info[0] <= 2 and version_info[1] < 6:

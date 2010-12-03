@@ -39,7 +39,7 @@ class Connection(object):
     @undocumented: _check_container_name
     """
 
-    def __init__(self, username=None, api_key=None,timeout=5 , **kwargs):
+    def __init__(self, username=None, api_key=None, timeout=5, **kwargs):
         """
         Accepts keyword arguments for Mosso username and api key.
         Optionally, you can omit these keywords and supply an
@@ -64,6 +64,7 @@ class Connection(object):
         self.token = None
         self.debuglevel = int(kwargs.get('debuglevel', 0))
         self.servicenet = kwargs.get('servicenet', False)
+        self.user_agent = kwargs.get('useragent', consts.user_agent)
         self.timeout = timeout
 
         # if the environement variable RACKSPACE_SERVICENET is set (to
@@ -77,7 +78,8 @@ class Connection(object):
         if not self.auth:
             authurl = kwargs.get('authurl', consts.default_authurl)
             if username and api_key and authurl:
-                self.auth = Authentication(username, api_key, authurl)
+                self.auth = Authentication(username, api_key, authurl=authurl,
+                            useragent=self.user_agent)
             else:
                 raise TypeError("Incorrect or invalid arguments supplied")
 
@@ -134,7 +136,7 @@ class Connection(object):
         path = '/%s/%s' % \
                  (self.uri.rstrip('/'), '/'.join([quote(i) for i in path]))
         headers = {'Content-Length': str(len(data)),
-                   'User-Agent': consts.user_agent,
+                   'User-Agent': self.user_agent,
                    'X-Auth-Token': self.token}
         if isinstance(hdrs, dict):
             headers.update(hdrs)
@@ -175,7 +177,7 @@ class Connection(object):
             path = '%s?%s' % (path, '&'.join(query_args))
 
         headers = {'Content-Length': str(len(data)),
-                   'User-Agent': consts.user_agent,
+                   'User-Agent': self.user_agent,
                    'X-Auth-Token': self.token}
         isinstance(hdrs, dict) and headers.update(hdrs)
 
