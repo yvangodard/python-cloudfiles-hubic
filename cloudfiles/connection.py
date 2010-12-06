@@ -92,8 +92,7 @@ class Connection(object):
         (url, self.cdn_url, self.token) = self.auth.authenticate()
         url = self._set_storage_url(url)
         self.connection_args = parse_url(url)
-     
-    
+
         if version_info[0] <= 2 and version_info[1] < 6:
             self.conn_class = self.connection_args[3] and THTTPSConnection or \
                                                               THTTPConnection
@@ -122,7 +121,8 @@ class Connection(object):
         Setup the http connection instance.
         """
         (host, port, self.uri, is_ssl) = self.connection_args
-        self.connection = self.conn_class(host, port=port, timeout=self.timeout)
+        self.connection = self.conn_class(host, port=port, \
+                                              timeout=self.timeout)
         self.connection.set_debuglevel(self.debuglevel)
 
     def cdn_request(self, method, path=[], data='', hdrs=None):

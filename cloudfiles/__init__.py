@@ -4,7 +4,8 @@ Cloud Files python client API.
 Working with result sets:
 
     >>> import cloudfiles
-    >>> # conn = cloudfiles.get_connection(username='jsmith', api_key='1234567890')
+    >>> # conn = cloudfiles.get_connection(username='jsmith', \
+                 api_key='1234567890')
     >>> conn = cloudfiles.get_connection('jsmith', '1234567890')
     >>> containers = conn.get_all_containers()
     >>> type(containers)
@@ -31,12 +32,13 @@ Rackspace ServiceNet network to access Cloud Files (and not the public
 network) :
 
     >>> import cloudfiles
-    >>> conn = cloudfiles.get_connection('jsmith', '1234567890', servicenet=True)
+    >>> conn = cloudfiles.get_connection('jsmith', '1234567890', \
+        servicenet=True)
     >>> conn.connection_args[0]
     'snet-storage4.clouddrive.com'
 
-If you define the environment variable RACKSPACE_SERVICENET it will automatically
-connect via the servicenet network.
+If you define the environment variable RACKSPACE_SERVICENET it will
+automatically connect via the servicenet network.
 
 Creating Containers and adding Objects to them:
 
@@ -76,6 +78,7 @@ from cloudfiles.container      import Container
 from cloudfiles.storage_object import Object
 from cloudfiles.consts         import __version__
 
+
 def get_connection(*args, **kwargs):
     """
     Helper function for creating connection instances.
@@ -88,4 +91,3 @@ def get_connection(*args, **kwargs):
     @returns: a connection object
     """
     return Connection(*args, **kwargs)
-

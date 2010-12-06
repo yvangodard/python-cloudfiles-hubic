@@ -16,9 +16,10 @@ from utils  import requires_name
 import consts
 from fjson  import json_loads
 
-# Because HTTPResponse objects *have* to have read() called on them 
+# Because HTTPResponse objects *have* to have read() called on them
 # before they can be used again ...
 # pylint: disable-msg=W0612
+
 
 class Container(object):
     """
@@ -45,7 +46,7 @@ class Container(object):
     @ivar cdn_acl_referrer: enable ACL restriction by Referrer
     for this container.
     @type cdn_acl_referrer: str
-    
+
     @undocumented: _fetch_cdn_data
     @undocumented: _list_objects_raw
     """
@@ -119,7 +120,8 @@ class Container(object):
         else:
             request_method = 'PUT'
         hdrs = {'X-TTL': str(ttl), 'X-CDN-Enabled': 'True'}
-        response = self.conn.cdn_request(request_method, [self.name], hdrs=hdrs)
+        response = self.conn.cdn_request(request_method, \
+                                             [self.name], hdrs=hdrs)
         if (response.status < 200) or (response.status >= 300):
             raise ResponseError(response.status, response.reason)
         self.cdn_ttl = ttl
@@ -143,7 +145,7 @@ class Container(object):
         if (response.status < 200) or (response.status >= 300):
             raise ResponseError(response.status, response.reason)
 
-    @requires_name(InvalidContainerName)        
+    @requires_name(InvalidContainerName)
     def acl_user_agent(self, cdn_acl_user_agent=consts.cdn_acl_user_agent):
         """
         Enable ACL restriction by User Agent for this container.
@@ -163,7 +165,7 @@ class Container(object):
 
         self.cdn_acl_user_agent = cdn_acl_user_agent
 
-    @requires_name(InvalidContainerName)        
+    @requires_name(InvalidContainerName)
     def acl_referrer(self, cdn_acl_referrer=consts.cdn_acl_referrer):
         """
         Enable ACL restriction by referrer for this container.
@@ -183,7 +185,7 @@ class Container(object):
 
         self.cdn_acl_referrer = cdn_acl_referrer
 
-    @requires_name(InvalidContainerName)        
+    @requires_name(InvalidContainerName)
     def log_retention(self, log_retention=consts.cdn_log_retention):
         """
         Enable CDN log retention on the container. If enabled logs will be
@@ -246,7 +248,7 @@ class Container(object):
         """
         Return an L{Object} instance, creating it if necessary.
 
-        When passed the name of an existing object, this method will 
+        When passed the name of an existing object, this method will
         return an instance of that object, otherwise it will create a
         new one.
 
@@ -264,7 +266,7 @@ class Container(object):
         return Object(self, object_name)
 
     @requires_name(InvalidContainerName)
-    def get_objects(self, prefix=None, limit=None, marker=None, 
+    def get_objects(self, prefix=None, limit=None, marker=None,
                     path=None, **parms):
         """
         Return a result set of all Objects in the Container.
@@ -314,7 +316,7 @@ class Container(object):
         return Object(self, object_name, force_exists=True)
 
     @requires_name(InvalidContainerName)
-    def list_objects_info(self, prefix=None, limit=None, marker=None, 
+    def list_objects_info(self, prefix=None, limit=None, marker=None,
                           path=None, delimiter=None, **parms):
         """
         Return information about all objects in the Container.
@@ -355,11 +357,11 @@ class Container(object):
         return json_loads(resp)
 
     @requires_name(InvalidContainerName)
-    def list_objects(self, prefix=None, limit=None, marker=None, 
+    def list_objects(self, prefix=None, limit=None, marker=None,
                      path=None, delimiter=None, **parms):
         """
         Return names of all L{Object}s in the L{Container}.
-        
+
         Keyword arguments are treated as HTTP query parameters and can
         be used to limit the result set (see the API documentation).
 
@@ -382,23 +384,28 @@ class Container(object):
         """
         resp = self._list_objects_raw(prefix=prefix, limit=limit,
                                       marker=marker, path=path,
-                                      delimiter=delimiter,**parms)
+                                      delimiter=delimiter, **parms)
         return resp.splitlines()
 
     @requires_name(InvalidContainerName)
-    def _list_objects_raw(self, prefix=None, limit=None, marker=None, 
+    def _list_objects_raw(self, prefix=None, limit=None, marker=None,
                           path=None, delimiter=None, **parms):
         """
         Returns a chunk list of storage object info.
         """
-        if prefix: parms['prefix'] = prefix
-        if limit: parms['limit'] = limit
-        if marker: parms['marker'] = marker
-        if delimiter: parms['delimiter'] = delimiter
-        if not path is None: parms['path'] = path # empty strings are valid
+        if prefix:
+            parms['prefix'] = prefix
+        if limit:
+            parms['limit'] = limit
+        if marker:
+            parms['marker'] = marker
+        if delimiter:
+            parms['delimiter'] = delimiter
+        if not path is None:
+            parms['path'] = path  # empty strings are valid
         response = self.conn.make_request('GET', [self.name], parms=parms)
         if (response.status < 200) or (response.status > 299):
-            buff = response.read()
+            response.read()
             raise ResponseError(response.status, response.reason)
         return response.read()
 
@@ -428,13 +435,14 @@ class Container(object):
             raise InvalidObjectName(object_name)
         response = self.conn.make_request('DELETE', [self.name, object_name])
         if (response.status < 200) or (response.status > 299):
-            buff = response.read()
+            response.read()
             raise ResponseError(response.status, response.reason)
-        buff = response.read()
+        response.read()
+
 
 class ContainerResults(object):
     """
-    An iterable results set object for Containers. 
+    An iterable results set object for Containers.
 
     This class implements dictionary- and list-like interfaces.
     """
@@ -445,12 +453,13 @@ class ContainerResults(object):
 
     def __getitem__(self, key):
         return Container(self.conn,
-                         self._containers[key]['name'], 
-                         self._containers[key]['count'], 
+                         self._containers[key]['name'],
+                         self._containers[key]['count'],
                          self._containers[key]['bytes'])
 
     def __getslice__(self, i, j):
-        return [Container(self.conn, k['name'], k['count'], k['size']) for k in self._containers[i:j] ]
+        return [Container(self.conn, k['name'], k['count'], \
+                              k['size']) for k in self._containers[i:j]]
 
     def __contains__(self, item):
         return item in self._names
@@ -458,7 +467,7 @@ class ContainerResults(object):
     def __repr__(self):
         return 'ContainerResults: %s containers' % len(self._containers)
     __str__ = __repr__
-    
+
     def __len__(self):
         return len(self._containers)
 

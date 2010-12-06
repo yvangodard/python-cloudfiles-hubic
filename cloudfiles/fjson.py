@@ -4,6 +4,7 @@ from re        import  compile, DOTALL
 
 comments = compile(r'/\*.*\*/|//[^\r\n]*', DOTALL)
 
+
 def _loads(string):
     '''
     Fairly competent json parser exploiting the python tokenizer and eval()
@@ -27,6 +28,7 @@ def _loads(string):
     except:
         raise AttributeError()
 
+
 # look for a real json parser first
 try:
     # 2.6 will have a json module in the stdlib
@@ -40,4 +42,3 @@ except ImportError:
         json_loads = _loads
 
 __all__ = ['json_loads']
-

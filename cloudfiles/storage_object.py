@@ -25,9 +25,10 @@ from socket  import timeout
 import consts
 from utils   import requires_name
 
-# Because HTTPResponse objects *have* to have read() called on them 
+# Because HTTPResponse objects *have* to have read() called on them
 # before they can be used again ...
 # pylint: disable-msg=W0612
+
 
 class Object(object):
     """
@@ -60,7 +61,8 @@ class Object(object):
 
     etag = property(lambda self: self._etag, __set_etag)
 
-    def __init__(self, container, name=None, force_exists=False, object_record=None):
+    def __init__(self, container, name=None,
+                 force_exists=False, object_record=None):
         """
         Storage objects rarely if ever need to be instantiated directly by the
         user.
@@ -130,9 +132,9 @@ class Object(object):
             else:
                 hdrs = {'Range': range}
         response = self.container.conn.make_request('GET',
-                path = [self.container.name, self.name], hdrs = hdrs)
+                path=[self.container.name, self.name], hdrs=hdrs)
         if (response.status < 200) or (response.status > 299):
-            buff = response.read()
+            response.read()
             raise ResponseError(response.status, response.reason)
 
         if hasattr(buffer, 'write'):
@@ -192,7 +194,7 @@ class Object(object):
         """
         self._name_check()
         response = self.container.conn.make_request('GET',
-                path = [self.container.name, self.name], hdrs = hdrs)
+                path=[self.container.name, self.name], hdrs=hdrs)
         if response.status < 200 or response.status > 299:
             buff = response.read()
             raise ResponseError(response.status, response.reason)
@@ -220,9 +222,8 @@ class Object(object):
             headers = self._make_headers()
             headers['Content-Length'] = "0"
             response = self.container.conn.make_request(
-                'POST', [self.container.name, self.name], hdrs=headers, data=''
-            )
-            buff = response.read()
+                'POST', [self.container.name, self.name], hdrs=headers, data='')
+            response.read()
             if response.status != 202:
                 raise ResponseError(response.status, response.reason)
 
@@ -282,7 +283,7 @@ class Object(object):
             try:
                 data.flush()
             except IOError:
-                pass # If the file descriptor is read-only this will fail
+                pass  # If the file descriptor is read-only this will fail
             self.size = int(os.fstat(data.fileno())[6])
         else:
             data = StringIO.StringIO(data)
@@ -333,7 +334,7 @@ class Object(object):
         if (response.status < 200) or (response.status > 299):
             raise ResponseError(response.status, response.reason)
 
-        # If verification has been disabled for this write, then set the 
+        # If verification has been disabled for this write, then set the
         # instances etag attribute to what the server returns to us.
         if not verify:
             for hdr in response.getheaders():
@@ -372,6 +373,7 @@ class Object(object):
         self._name_check()
 
         if hasattr(iterable, 'read'):
+
             def file_iterator(file):
                 chunk = file.read(4095)
                 while chunk:
@@ -422,7 +424,7 @@ class Object(object):
         except timeout, err:
             if response:
                 # pylint: disable-msg=E1101
-                buff = response.read()
+                response.read()
             raise err
 
         if (response.status < 200) or (response.status > 299):
@@ -459,9 +461,8 @@ class Object(object):
             return False
 
         response = self.container.conn.make_request(
-                'HEAD', [self.container.name, self.name]
-        )
-        buff = response.read()
+                'HEAD', [self.container.name, self.name])
+        response.read()
         if response.status == 404:
             return False
         if (response.status < 200) or (response.status > 299):
@@ -493,18 +494,23 @@ class Object(object):
         respective instance attributes.
         """
         headers = {}
-        headers['Content-Length'] = ( str(self.size) and str(self.size) != "0" ) and str(self.size) or "0"
-        if self._etag: headers['ETag'] = self._etag
+        headers['Content-Length'] = (str(self.size) \
+                                          and str(self.size) != "0") \
+                                          and str(self.size) or "0"
+        if self._etag:
+            headers['ETag'] = self._etag
 
-        if self.content_type: headers['Content-Type'] = self.content_type
-        else: headers['Content-Type'] = 'application/octet-stream'
+        if self.content_type:
+            headers['Content-Type'] = self.content_type
+        else:
+            headers['Content-Type'] = 'application/octet-stream'
 
         for key in self.metadata:
             if len(key) > consts.meta_name_limit:
                 raise(InvalidMetaName(key))
             if len(self.metadata[key]) > consts.meta_value_limit:
                 raise(InvalidMetaValue(self.metadata[key]))
-            headers['X-Object-Meta-'+key] = self.metadata[key]
+            headers['X-Object-Meta-' + key] = self.metadata[key]
         return headers
 
     @classmethod
@@ -536,6 +542,7 @@ class Object(object):
         return "%s/%s" % (self.container.public_uri().rstrip('/'),
                 quote(self.name))
 
+
 class ObjectResults(object):
     """
     An iterable results set object for Objects.
@@ -551,7 +558,8 @@ class ObjectResults(object):
         return Object(self.container, object_record=self._objects[key])
 
     def __getslice__(self, i, j):
-        return [Object(self.container, object_record=k) for k in self._objects[i:j]]
+        return [Object(self.container, object_record=k) \
+                    for k in self._objects[i:j]]
 
     def __contains__(self, item):
         return item in self._objects

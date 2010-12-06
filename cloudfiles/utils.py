@@ -3,13 +3,13 @@
 import re
 from urlparse  import urlparse
 from errors    import InvalidUrl
-from consts    import object_name_limit
-from httplib   import HTTPConnection,HTTPSConnection,HTTP
+from httplib   import HTTPConnection, HTTPSConnection, HTTP
+
 
 def parse_url(url):
     """
     Given a URL, returns a 4-tuple containing the hostname, port,
-    a path relative to root (if any), and a boolean representing 
+    a path relative to root (if any), and a boolean representing
     whether the connection should use SSL or not.
     """
     (scheme, netloc, path, params, query, frag) = urlparse(url)
@@ -32,6 +32,7 @@ def parse_url(url):
 
     return (host, int(port), path.strip('/'), is_ssl)
 
+
 def requires_name(exc_class):
     """Decorator to guard against invalid or unset names."""
     def wrapper(f):
@@ -47,27 +48,36 @@ def requires_name(exc_class):
         return decorator
     return wrapper
 
+
 class THTTPConnection(HTTPConnection):
     def __init__(self, host, port, timeout):
         HTTPConnection.__init__(self, host, port)
         self.timeout = timeout
+
     def connect(self):
         HTTPConnection.connect(self)
         self.sock.settimeout(self.timeout)
+
+
 class THTTP(HTTP):
     _connection_class = THTTPConnection
+
     def set_timeout(self, timeout):
         self._conn.timeout = timeout
+
 
 class THTTPSConnection(HTTPSConnection):
     def __init__(self, host, port, timeout):
-        HTTPSConnection.__init__(self, host,port)
+        HTTPSConnection.__init__(self, host, port)
         self.timeout = timeout
+
     def connect(self):
         HTTPSConnection.connect(self)
         self.sock.settimeout(self.timeout)
+
+
 class THTTPS(HTTP):
     _connection_class = THTTPSConnection
+
     def set_timeout(self, timeout):
         self._conn.timeout = timeout
-
