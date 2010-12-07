@@ -111,9 +111,11 @@ class Object(object):
         >>> test_object.read()
         'hello'
 
-        @param size: combined with offset, defines the length of data to be read
+        @param size: combined with offset, defines the length of data to be
+                     read
         @type size: number
-        @param offset: combined with size, defines the start location to be read
+        @param offset: combined with size, defines the start location to be
+                       read
         @type offset: number
         @param hdrs: an optional dict of headers to send with the request
         @type hdrs: dictionary
@@ -122,7 +124,8 @@ class Object(object):
         @param callback: function to be used as a progress callback
         @type callback: callable(transferred, size)
         @rtype: str or None
-        @return: a string of all data in the object, or None if a buffer is used
+        @return: a string of all data in the object, or None if a buffer is
+                 used
         """
         self._name_check()
         if size > 0:
@@ -222,7 +225,8 @@ class Object(object):
             headers = self._make_headers()
             headers['Content-Length'] = "0"
             response = self.container.conn.make_request(
-                'POST', [self.container.name, self.name], hdrs=headers, data='')
+                'POST', [self.container.name, self.name], hdrs=headers,
+                data='')
             response.read()
             if response.status != 202:
                 raise ResponseError(response.status, response.reason)
@@ -351,8 +355,9 @@ class Object(object):
         used to upload the file.
 
         If the object's size attribute is set, it will be used as the
-        Content-Length.  If the generator raises StopIteration prior to yielding
-        the right number of bytes, an IncompleteSend exception is raised.
+        Content-Length.  If the generator raises StopIteration prior to
+        yielding the right number of bytes, an IncompleteSend exception is
+        raised.
 
         If the content_type attribute is not set then a value of
         application/octet-stream will be used.
