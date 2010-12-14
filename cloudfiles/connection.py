@@ -76,7 +76,7 @@ class Connection(object):
         self.auth = 'auth' in kwargs and kwargs['auth'] or None
 
         if not self.auth:
-            authurl = kwargs.get('authurl', consts.default_authurl)
+            authurl = kwargs.get('authurl', consts.us_authurl)
             if username and api_key and authurl:
                 self.auth = Authentication(username, api_key, authurl=authurl,
                             useragent=self.user_agent)

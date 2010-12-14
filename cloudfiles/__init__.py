@@ -7,6 +7,10 @@ Working with result sets:
     >>> # conn = cloudfiles.get_connection(username='jsmith', \
                  api_key='1234567890')
     >>> conn = cloudfiles.get_connection('jsmith', '1234567890')
+    >>> # NOTE: For Uk Customers please pass in Default UK Auth URL like EX
+    >>> conn = cloudfiles.get_connection('username', 'api_key', \ 
+    >>>                                  authurl = cloudfiles.uk_authurl)
+    >>> # This will force connectivity to the UK's Auth Service
     >>> containers = conn.get_all_containers()
     >>> type(containers)
     <class 'cloudfiles.container.ContainerResults'>
@@ -76,7 +80,8 @@ See COPYING for license information.
 from cloudfiles.connection     import Connection, ConnectionPool
 from cloudfiles.container      import Container
 from cloudfiles.storage_object import Object
-from cloudfiles.consts         import __version__
+from cloudfiles.consts         import __version__, \
+us_authurl, uk_authurl
 
 
 def get_connection(*args, **kwargs):

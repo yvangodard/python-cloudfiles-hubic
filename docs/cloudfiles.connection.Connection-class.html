@@ -34,7 +34,7 @@
       <th class="navbar" align="right" width="100%">
         <table border="0" cellpadding="0" cellspacing="0">
           <tr><th class="navbar" align="center"
-            ><a class="navbar" target="_top" href="http://www.mosso.com/">Cloud Files Python API</a></th>
+            ><a class="navbar" target="_top" href="http://www.rackspacecloud.com/">Cloud Files Python API</a></th>
           </tr></table></th>
   </tr>
 </table>
@@ -62,17 +62,17 @@
 <h1 class="epydoc">Class Connection</h1><p class="nomargin-top"><span class="codelink"><a href="cloudfiles.connection-pysrc.html#Connection">source&nbsp;code</a></span></p>
 <center>
 <center>  <map id="uml_class_diagram_for_cloudfil" name="uml_class_diagram_for_cloudfil">
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#__init__" title="Accepts keyword arguments for Mosso username and api key." alt="" coords="17,39,377,57"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#get_info" title="Return tuple for number of containers and total bytes in the account" alt="" coords="17,57,377,76"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#create_container" title="Given a container name, returns a Container item, creating a new Container &#160;if one does not already exist." alt="" coords="17,76,377,95"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#delete_container" title="Given a container name, delete it." alt="" coords="17,95,377,113"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#get_all_containers" title="Returns a Container item result set." alt="" coords="17,113,377,132"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#get_container" title="Return a single Container item for the given Container." alt="" coords="17,132,377,151"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#list_public_containers" title="Returns a list of containers that have been published to the CDN." alt="" coords="17,151,377,169"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#list_containers_info" title="Returns a list of Containers, including object count and size." alt="" coords="17,169,377,188"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#list_containers" title="Returns a list of Containers." alt="" coords="17,188,377,207"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#__getitem__" title="Container objects can be grabbed from a connection using index syntax." alt="" coords="17,207,377,225"/>
-<area shape="rect" id="node1" href="cloudfiles.connection.Connection-class.html" title="Manages the connection to the storage system and serves as a factory for Container instances." alt="" coords="5,6,389,231"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#__init__" title="Accepts keyword arguments for Mosso username and api key." alt="" coords="17,36,415,55"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#get_info" title="Return tuple for number of containers and total bytes in the account" alt="" coords="17,55,415,73"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#create_container" title="Given a container name, returns a Container item, creating a new Container &#160;if one does not already exist." alt="" coords="17,73,415,92"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#delete_container" title="Given a container name, delete it." alt="" coords="17,92,415,111"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#get_all_containers" title="Returns a Container item result set." alt="" coords="17,111,415,129"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#get_container" title="Return a single Container item for the given Container." alt="" coords="17,129,415,148"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#list_public_containers" title="Returns a list of containers that have been published to the CDN." alt="" coords="17,148,415,167"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#list_containers_info" title="Returns a list of Containers, including object count and size." alt="" coords="17,167,415,185"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#list_containers" title="Returns a list of Containers." alt="" coords="17,185,415,204"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html#__getitem__" title="Container objects can be grabbed from a connection using index syntax." alt="" coords="17,204,415,223"/>
+<area shape="rect" href="cloudfiles.connection.Connection-class.html" title="Manages the connection to the storage system and serves as a factory for Container instances." alt="" coords="16,11,416,224"/>
 </map>
   <img src="uml_class_diagram_for_cloudfil.gif" alt='' usemap="#uml_class_diagram_for_cloudfil" ismap="ismap" class="graph-without-title" />
 </center>
@@ -98,6 +98,7 @@
           <td><span class="summary-sig"><a href="cloudfiles.connection.Connection-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">username</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">api_key</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">timeout</span>=<span class="summary-sig-default">5</span>,
         <span class="summary-sig-arg">**kwargs</span>)</span><br />
       Accepts keyword arguments for Mosso username and api key.</td>
           <td align="right" valign="top">
@@ -288,6 +289,7 @@
     <td colspan="2" class="summary">
     <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
       <code>__delattr__</code>,
+      <code>__format__</code>,
       <code>__getattribute__</code>,
       <code>__hash__</code>,
       <code>__new__</code>,
@@ -295,7 +297,9 @@
       <code>__reduce_ex__</code>,
       <code>__repr__</code>,
       <code>__setattr__</code>,
-      <code>__str__</code>
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
       </p>
     </td>
   </tr>
@@ -335,6 +339,7 @@
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">username</span>=<span class="sig-default">None</span>,
         <span class="sig-arg">api_key</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">timeout</span>=<span class="sig-default">5</span>,
         <span class="sig-arg">**kwargs</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
@@ -670,14 +675,14 @@
       <th class="navbar" align="right" width="100%">
         <table border="0" cellpadding="0" cellspacing="0">
           <tr><th class="navbar" align="center"
-            ><a class="navbar" target="_top" href="http://www.mosso.com/">Cloud Files Python API</a></th>
+            ><a class="navbar" target="_top" href="http://www.rackspacecloud.com/">Cloud Files Python API</a></th>
           </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Mar 26 11:05:10 2010
+    Generated by Epydoc 3.0.1 on Tue Dec 14 06:06:15 2010
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

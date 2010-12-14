@@ -11,7 +11,7 @@ See COPYING for license information.
 from httplib  import HTTPSConnection, HTTPConnection
 from utils    import parse_url, THTTPConnection, THTTPSConnection
 from errors   import ResponseError, AuthenticationError, AuthenticationFailed
-from consts   import user_agent, default_authurl
+from consts   import user_agent, us_authurl, uk_authurl
 from sys      import version_info
 
 
@@ -19,7 +19,7 @@ class BaseAuthentication(object):
     """
     The base authentication class from which all others inherit.
     """
-    def __init__(self, username, api_key, authurl=default_authurl, timeout=5,
+    def __init__(self, username, api_key, authurl=us_authurl, timeout=5,
                  useragent=user_agent):
         self.authurl = authurl
         self.headers = dict()
