@@ -93,10 +93,18 @@ class ContainerTest(unittest.TestCase):
     @printdoc
     def test_list_objects_path(self):
         """
-        Verify that the prefix query parameter works.
+        Verify that the path query parameter works.
         """
         self.assert_(isinstance(
                 self.container.list_objects(path='/'), list))
+
+    @printdoc
+    def test_list_objects_delimiter(self):
+        """
+        Verify that the delimiter query parameter works.
+        """
+        self.assert_(isinstance(
+                self.container.list_objects(delimiter='/'), list))
 
     @printdoc
     def test_bad_name_assignment(self):
