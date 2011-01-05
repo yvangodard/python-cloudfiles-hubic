@@ -1,3 +1,6 @@
+2011-01-05 Chmouel Boudjnah <chmouel.boudjnah@rackspace.co.uk>
+	* 1.7.5:  Add support for different auth servers (cweidenkeller).
+
 2010-12-03 John Dickinson <john@johnandkaren.com>
 	* 1.7.4: Added delimiter query support
 			 Added settable user agent string
