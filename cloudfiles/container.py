@@ -267,7 +267,7 @@ class Container(object):
 
     @requires_name(InvalidContainerName)
     def get_objects(self, prefix=None, limit=None, marker=None,
-                    path=None, **parms):
+                    path=None, delimiter=None, **parms):
         """
         Return a result set of all Objects in the Container.
 
@@ -289,12 +289,14 @@ class Container(object):
         @type marker: str
         @param path: return all objects in "path"
         @type path: str
+        @param delimiter: use this character as a delimiter for subdirectories
+        @type delimiter: char
 
         @rtype: L{ObjectResults}
         @return: an iterable collection of all storage objects in the container
         """
         return ObjectResults(self, self.list_objects_info(
-                prefix, limit, marker, path, **parms))
+                prefix, limit, marker, path, delimiter, **parms))
 
     @requires_name(InvalidContainerName)
     def get_object(self, object_name):
