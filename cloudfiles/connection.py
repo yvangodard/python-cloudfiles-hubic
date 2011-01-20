@@ -141,9 +141,6 @@ class Connection(object):
         if isinstance(hdrs, dict):
             headers.update(hdrs)
 
-        # Send the request
-        self.cdn_connection.request(method, path, data, headers)
-
         def retry_request():
             '''Re-connect and re-try a failed request once'''
             self.cdn_connect()
@@ -151,10 +148,10 @@ class Connection(object):
             return self.cdn_connection.getresponse()
 
         try:
+            self.cdn_connection.request(method, path, data, headers)
             response = self.cdn_connection.getresponse()
         except (socket.error, IOError, HTTPException):
             response = retry_request()
-
         if response.status == 401:
             self._authenticate()
             headers['X-Auth-Token'] = self.token
