@@ -1,6 +1,6 @@
 """ See COPYING for license information. """
 
-__version__ = "1.7.5.1"
+__version__ = "1.7.6"
 user_agent = "python-cloudfiles/%s" % __version__
 us_authurl = 'https://auth.api.rackspacecloud.com/v1.0'
 uk_authurl = 'https://lon.auth.api.rackspacecloud.com/v1.0'

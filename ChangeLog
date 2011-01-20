@@ -1,4 +1,7 @@
-2011-01-19 Chmouel Boudjnah <chmouel.boudjnah@rackspace.co.uk>
+2011-01-19 John Dickinson <john@johnandkaren.com>
+	* 1.7.6:  Fixed error where re-authenticating a request would result in a failed request
+
+2011-01-19 John Dickinson <john@johnandkaren.com>
 	* 1.7.5.1:  Updated missing reference to delimiter query.
 
 2011-01-05 Chmouel Boudjnah <chmouel.boudjnah@rackspace.co.uk>
