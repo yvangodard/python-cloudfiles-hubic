@@ -157,6 +157,7 @@ class Connection(object):
 
         if response.status == 401:
             self._authenticate()
+            headers['X-Auth-Token'] = self.token
             response = retry_request()
 
         return response
@@ -194,6 +195,7 @@ class Connection(object):
             response = retry_request()
         if response.status == 401:
             self._authenticate()
+            headers['X-Auth-Token'] = self.token
             response = retry_request()
 
         return response
