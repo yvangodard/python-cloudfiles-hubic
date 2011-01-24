@@ -555,8 +555,18 @@ class ObjectResults(object):
     This class implements dictionary- and list-like interfaces.
     """
     def __init__(self, container, objects=None):
-        self._objects = objects and objects or list()
-        self._names = [obj['name'] for obj in self._objects]
+        if objects is None:
+            objects = []
+        self._names = []
+        self._objects = []
+        for obj in objects:
+            try:
+                self._names.append(obj['name'])
+            except KeyError:
+                # pseudo-objects from a delimiter query don't have names
+                continue
+            else:
+                self._objects.append(obj)
         self.container = container
 
     def __getitem__(self, key):
