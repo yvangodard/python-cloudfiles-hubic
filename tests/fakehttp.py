@@ -13,7 +13,12 @@ instances that have had their HTTPConnection instances replaced by
 intances of CustomHTTPConnection.
 """
 
-from httplib import HTTPConnection as connbase
+from sys import version_info
+if version_info[0] <= 2 and version_info[1] < 6:
+    from cloudfiles.utils import THTTPConnection as connbase
+else:
+    from httplib import HTTPConnection as connbase
+
 import StringIO
 
 class FakeSocket(object):
