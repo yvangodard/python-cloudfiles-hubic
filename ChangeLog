@@ -1,3 +1,10 @@
+2011-01-27 Chmouel Boudjnah <chmouel.boudjnah@rackspace.co.uk>
+   * 1.7.7: 
+   - fixed error where get_objects with a delimiter would error (John).
+   - Added setuptools support (BJ).
+   - Fix unit tests (BJ).
+   - pypi upload support.
+
 2011-01-19 John Dickinson <john@johnandkaren.com>
 	* 1.7.6:  Fixed error where re-authenticating a request would result in a failed request
 
