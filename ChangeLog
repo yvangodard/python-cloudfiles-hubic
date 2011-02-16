@@ -1,3 +1,7 @@
+2011-02-16 Chmouel Boudjnah <chmouel.boudjnah@rackspace.co.uk>
+  * 1.7.8:
+   - setup.py: call package python-cloudfiles for pypi.
+
 2011-01-27 Chmouel Boudjnah <chmouel.boudjnah@rackspace.co.uk>
    * 1.7.7: 
    - fixed error where get_objects with a delimiter would error (John).
