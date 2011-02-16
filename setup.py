@@ -2,14 +2,14 @@
 from setuptools import setup, find_packages
 from cloudfiles.consts import __version__
 
-setup(name='cloudfiles',
+setup(name='python-cloudfiles',
     version=__version__,
     description='CloudFiles client library for Python',
     classifiers=[], 
     keywords='',
     author='Rackspace',
     author_email='',
-    url='https://www.rackspacecloud.com/',
+    url='https://www.rackspace.com/cloud',
     license='MIT',
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
     include_package_data=True,
