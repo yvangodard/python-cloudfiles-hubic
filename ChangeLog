@@ -1,3 +1,6 @@
+2011-02-24 Conrad Weidenkeller <conrad.weidenkeller@rackspace.com>
+  * 1.7.9:
+  - Added Container Level and Object Level Edge purge functionality
 2011-02-16 Chmouel Boudjnah <chmouel.boudjnah@rackspace.co.uk>
   * 1.7.8:
    - setup.py: call package python-cloudfiles for pypi.

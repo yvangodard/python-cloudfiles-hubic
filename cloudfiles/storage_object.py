@@ -547,6 +547,37 @@ class Object(object):
         return "%s/%s" % (self.container.public_uri().rstrip('/'),
                 quote(self.name))
 
+    def purge_from_cdn(self, email=None):
+        """
+        Purge Edge cache for this object.
+        You will be notified by email if one is provided when the
+        job completes.
+
+        >>> obj.purge_from_cdn("user@dmain.com")
+        
+        or
+
+        >>> obj.purge_from_cdn("user@domain.com,user2@domain.com")
+        
+        or
+        
+        >>> obj.purge_from_cdn()
+        
+        @param email: A Valid email address
+        @type email: str
+        """
+        if not self.container.conn.cdn_enabled:
+            raise CDNNotEnabled()
+
+        if email:
+            hdrs = {"X-Purge-Email": email}
+            response = self.container.conn.cdn_request('DELETE', [self.container.name, self.name], hdrs=hdrs)
+        else:
+            response = self.container.conn.cdn_request('DELETE', [self.container.name, self.name])
+
+        if (response.status < 200) or (response.status >= 300):
+            raise ResponseError(response.status, response.reason)
+
 
 class ObjectResults(object):
     """
