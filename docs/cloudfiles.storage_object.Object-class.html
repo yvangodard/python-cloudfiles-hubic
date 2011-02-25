@@ -61,31 +61,7 @@
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class Object</h1><p class="nomargin-top"><span class="codelink"><a href="cloudfiles.storage_object-pysrc.html#Object">source&nbsp;code</a></span></p>
 <center>
-<center>  <map id="uml_class_diagram_for_cloudfil_20" name="uml_class_diagram_for_cloudfil_20">
-<area shape="rect" id="node1" href="cloudfiles.container.Container-class.html" title="Container object and Object instance factory." alt="" coords="176,398,325,437"/>
-<area shape="rect" id="node50" href="cloudfiles.storage_object.Object-class.html#objsum" title="cloudfiles.storage_object.Object.objsum" alt="" coords="17,31,483,49"/>
-<area shape="rect" id="node50" href="cloudfiles.storage_object.Object-class.html#etag" title="cloudfiles.storage_object.Object.etag" alt="" coords="17,49,483,68"/>
-<area shape="rect" id="node50" href="cloudfiles.storage_object.Object-class.html#content_type" title="the object&#39;s content&#45;type (set or read)" alt="" coords="17,68,483,87"/>
-<area shape="rect" id="node50" href="cloudfiles.storage_object.Object-class.html#last_modified" title="date and time of last file modification (cached)" alt="" coords="17,87,483,105"/>
-<area shape="rect" id="node50" href="cloudfiles.storage_object.Object-class.html#metadata" title="metadata associated with the object (set or read)" alt="" coords="17,105,483,124"/>
-<area shape="rect" id="node50" href="cloudfiles.storage_object.Object-class.html#name" title="the object&#39;s name (generally treat as read&#45;only)" alt="" coords="17,124,483,143"/>
-<area shape="rect" id="node50" href="cloudfiles.storage_object.Object-class.html#size" title="the object&#39;s size (cached)" alt="" coords="17,143,483,161"/>
-<area shape="rect" id="node50" href="cloudfiles.storage_object.Object-class.html#__init__" title="Storage objects rarely if ever need to be instantiated directly by the &#160;user." alt="" coords="17,164,483,183"/>
-<area shape="rect" id="node50" href="cloudfiles.storage_object.Object-class.html#read" title="Read the content from the remote storage object." alt="" coords="17,183,483,201"/>
-<area shape="rect" id="node50" href="cloudfiles.storage_object.Object-class.html#save_to_filename" title="Save the contents of the object to filename." alt="" coords="17,201,483,220"/>
-<area shape="rect" id="node50" href="cloudfiles.storage_object.Object-class.html#stream" title="Return a generator of the remote storage object&#39;s data." alt="" coords="17,220,483,239"/>
-<area shape="rect" id="node50" href="cloudfiles.storage_object.Object-class.html#sync_metadata" title="Commits the metadata to the remote storage system." alt="" coords="17,239,483,257"/>
-<area shape="rect" id="node50" href="cloudfiles.storage_object.Object-class.html#write" title="Write data to the remote storage system." alt="" coords="17,257,483,276"/>
-<area shape="rect" id="node50" href="cloudfiles.storage_object.Object-class.html#send" title="Write potentially transient data to the remote storage system using a &#160;generator or stream." alt="" coords="17,276,483,295"/>
-<area shape="rect" id="node50" href="cloudfiles.storage_object.Object-class.html#load_from_filename" title="Put the contents of the named file into remote storage." alt="" coords="17,295,483,313"/>
-<area shape="rect" id="node50" href="cloudfiles.storage_object.Object-class.html#__str__" title="str(x)" alt="" coords="17,313,483,332"/>
-<area shape="rect" id="node50" href="cloudfiles.storage_object.Object-class.html#public_uri" title="Retrieve the URI for this object, if its container is public." alt="" coords="17,332,483,351"/>
-<area shape="rect" id="node2" href="cloudfiles.storage_object.Object-class.html" title="Storage data representing an object, (metadata and data)." alt="" coords="5,6,493,357"/>
-<area shape="poly" id="edge2" href="cloudfiles.storage_object.Object-class.html#container" title="cloudfiles.storage_object.Object.container" alt="" coords="253,353 253,389 248,389 248,353"/>
-<area shape="rect" id="edge2" href="cloudfiles.storage_object.Object-class.html#container" title="container" alt="" coords="251,369,304,386"/>
-</map>
-  <img src="uml_class_diagram_for_cloudfil_20.gif" alt='' usemap="#uml_class_diagram_for_cloudfil_20" ismap="ismap" class="graph-without-title" />
-</center>
+
 </center>
 <hr />
 <p>Storage data representing an object, (metadata and data).</p>
@@ -277,6 +253,24 @@
       Retrieve the URI for this object, if its container is public.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="cloudfiles.storage_object-pysrc.html#Object.public_uri">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="cloudfiles.storage_object.Object-class.html#purge_from_cdn" class="summary-sig-name">purge_from_cdn</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">email</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Purge Edge cache for this object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="cloudfiles.storage_object-pysrc.html#Object.purge_from_cdn">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -756,6 +750,39 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="purge_from_cdn"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">purge_from_cdn</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">email</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="cloudfiles.storage_object-pysrc.html#Object.purge_from_cdn">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Purge Edge cache for this object. You will be notified by email if one
+  is provided when the job completes.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>obj.purge_from_cdn(<span class="py-string">&quot;user@dmain.com&quot;</span>)</pre>
+  <p>or</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>obj.purge_from_cdn(<span class="py-string">&quot;user@domain.com,user2@domain.com&quot;</span>)</pre>
+  <p>or</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>obj.purge_from_cdn()</pre>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>email</code></strong> (str) - A Valid email address</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
 <br />
 <!-- ==================== PROPERTY DETAILS ==================== -->
 <a name="section-PropertyDetails"></a>
@@ -830,7 +857,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Jan 27 11:23:44 2011
+    Generated by Epydoc 3.0.1 on Thu Feb 24 15:22:01 2011
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

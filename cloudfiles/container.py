@@ -146,6 +146,38 @@ class Container(object):
             raise ResponseError(response.status, response.reason)
 
     @requires_name(InvalidContainerName)
+    def purge_from_cdn(self, email=None):
+        """
+        Purge Edge cache for all object inside of this container.
+        You will be notified by email if one is provided when the
+        job completes.
+
+        >>> container.purge_from_cdn("user@dmain.com")
+        
+        or
+
+        >>> container.purge_from_cdn("user@domain.com,user2@domain.com")
+        
+        or
+        
+        >>> container.purge_from_cdn()
+        
+        @param email: A Valid email address
+        @type email: str
+        """
+        if not self.conn.cdn_enabled:
+            raise CDNNotEnabled()
+
+        if email:
+            hdrs = {"X-Purge-Email": email}
+            response = self.conn.cdn_request('DELETE', [self.name], hdrs=hdrs)
+        else:
+            response = self.conn.cdn_request('DELETE', [self.name])
+
+        if (response.status < 200) or (response.status >= 300):
+            raise ResponseError(response.status, response.reason)
+        
+    @requires_name(InvalidContainerName)
     def acl_user_agent(self, cdn_acl_user_agent=consts.cdn_acl_user_agent):
         """
         Enable ACL restriction by User Agent for this container.
