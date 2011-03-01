@@ -159,42 +159,6 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="cloudfiles.container.Container-class.html#acl_user_agent" class="summary-sig-name">acl_user_agent</a>(<span class="summary-sig-arg">*args</span>,
-        <span class="summary-sig-arg">**kwargs</span>)</span><br />
-      Enable ACL restriction by User Agent for this container.</td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="cloudfiles.container.Container-class.html#acl_referrer" class="summary-sig-name">acl_referrer</a>(<span class="summary-sig-arg">*args</span>,
-        <span class="summary-sig-arg">**kwargs</span>)</span><br />
-      Enable ACL restriction by referrer for this container.</td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a href="cloudfiles.container.Container-class.html#log_retention" class="summary-sig-name">log_retention</a>(<span class="summary-sig-arg">*args</span>,
         <span class="summary-sig-arg">**kwargs</span>)</span><br />
       Enable CDN log retention on the container.</td>
@@ -432,22 +396,6 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">str</span>
-    </td><td class="summary">
-        <a name="cdn_acl_referrer"></a><span class="summary-name">cdn_acl_referrer</span><br />
-      enable ACL restriction by Referrer for this container.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">str</span>
-    </td><td class="summary">
-        <a name="cdn_acl_user_agent"></a><span class="summary-name">cdn_acl_user_agent</span><br />
-      enable ACL restriction by User Agent for this container.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">bool</span>
     </td><td class="summary">
         <a name="cdn_log_retention"></a><span class="summary-name">cdn_log_retention</span><br />
@@ -636,66 +584,6 @@
   </dl>
 </td></tr></table>
 </div>
-<a name="acl_user_agent"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">acl_user_agent</span>(<span class="sig-arg">*args</span>,
-        <span class="sig-arg">**kwargs</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Enable ACL restriction by User Agent for this container.</p>
-<pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span>container.acl_user_agent(<span class="py-string">&quot;Mozilla&quot;</span>)</pre>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>cdn_acl_user_agent</code></strong> (str) - Set the user agent ACL</li>
-    </ul></dd>
-    <dt>Decorators:</dt>
-    <dd><ul class="nomargin-top">
-        <li><code>@requires_name(InvalidContainerName)</code></li>
-    </ul></dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="acl_referrer"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">acl_referrer</span>(<span class="sig-arg">*args</span>,
-        <span class="sig-arg">**kwargs</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Enable ACL restriction by referrer for this container.</p>
-<pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span>container.acl_referrer(<span class="py-string">&quot;http://www.example.com&quot;</span>)</pre>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>cdn_acl_user_agent</code></strong> (str) - Set the referrer ACL</li>
-    </ul></dd>
-    <dt>Decorators:</dt>
-    <dd><ul class="nomargin-top">
-        <li><code>@requires_name(InvalidContainerName)</code></li>
-    </ul></dd>
-  </dl>
-</td></tr></table>
-</div>
 <a name="log_retention"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -714,8 +602,8 @@
   <p>Enable CDN log retention on the container. If enabled logs will be 
   periodically (at unpredictable intervals) compressed and uploaded to a 
   &quot;.CDN_ACCESS_LOGS&quot; container in the form of 
-  &quot;container_name.YYYYMMDDHH-XXXX.gz&quot;. Requires CDN be enabled on
-  the account.</p>
+  &quot;container_name/YYYY/MM/DD/HH/XXXX.gz&quot;. Requires CDN be enabled
+  on the account.</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span>container.log_retention(True)</pre>
   <dl class="fields">
@@ -1123,7 +1011,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Feb 24 15:22:01 2011
+    Generated by Epydoc 3.0.1 on Tue Mar  1 15:05:31 2011
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

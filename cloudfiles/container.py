@@ -40,12 +40,6 @@ class Container(object):
     @type cdn_ttl: number
     @ivar cdn_log_retention: retention of the logs in the container.
     @type cdn_log_retention: bool
-    @ivar cdn_acl_user_agent: enable ACL restriction by User Agent
-    for this container.
-    @type cdn_acl_user_agent: str
-    @ivar cdn_acl_referrer: enable ACL restriction by Referrer
-    for this container.
-    @type cdn_acl_referrer: str
 
     @undocumented: _fetch_cdn_data
     @undocumented: _list_objects_raw
@@ -78,8 +72,6 @@ class Container(object):
         self.cdn_uri = None
         self.cdn_ttl = None
         self.cdn_log_retention = None
-        self.cdn_acl_user_agent = None
-        self.cdn_acl_referrer = None
         if connection.cdn_enabled:
             self._fetch_cdn_data()
 
@@ -97,10 +89,6 @@ class Container(object):
                     self.cdn_ttl = int(hdr[1])
                 if hdr[0].lower() == 'x-log-retention':
                     self.cdn_log_retention = hdr[1] == "True" and True or False
-                if hdr[0].lower() == 'x-user-agent-acl':
-                    self.cdn_acl_user_agent = hdr[1]
-                if hdr[0].lower() == 'x-referrer-acl':
-                    self.cdn_acl_referrer = hdr[1]
 
     @requires_name(InvalidContainerName)
     def make_public(self, ttl=consts.default_cdn_ttl):
@@ -176,46 +164,6 @@ class Container(object):
 
         if (response.status < 200) or (response.status >= 300):
             raise ResponseError(response.status, response.reason)
-        
-    @requires_name(InvalidContainerName)
-    def acl_user_agent(self, cdn_acl_user_agent=consts.cdn_acl_user_agent):
-        """
-        Enable ACL restriction by User Agent for this container.
-
-        >>> container.acl_user_agent("Mozilla")
-
-        @param cdn_acl_user_agent: Set the user agent ACL
-        @type cdn_acl_user_agent: str
-        """
-        if not self.conn.cdn_enabled:
-            raise CDNNotEnabled()
-
-        hdrs = {'X-User-Agent-ACL': cdn_acl_user_agent}
-        response = self.conn.cdn_request('POST', [self.name], hdrs=hdrs)
-        if (response.status < 200) or (response.status >= 300):
-            raise ResponseError(response.status, response.reason)
-
-        self.cdn_acl_user_agent = cdn_acl_user_agent
-
-    @requires_name(InvalidContainerName)
-    def acl_referrer(self, cdn_acl_referrer=consts.cdn_acl_referrer):
-        """
-        Enable ACL restriction by referrer for this container.
-
-        >>> container.acl_referrer("http://www.example.com")
-
-        @param cdn_acl_user_agent: Set the referrer ACL
-        @type cdn_acl_user_agent: str
-        """
-        if not self.conn.cdn_enabled:
-            raise CDNNotEnabled()
-
-        hdrs = {'X-Referrer-ACL': cdn_acl_referrer}
-        response = self.conn.cdn_request('POST', [self.name], hdrs=hdrs)
-        if (response.status < 200) or (response.status >= 300):
-            raise ResponseError(response.status, response.reason)
-
-        self.cdn_acl_referrer = cdn_acl_referrer
 
     @requires_name(InvalidContainerName)
     def log_retention(self, log_retention=consts.cdn_log_retention):
@@ -223,7 +171,7 @@ class Container(object):
         Enable CDN log retention on the container. If enabled logs will be
         periodically (at unpredictable intervals) compressed and uploaded to
         a ".CDN_ACCESS_LOGS" container in the form of
-        "container_name.YYYYMMDDHH-XXXX.gz". Requires CDN be enabled on the
+        "container_name/YYYY/MM/DD/HH/XXXX.gz". Requires CDN be enabled on the
         account.
 
         >>> container.log_retention(True)
