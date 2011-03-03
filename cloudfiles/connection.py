@@ -13,7 +13,7 @@ import  os
 from    urllib    import quote
 from    httplib   import HTTPSConnection, HTTPConnection, HTTPException
 from    container import Container, ContainerResults
-from    utils     import parse_url, THTTPConnection, THTTPSConnection
+from    utils     import unicode_quote, parse_url, THTTPConnection, THTTPSConnection
 from    errors    import ResponseError, NoSuchContainer, ContainerNotEmpty, \
                          InvalidContainerName, CDNNotEnabled
 from    Queue     import Queue, Empty, Full
@@ -134,7 +134,7 @@ class Connection(object):
             raise CDNNotEnabled()
 
         path = '/%s/%s' % \
-                 (self.uri.rstrip('/'), '/'.join([quote(i) for i in path]))
+                 (self.uri.rstrip('/'), '/'.join([unicode_quote(i) for i in path]))
         headers = {'Content-Length': str(len(data)),
                    'User-Agent': self.user_agent,
                    'X-Auth-Token': self.token}
@@ -166,7 +166,7 @@ class Connection(object):
         performs an http request.
         """
         path = '/%s/%s' % \
-                 (self.uri.rstrip('/'), '/'.join([quote(i) for i in path]))
+                 (self.uri.rstrip('/'), '/'.join([unicode_quote(i) for i in path]))
 
         if isinstance(parms, dict) and parms:
             query_args = \

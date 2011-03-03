@@ -23,7 +23,7 @@ from errors  import ResponseError, NoSuchObject, \
 
 from socket  import timeout
 import consts
-from utils   import requires_name
+from utils   import unicode_quote, requires_name
 
 # Because HTTPResponse objects *have* to have read() called on them
 # before they can be used again ...
@@ -344,58 +344,58 @@ class Object(object):
             for hdr in response.getheaders():
                 if hdr[0].lower() == 'etag':
                     self._etag = hdr[1]
-    
+
     @requires_name(InvalidObjectName)
     def copy_to(self, container_name, name):
         """
         Copy an object's contents to another location.
         """
-        
+
         self._name_check()
         self._name_check(name)
-        
+
         # This method implicitly disables verification.
         if not self._etag_override:
             self._etag = None
-        
+
         headers = self._make_headers()
         headers['Destination'] = "%s/%s" % (container_name, name)
         headers['Content-Length'] = 0
         response = self.container.conn.make_request(
                    'COPY', [self.container.name, self.name], hdrs=headers, data='')
         buff = response.read()
-        
+
         if response.status < 200 or response.status > 299:
             raise ResponseError(response.status, response.reason)
-        
+
         # Reset the etag to what the server returns.
         for hdr in response.getheaders():
             if hdr[0].lower() == 'etag':
                 self._etag = hdr[1]
-    
+
     @requires_name(InvalidObjectName)
     def copy_from(self, container_name, name):
         """
         Copy another object's contents to this object.
         """
-        
+
         self._name_check()
         self._name_check(name)
-        
+
         # This method implicitly disables verification.
         if not self._etag_override:
             self._etag = None
-        
+
         headers = self._make_headers()
         headers['X-Copy-From'] = "%s/%s" % (container_name, name)
         headers['Content-Length'] = 0
         response = self.container.conn.make_request(
                    'PUT', [self.container.name, self.name], hdrs=headers, data='')
         buff = response.read()
-        
+
         if response.status < 200 or response.status > 299:
             raise ResponseError(response.status, response.reason)
-        
+
         # Reset the etag to what the server returns.
         for hdr in response.getheaders():
             if hdr[0].lower() == 'etag':
@@ -451,7 +451,7 @@ class Object(object):
             self.content_type = 'application/octet-stream'
 
         path = "/%s/%s/%s" % (self.container.conn.uri.rstrip('/'), \
-                quote(self.container.name), quote(self.name))
+                unicode_quote(self.container.name), unicode_quote(self.name))
         headers = self._make_headers()
         if self.size is None:
             del headers['Content-Length']
@@ -612,15 +612,15 @@ class Object(object):
         job completes.
 
         >>> obj.purge_from_cdn("user@dmain.com")
-        
+
         or
 
         >>> obj.purge_from_cdn("user@domain.com,user2@domain.com")
-        
+
         or
-        
+
         >>> obj.purge_from_cdn()
-        
+
         @param email: A Valid email address
         @type email: str
         """
