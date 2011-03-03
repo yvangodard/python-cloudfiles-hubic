@@ -1,13 +1,13 @@
 
 import unittest
 from misc             import printdoc
-from cloudfiles.utils  import parse_url
+from cloudfiles.utils  import unicode_quote, parse_url
 
 @printdoc
 def test_parse_url():
     """
-    Validate that the parse_url() function properly returns the hostname, 
-    port number, path (if any), and ssl boolean. Attempts several 
+    Validate that the parse_url() function properly returns the hostname,
+    port number, path (if any), and ssl boolean. Attempts several
     different URL permutations, (5 tests total).
     """
     urls = {
@@ -56,5 +56,13 @@ def check_url(test, urlspec):
     assert port == urlspec['port'], "%s failed on port assertion" % test
     assert path == urlspec['path'], "%s failed on path assertion" % test
     assert ssl == urlspec['ssl'], "%s failed on ssl assertion" % test
+
+def test_unicode_quote():
+    """
+    Ensure that unicode strings are encoded as utf-8 properly for use with the
+    quote method of the urlparse stdlib.
+    """
+    assert unicode_quote("non-unicode text") == "non-unicode%20text"
+    assert unicode_quote(u'\xe1gua.txt') == "%C3%A1gua.txt"
 
 # vim:set ai sw=4 ts=4 tw=0 expandtab:

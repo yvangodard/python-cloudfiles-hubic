@@ -1,6 +1,7 @@
 """ See COPYING for license information. """
 
 import re
+from urllib    import quote
 from urlparse  import urlparse
 from errors    import InvalidUrl
 from httplib   import HTTPConnection, HTTPSConnection, HTTP
@@ -47,6 +48,21 @@ def requires_name(exc_class):
         decorator.parent_func = f
         return decorator
     return wrapper
+
+
+def unicode_quote(s):
+    """
+    Utility function to address handling of unicode characters when using the quote
+    method of the stdlib module urlparse. Converts unicode, if supplied, to utf-8
+    and returns quoted utf-8 string.
+
+    For more info see http://bugs.python.org/issue1712522 or
+    http://mail.python.org/pipermail/python-dev/2006-July/067248.html
+    """
+    if isinstance(s, unicode):
+        return quote(s.encode("utf-8"))
+    else:
+        return quote(str(s))
 
 
 class THTTPConnection(HTTPConnection):
