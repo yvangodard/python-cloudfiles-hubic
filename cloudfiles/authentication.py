@@ -73,7 +73,8 @@ class Authentication(BaseAuthentication):
         if response.status == 401:
             raise AuthenticationFailed()
 
-        if response.status != 204 and response.status != 200:
+        # Raise an error for any response that is not 2XX
+        if response.status < 200 or response.status > 299:
             raise ResponseError(response.status, response.reason)
 
         storage_url = cdn_url = auth_token = None
