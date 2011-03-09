@@ -233,7 +233,7 @@ class Container(object):
         accessible via the CDN.
 
         >>> connection['container1'].public_ssl_uri()
-        'https://c00061.cdn.cloudfiles.rackspacecloud.com'
+        'https://c61.ssl.cf0.rackcdn.com'
 
         @rtype: str
         @return: the public SSL URI for this container

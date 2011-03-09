@@ -612,7 +612,7 @@ class Object(object):
         >>> container1.make_public()
         >>> container1.create_object('file.txt').write('testing')
         >>> container1['file.txt'].public_ssl_uri()
-        'https://c00061.cdn.cloudfiles.rackspacecloud.com/file.txt'
+        'https://c61.ssl.cf0.rackcdn.com/file.txt'
 
         @return: the public SSL URI for this object
         @rtype: str
