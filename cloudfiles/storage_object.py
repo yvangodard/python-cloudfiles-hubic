@@ -567,7 +567,6 @@ class Object(object):
             headers['Content-Type'] = self.content_type
         else:
             headers['Content-Type'] = 'application/octet-stream'
-
         for key in self.metadata:
             if len(key) > consts.meta_name_limit:
                 raise(InvalidMetaName(key))
@@ -604,6 +603,22 @@ class Object(object):
         """
         return "%s/%s" % (self.container.public_uri().rstrip('/'),
                 quote(self.name))
+    
+    def public_ssl_uri(self):
+        """
+        Retrieve the SSL URI for this object, if its container is public.
+
+        >>> container1 = connection['container1']
+        >>> container1.make_public()
+        >>> container1.create_object('file.txt').write('testing')
+        >>> container1['file.txt'].public_ssl_uri()
+        'https://c00061.cdn.cloudfiles.rackspacecloud.com/file.txt'
+
+        @return: the public SSL URI for this object
+        @rtype: str
+        """
+        return "%s/%s" % (self.container.public_ssl_uri().rstrip('/'),
+                quote(self.name))
 
     def purge_from_cdn(self, email=None):
         """
@@ -629,11 +644,13 @@ class Object(object):
 
         if email:
             hdrs = {"X-Purge-Email": email}
-            response = self.container.conn.cdn_request('DELETE', [self.container.name, self.name], hdrs=hdrs)
+            response = self.container.conn.cdn_request('DELETE',
+                       [self.container.name, self.name], hdrs=hdrs)
         else:
-            response = self.container.conn.cdn_request('DELETE', [self.container.name, self.name])
+            response = self.container.conn.cdn_request('DELETE',
+                       [self.container.name, self.name])
 
-        if (response.status < 200) or (response.status >= 300):
+        if (response.status < 200) or (response.status >= 299):
             raise ResponseError(response.status, response.reason)
 
 
