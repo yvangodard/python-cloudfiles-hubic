@@ -267,10 +267,11 @@ class Connection(object):
         self._check_container_name(container_name)
 
         response = self.make_request('DELETE', [container_name])
-        buff = response.read()
 
         if (response.status == 409):
             raise ContainerNotEmpty(container_name)
+        elif (response.status == 404):
+            raise NoSuchContainer
         elif (response.status < 200) or (response.status > 299):
             raise ResponseError(response.status, response.reason)
 
