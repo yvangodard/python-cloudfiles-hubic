@@ -75,6 +75,7 @@ class Object(object):
         self.container = container
         self.last_modified = None
         self.metadata = {}
+        self.manifest = None
         if object_record:
             self.name = object_record['name']
             self.content_type = object_record['content_type']
@@ -229,6 +230,29 @@ class Object(object):
                 data='')
             response.read()
             if response.status != 202:
+                raise ResponseError(response.status, response.reason)
+
+    @requires_name(InvalidObjectName)
+    def sync_manifest(self):
+        """
+        Commits the manifest to the remote storage system.
+
+        >>> test_object = container['paradise_lost.pdf']
+        >>> test_object.manifest = 'container/prefix'
+        >>> test_object.sync_manifest()
+
+        Object manifests can be set and retrieved through the object's
+        .manifest attribute.
+        """
+        self._name_check()
+        if self.manifest:
+            headers = self._make_headers()
+            headers['Content-Length'] = "0"
+            response = self.container.conn.make_request(
+                'POST', [self.container.name, self.name], hdrs=headers,
+                data='')
+            response.read()
+            if response.status < 200 or response.status > 299:
                 raise ResponseError(response.status, response.reason)
 
     def __get_conn_for_write(self):
@@ -529,6 +553,8 @@ class Object(object):
         if (response.status < 200) or (response.status > 299):
             raise ResponseError(response.status, response.reason)
         for hdr in response.getheaders():
+            if hdr[0].lower() == 'x-object-manifest':
+                self.manifest = hdr[1]
             if hdr[0].lower() == 'content-type':
                 self.content_type = hdr[1]
             if hdr[0].lower().startswith('x-object-meta-'):
@@ -560,6 +586,8 @@ class Object(object):
         headers['Content-Length'] = (str(self.size) \
                                           and str(self.size) != "0") \
                                           and str(self.size) or "0"
+        if self.manifest:
+            headers['X-Object-Manifest'] = self.manifest
         if self._etag:
             headers['ETag'] = self._etag
 

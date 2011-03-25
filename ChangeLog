@@ -1,3 +1,7 @@
+2011-03-25 Conrad Weidenkeller <conrad.weidenkeller@rackspace.com>
+  * 1.7.9.2:
+  - Added Manifest support for Large Objects
+
 2011-03-09 Conrad Weidenkeller <conrad.weidenkeller@rackspace.com>
   * 1.7.9.1:
   - Added CDN SSL URI's to storage_objects and containers.
