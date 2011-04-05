@@ -15,7 +15,7 @@ from    httplib   import HTTPSConnection, HTTPConnection, HTTPException
 from    container import Container, ContainerResults
 from    utils     import unicode_quote, parse_url, THTTPConnection, THTTPSConnection
 from    errors    import ResponseError, NoSuchContainer, ContainerNotEmpty, \
-                         InvalidContainerName, CDNNotEnabled
+                         InvalidContainerName, CDNNotEnabled, ContainerExists
 from    Queue     import Queue, Empty, Full
 from    time      import time
 import  consts
@@ -232,7 +232,7 @@ class Connection(object):
                 len(container_name) > consts.container_name_limit:
             raise InvalidContainerName(container_name)
 
-    def create_container(self, container_name):
+    def create_container(self, container_name, error_on_existing=False):
         """
         Given a container name, returns a L{Container} item, creating a new
         Container if one does not already exist.
@@ -242,6 +242,9 @@ class Connection(object):
 
         @param container_name: name of the container to create
         @type container_name: str
+        @param error_on_existing: raise ContainerExists if container already
+        exists
+        @type error_on_existing: bool
         @rtype: L{Container}
         @return: an object representing the newly created container
         """
@@ -251,6 +254,8 @@ class Connection(object):
         buff = response.read()
         if (response.status < 200) or (response.status > 299):
             raise ResponseError(response.status, response.reason)
+        if error_on_existing and (response.status == 202):
+            raise ContainerExists(container_name)
         return Container(self, container_name)
 
     def delete_container(self, container_name):
