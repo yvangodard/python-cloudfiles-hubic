@@ -56,6 +56,14 @@ class ContainerNotEmpty(Error):
         return "%s(%s)" % (self.__class__.__name__, self.container_name)
 
 
+class ContainerExists(Error):
+    """
+    Raised when attempting to create a Container when the container already
+    exists.
+    """
+    pass
+
+
 class InvalidContainerName(Error):
     """
     Raised for invalid storage container names.
