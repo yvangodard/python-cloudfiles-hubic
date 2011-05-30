@@ -79,7 +79,7 @@ class Connection(object):
             authurl = kwargs.get('authurl', consts.us_authurl)
             if username and api_key and authurl:
                 self.auth = Authentication(username, api_key, authurl=authurl,
-                            useragent=self.user_agent)
+                            useragent=self.user_agent, timeout=self.timeout)
             else:
                 raise TypeError("Incorrect or invalid arguments supplied")
 
