@@ -615,7 +615,8 @@ class Object(object):
             buff = fobj.read(4096)
         fobj.seek(0)
         return checksum.hexdigest()
-
+    
+    @property
     def public_uri(self):
         """
         Retrieve the URI for this object, if its container is public.
@@ -631,7 +632,8 @@ class Object(object):
         """
         return "%s/%s" % (self.container.public_uri().rstrip('/'),
                 quote(self.name))
-    
+
+    @property
     def public_ssl_uri(self):
         """
         Retrieve the SSL URI for this object, if its container is public.
