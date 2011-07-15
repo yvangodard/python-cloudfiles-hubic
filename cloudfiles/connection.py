@@ -10,7 +10,7 @@ See COPYING for license information.
 
 import  socket
 import  os
-from    urllib    import quote
+from    urllib    import urlencode
 from    httplib   import HTTPSConnection, HTTPConnection, HTTPException
 from    container import Container, ContainerResults
 from    utils     import unicode_quote, parse_url, THTTPConnection, THTTPSConnection
@@ -169,10 +169,7 @@ class Connection(object):
                  (self.uri.rstrip('/'), '/'.join([unicode_quote(i) for i in path]))
 
         if isinstance(parms, dict) and parms:
-            query_args = \
-                ['%s=%s' % (quote(x),
-                            quote(str(y))) for (x, y) in parms.items()]
-            path = '%s?%s' % (path, '&'.join(query_args))
+            path = '%s?%s' % (path, urlencode(parms))
 
         headers = {'Content-Length': str(len(data)),
                    'User-Agent': self.user_agent,
