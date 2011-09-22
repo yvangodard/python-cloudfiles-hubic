@@ -383,7 +383,7 @@ class Object(object):
             self._etag = None
 
         headers = self._make_headers()
-        headers['Destination'] = "%s/%s" % (container_name, name)
+        headers['Destination'] = quote("%s/%s" % (container_name, name))
         headers['Content-Length'] = 0
         response = self.container.conn.make_request(
                    'COPY', [self.container.name, self.name], hdrs=headers, data='')
@@ -411,7 +411,7 @@ class Object(object):
             self._etag = None
 
         headers = self._make_headers()
-        headers['X-Copy-From'] = "%s/%s" % (container_name, name)
+        headers['X-Copy-From'] = quote("%s/%s" % (container_name, name))
         headers['Content-Length'] = 0
         response = self.container.conn.make_request(
                    'PUT', [self.container.name, self.name], hdrs=headers, data='')
