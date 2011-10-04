@@ -457,6 +457,10 @@ class Object(object):
         """
         self._name_check()
 
+        if isinstance(iterable, basestring):
+            # buffer it so that we don't send it 1 byte at a time.
+            iterable = StringIO.StringIO(iterable)
+
         if hasattr(iterable, 'read'):
 
             def file_iterator(file):
