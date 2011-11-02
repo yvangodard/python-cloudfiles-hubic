@@ -249,7 +249,7 @@ class Object(object):
             headers = self._make_headers()
             headers['Content-Length'] = "0"
             response = self.container.conn.make_request(
-                'POST', [self.container.name, self.name], hdrs=headers,
+                'PUT', [self.container.name, self.name], hdrs=headers,
                 data='')
             response.read()
             if response.status < 200 or response.status > 299:
