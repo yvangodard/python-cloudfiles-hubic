@@ -443,10 +443,9 @@ class ConnectionPool(Queue):
     """
 
     def __init__(self, username=None, api_key=None, **kwargs):
-        auth = kwargs.get('auth', None)
-        self.timeout = kwargs.get('timeout', 5)
+        poolsize = kwargs.pop('poolsize', 10)
         self.connargs = {'username': username, 'api_key': api_key}
-        poolsize = kwargs.get('poolsize', 10)
+        self.connargs.update(kwargs)
         Queue.__init__(self, poolsize)
 
     def get(self):
