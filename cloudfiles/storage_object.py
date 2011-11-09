@@ -458,8 +458,8 @@ class Object(object):
         self._name_check()
 
         if isinstance(iterable, basestring):
-            # buffer it so that we don't send it 1 byte at a time.
-            iterable = StringIO.StringIO(iterable)
+            # use write to buffer the string and avoid sending it 1 byte at a time
+            self.write(iterable)
 
         if hasattr(iterable, 'read'):
 
