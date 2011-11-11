@@ -313,9 +313,13 @@ class Object(object):
             except IOError:
                 pass  # If the file descriptor is read-only this will fail
             self.size = int(os.fstat(data.fileno())[6])
-        else:
+        elif isinstance(data, basestring):
             data = StringIO.StringIO(data)
             self.size = data.len
+        elif isinstance(data, StringIO.StringIO):
+            self.size = data.len
+        else:
+            self.size = len(data)
 
         # If override is set (and _etag is not None), then the etag has
         # been manually assigned and we will not calculate our own.
@@ -456,6 +460,10 @@ class Object(object):
         @type iterable: generator or stream
         """
         self._name_check()
+
+        if isinstance(iterable, basestring):
+            # use write to buffer the string and avoid sending it 1 byte at a time
+            self.write(iterable)
 
         if hasattr(iterable, 'read'):
 

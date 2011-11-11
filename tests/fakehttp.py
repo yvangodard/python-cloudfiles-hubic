@@ -268,6 +268,9 @@ class CustomHTTPConnection(connbase):
     def connect(self):
         self.sock = TrackerSocket()
 
+    def send(self, data):
+        self._wbuffer = data
+        connbase.send(self, data)
 
 if __name__ == '__main__':
     conn = CustomHTTPConnection('localhost', 8000)
