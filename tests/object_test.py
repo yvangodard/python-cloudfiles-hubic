@@ -94,6 +94,7 @@ class ObjectTest(unittest.TestCase):
         """
         Sanity check of Object.sync_metadata()
         """
+        self.storage_object.headers['content-encoding'] = 'gzip'
         self.storage_object.metadata['unit'] = 'test'
         self.storage_object.sync_metadata()
 
