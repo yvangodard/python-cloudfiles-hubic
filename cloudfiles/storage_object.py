@@ -75,6 +75,7 @@ class Object(object):
         self.container = container
         self.last_modified = None
         self.metadata = {}
+        self.headers = {}
         self.manifest = None
         if object_record:
             self.name = object_record['name']
@@ -212,17 +213,18 @@ class Object(object):
     @requires_name(InvalidObjectName)
     def sync_metadata(self):
         """
-        Commits the metadata to the remote storage system.
+        Commits the metadata and custom headers to the remote storage system.
 
         >>> test_object = container['paradise_lost.pdf']
         >>> test_object.metadata = {'author': 'John Milton'}
-        >>> test_object.sync_metadata()
+        >>> test_object.headers = {'content-disposition': 'foo'}
+        >>> test_objectt.sync_metadata()
 
         Object metadata can be set and retrieved through the object's
         .metadata attribute.
         """
         self._name_check()
-        if self.metadata:
+        if self.metadata or self.headers:
             headers = self._make_headers()
             headers['Content-Length'] = "0"
             response = self.container.conn.make_request(
@@ -609,6 +611,7 @@ class Object(object):
             if len(self.metadata[key]) > consts.meta_value_limit:
                 raise(InvalidMetaValue(self.metadata[key]))
             headers['X-Object-Meta-' + key] = self.metadata[key]
+        headers.update(self.headers)
         return headers
 
     @classmethod
