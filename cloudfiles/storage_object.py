@@ -16,7 +16,6 @@ import StringIO
 import mimetypes
 import os
 
-from urllib  import quote
 from errors  import ResponseError, NoSuchObject, \
                     InvalidObjectName, IncompleteSend, \
                     InvalidMetaName, InvalidMetaValue
@@ -263,7 +262,7 @@ class Object(object):
         headers['X-Auth-Token'] = self.container.conn.token
 
         path = "/%s/%s/%s" % (self.container.conn.uri.rstrip('/'), \
-                quote(self.container.name), quote(self.name))
+                unicode_quote(self.container.name), unicode_quote(self.name))
 
         # Requests are handled a little differently for writes ...
         http = self.container.conn.connection
@@ -389,7 +388,7 @@ class Object(object):
             self._etag = None
 
         headers = self._make_headers()
-        headers['Destination'] = quote("%s/%s" % (container_name, name))
+        headers['Destination'] = unicode_quote("%s/%s" % (container_name, name))
         headers['Content-Length'] = 0
         response = self.container.conn.make_request(
                    'COPY', [self.container.name, self.name], hdrs=headers, data='')
@@ -417,7 +416,7 @@ class Object(object):
             self._etag = None
 
         headers = self._make_headers()
-        headers['X-Copy-From'] = quote("%s/%s" % (container_name, name))
+        headers['X-Copy-From'] = unicode_quote("%s/%s" % (container_name, name))
         headers['Content-Length'] = 0
         response = self.container.conn.make_request(
                    'PUT', [self.container.name, self.name], hdrs=headers, data='')
@@ -641,8 +640,8 @@ class Object(object):
         @rtype: str
         """
         return "%s/%s" % (self.container.public_uri().rstrip('/'),
-                quote(self.name))
-    
+                unicode_quote(self.name))
+
     def public_ssl_uri(self):
         """
         Retrieve the SSL URI for this object, if its container is public.
@@ -657,7 +656,7 @@ class Object(object):
         @rtype: str
         """
         return "%s/%s" % (self.container.public_ssl_uri().rstrip('/'),
-                quote(self.name))
+                unicode_quote(self.name))
 
     def public_streaming_uri(self):
         """
@@ -673,7 +672,7 @@ class Object(object):
         @rtype: str
         """
         return "%s/%s" % (self.container.public_streaming_uri().rstrip('/'),
-                quote(self.name))
+                unicode_quote(self.name))
 
     def purge_from_cdn(self, email=None):
         """
