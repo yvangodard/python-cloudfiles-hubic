@@ -123,6 +123,8 @@ class Container(object):
         for hdr in response.getheaders():
             if hdr[0].lower() == 'x-cdn-uri':
                 self.cdn_uri = hdr[1]
+            if hdr[0].lower() == 'x-cdn-ssl-uri':
+                self.cdn_ssl_uri = hdr[1]
 
     @requires_name(InvalidContainerName)
     def make_private(self):
