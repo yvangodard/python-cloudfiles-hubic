@@ -63,16 +63,17 @@
 <center>
 <center>  <map id="uml_class_diagram_for_cloudfil" name="uml_class_diagram_for_cloudfil">
 <area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#__init__" title="Accepts keyword arguments for Mosso username and api key." alt="" coords="17,39,421,57"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#get_info" title="Return tuple for number of containers and total bytes in the account" alt="" coords="17,57,421,76"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#create_container" title="Given a container name, returns a Container item, creating a new Container &#160;if one does not already exist." alt="" coords="17,76,421,95"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#delete_container" title="Given a container name, delete it." alt="" coords="17,95,421,113"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#get_all_containers" title="Returns a Container item result set." alt="" coords="17,113,421,132"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#get_container" title="Return a single Container item for the given Container." alt="" coords="17,132,421,151"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#list_public_containers" title="Returns a list of containers that have been published to the CDN." alt="" coords="17,151,421,169"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#list_containers_info" title="Returns a list of Containers, including object count and size." alt="" coords="17,169,421,188"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#list_containers" title="Returns a list of Containers." alt="" coords="17,188,421,207"/>
-<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#__getitem__" title="Container objects can be grabbed from a connection using index syntax." alt="" coords="17,207,421,225"/>
-<area shape="rect" id="node1" href="cloudfiles.connection.Connection-class.html" title="Manages the connection to the storage system and serves as a factory for Container instances." alt="" coords="5,6,432,231"/>
+<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#get_info" title="Return tuple for number of containers, total bytes in the account and &#160;account metadata" alt="" coords="17,57,421,76"/>
+<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#update_account_metadata" title="Update account metadata &gt;&gt;&gt; metadata = {&#39;x&#45;account&#45;meta&#45;foo&#39; : &#39;bar&#39;} &gt;&gt;&gt; &#160;connection.update_account_metadata(metadata)" alt="" coords="17,76,421,95"/>
+<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#create_container" title="Given a container name, returns a Container item, creating a new Container &#160;if one does not already exist." alt="" coords="17,95,421,113"/>
+<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#delete_container" title="Given a container name, delete it." alt="" coords="17,113,421,132"/>
+<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#get_all_containers" title="Returns a Container item result set." alt="" coords="17,132,421,151"/>
+<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#get_container" title="Return a single Container item for the given Container." alt="" coords="17,151,421,169"/>
+<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#list_public_containers" title="Returns a list of containers that have been published to the CDN." alt="" coords="17,169,421,188"/>
+<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#list_containers_info" title="Returns a list of Containers, including object count and size." alt="" coords="17,188,421,207"/>
+<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#list_containers" title="Returns a list of Containers." alt="" coords="17,207,421,225"/>
+<area shape="rect" id="node0" href="cloudfiles.connection.Connection-class.html#__getitem__" title="Container objects can be grabbed from a connection using index syntax." alt="" coords="17,225,421,244"/>
+<area shape="rect" id="node1" href="cloudfiles.connection.Connection-class.html" title="Manages the connection to the storage system and serves as a factory for Container instances." alt="" coords="5,6,432,250"/>
 </map>
   <img src="uml_class_diagram_for_cloudfil.gif" alt='' usemap="#uml_class_diagram_for_cloudfil" ismap="ismap" class="graph-without-title" />
 </center>
@@ -117,9 +118,29 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="cloudfiles.connection.Connection-class.html#get_info" class="summary-sig-name">get_info</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Return tuple for number of containers and total bytes in the account</td>
+      Return tuple for number of containers, total bytes in the account and
+      account metadata</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="cloudfiles.connection-pysrc.html#Connection.get_info">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="cloudfiles.connection.Connection-class.html#update_account_metadata" class="summary-sig-name">update_account_metadata</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">metadata</span>)</span><br />
+      Update account metadata &gt;&gt;&gt; metadata = {'x-account-meta-foo'
+      : 'bar'} &gt;&gt;&gt; connection.update_account_metadata(metadata)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="cloudfiles.connection-pysrc.html#Connection.update_account_metadata">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -381,15 +402,41 @@
     </td>
   </tr></table>
   
-  <p>Return tuple for number of containers and total bytes in the 
-  account</p>
+  <p>Return tuple for number of containers, total bytes in the account and 
+  account metadata</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span>connection.get_info()
 <span class="py-output">(5, 2309749)</span></pre>
   <dl class="fields">
     <dt>Returns: tuple</dt>
-        <dd>a tuple containing the number of containers and total bytes used 
-          by the account</dd>
+        <dd>a tuple containing the number of containers, total bytes used by 
+          the account and a dictionary containing account metadata</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="update_account_metadata"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">update_account_metadata</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">metadata</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="cloudfiles.connection-pysrc.html#Connection.update_account_metadata">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Update account metadata &gt;&gt;&gt; metadata = {'x-account-meta-foo' 
+  : 'bar'} &gt;&gt;&gt; connection.update_account_metadata(metadata)</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>metadata</code></strong> - Dictionary of metadata</li>
+        <li><strong class="pname"><code>metdada</code></strong> (dict)</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -685,7 +732,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Mar 15 15:18:55 2012
+    Generated by Epydoc 3.0.1 on Fri Jun  1 13:14:13 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

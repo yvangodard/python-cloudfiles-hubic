@@ -54,7 +54,7 @@ class Container(object):
     name = property(fget=lambda self: self._name, fset=__set_name,
         doc="the name of the container (read-only)")
 
-    def __init__(self, connection=None, name=None, count=None, size=None):
+    def __init__(self, connection=None, name=None, count=None, size=None, metadata=None):
         """
         Containers will rarely if ever need to be instantiated directly by the
         user.
@@ -69,14 +69,89 @@ class Container(object):
         self.conn = connection
         self.object_count = count
         self.size_used = size
+        self.metadata = metadata
         self.cdn_uri = None
         self.cdn_ssl_uri = None
         self.cdn_streaming_uri = None
         self.cdn_ttl = None
         self.cdn_log_retention = None
-
+        if self.metadata == None:
+            self.metadata = {}
         if connection.cdn_enabled:
             self._fetch_cdn_data()
+
+    @requires_name(InvalidContainerName)
+    def update_metadata(self, metadata):
+        """
+        Update Container Metadata
+        
+        >>> metadata = {'x-container-meta-foo' : 'bar'}
+        >>> container.update_metadata(metadata)
+        
+        @param metadata: A dictionary containing metadata.
+        @type metadata: dict
+        """
+        response = self.conn.make_request('POST', [self.name])
+        response.read()
+        if (response.status < 200) or (response.status > 299):
+            raise ResponseError(response.status, response.reason)
+    
+    def enable_static_web(self, index=None, listings=None, error=None, listings_css=None):
+        """
+        Enable static web for this Container
+
+        >>> container.enable_static_web('index.html', 'error.html', True, 'style.css')
+
+        @param index: The name of the index landing page
+        @type index : str
+        @param listings: A boolean value to enable listing.
+        @type error: bool
+        @param listings_css: The file to be used when applying CSS to the listing.
+        @type listings_css: str
+        @param error: The suffix to be used for 404 and 401 error pages.
+        @type error: str
+
+        """
+        metadata = {'X-Container-Meta-Web-Index' : '',
+                    'X-Container-Meta-Web-Listings' : '',
+                    'X-Container-Meta-Web-Error' : '',
+                    'X-Container-Meta-Web-Listings-CSS' : ''}
+        if index is not None:
+            metadata['X-Container-Meta-Web-Index'] = index
+        if listings is not None:
+            metadata['X-Container-Meta-Web-Listings'] = str(listings)
+        if error is not None:
+            metadata['X-Container-Meta-Web-Error'] = error
+        if listings_css is not None:
+            metadata['X-Container-Meta-Web-Listings-CSS'] = listings_css
+        self.update_metadata(metadata)
+
+    def disable_static_web(self):
+        """
+        Disable static web for this Container
+
+        >>> container.disable_static_web()
+        """
+        self.enable_static_web()
+
+    def enable_object_versioning(self, container_name):
+        """
+        Enable object versioning on this container
+        
+        >>> container.enable_object_versioning('container_i_want_versions_to_go_to')
+        
+        @param container_url: The container where versions will be stored
+        @type container_name: str
+        """
+        self.update_metadata({'X-Versions-Location' : container_name})
+
+    def disable_object_versioning(self):
+        """
+        Disable object versioning on this container
+
+        >>> container.disable_object_versioning()
+        """
+        self.update_metadata({'X-Versions-Location' : ''})
 
     @requires_name(InvalidContainerName)
     def _fetch_cdn_data(self):
