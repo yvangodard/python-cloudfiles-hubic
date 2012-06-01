@@ -91,7 +91,7 @@ class Container(object):
         @param metadata: A dictionary containing metadata.
         @type metadata: dict
         """
-        response = self.conn.make_request('POST', [self.name])
+        response = self.conn.make_request('POST', [self.name], hdrs=metadata)
         response.read()
         if (response.status < 200) or (response.status > 299):
             raise ResponseError(response.status, response.reason)
