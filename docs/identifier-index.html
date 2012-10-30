@@ -77,7 +77,7 @@
  <a href="#R">R</a>
  <a href="#S">S</a>
   T
-  U
+ <a href="#U">U</a>
   V
  <a href="#W">W</a>
   X
@@ -108,46 +108,47 @@
 <span class="index-where">(in&nbsp;<a href="cloudfiles.errors-module.html">cloudfiles.errors</a>)</span></td>
 <td width="33%" class="link-index"><a href="cloudfiles.container-module.html">container</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles-module.html">cloudfiles</a>)</span></td>
-<td width="33%" class="link-index"><a href="cloudfiles.storage_object.Object-class.html#copy_to">copy_to()</a><br />
+<td width="33%" class="link-index"><a href="cloudfiles.storage_object.Object-class.html#copy_from">copy_from()</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.storage_object.Object-class.html">Object</a>)</span></td>
 </tr>
 <tr>
 <td width="33%" class="link-index"><a href="cloudfiles-module.html">cloudfiles</a></td>
 <td width="33%" class="link-index"><a href="cloudfiles.container.Container-class.html">Container</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.container-module.html">cloudfiles.container</a>)</span></td>
-<td width="33%" class="link-index"><a href="cloudfiles.container.ContainerResults-class.html#count">count()</a><br />
-<span class="index-where">(in&nbsp;<a href="cloudfiles.container.ContainerResults-class.html">ContainerResults</a>)</span></td>
+<td width="33%" class="link-index"><a href="cloudfiles.storage_object.Object-class.html#copy_to">copy_to()</a><br />
+<span class="index-where">(in&nbsp;<a href="cloudfiles.storage_object.Object-class.html">Object</a>)</span></td>
 </tr>
 <tr>
 <td width="33%" class="link-index"><a href="cloudfiles.fjson-module.html#comments">comments</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.fjson-module.html">cloudfiles.fjson</a>)</span></td>
+<td width="33%" class="link-index"><a href="cloudfiles.errors.ContainerExists-class.html">ContainerExists</a><br />
+<span class="index-where">(in&nbsp;<a href="cloudfiles.errors-module.html">cloudfiles.errors</a>)</span></td>
+<td width="33%" class="link-index"><a href="cloudfiles.container.ContainerResults-class.html#count">count()</a><br />
+<span class="index-where">(in&nbsp;<a href="cloudfiles.container.ContainerResults-class.html">ContainerResults</a>)</span></td>
+</tr>
+<tr>
+<td width="33%" class="link-index"><a href="cloudfiles.connection-module.html">connection</a><br />
+<span class="index-where">(in&nbsp;<a href="cloudfiles-module.html">cloudfiles</a>)</span></td>
 <td width="33%" class="link-index"><a href="cloudfiles.errors.ContainerNotEmpty-class.html">ContainerNotEmpty</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.errors-module.html">cloudfiles.errors</a>)</span></td>
 <td width="33%" class="link-index"><a href="cloudfiles.storage_object.ObjectResults-class.html#count">count()</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.storage_object.ObjectResults-class.html">ObjectResults</a>)</span></td>
 </tr>
 <tr>
-<td width="33%" class="link-index"><a href="cloudfiles.connection-module.html">connection</a><br />
-<span class="index-where">(in&nbsp;<a href="cloudfiles-module.html">cloudfiles</a>)</span></td>
+<td width="33%" class="link-index"><a href="cloudfiles.connection.Connection-class.html">Connection</a><br />
+<span class="index-where">(in&nbsp;<a href="cloudfiles.connection-module.html">cloudfiles.connection</a>)</span></td>
 <td width="33%" class="link-index"><a href="cloudfiles.errors.ContainerNotPublic-class.html">ContainerNotPublic</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.errors-module.html">cloudfiles.errors</a>)</span></td>
 <td width="33%" class="link-index"><a href="cloudfiles.connection.Connection-class.html#create_container">create_container()</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.connection.Connection-class.html">Connection</a>)</span></td>
 </tr>
 <tr>
-<td width="33%" class="link-index"><a href="cloudfiles.connection.Connection-class.html">Connection</a><br />
+<td width="33%" class="link-index"><a href="cloudfiles.connection.ConnectionPool-class.html">ConnectionPool</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.connection-module.html">cloudfiles.connection</a>)</span></td>
 <td width="33%" class="link-index"><a href="cloudfiles.container.ContainerResults-class.html">ContainerResults</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.container-module.html">cloudfiles.container</a>)</span></td>
 <td width="33%" class="link-index"><a href="cloudfiles.container.Container-class.html#create_object">create_object()</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.container.Container-class.html">Container</a>)</span></td>
-</tr>
-<tr>
-<td width="33%" class="link-index"><a href="cloudfiles.connection.ConnectionPool-class.html">ConnectionPool</a><br />
-<span class="index-where">(in&nbsp;<a href="cloudfiles.connection-module.html">cloudfiles.connection</a>)</span></td>
-<td width="33%" class="link-index"><a href="cloudfiles.storage_object.Object-class.html#copy_from">copy_from()</a><br />
-<span class="index-where">(in&nbsp;<a href="cloudfiles.storage_object.Object-class.html">Object</a>)</span></td>
-<td width="33%" class="link-index">&nbsp;</td>
 </tr>
 </table>
 </td></tr>
@@ -157,25 +158,37 @@
 <tr>
 <td width="33%" class="link-index"><a href="cloudfiles.connection.Connection-class.html#delete_container">delete_container()</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.connection.Connection-class.html">Connection</a>)</span></td>
-<td width="33%" class="link-index"><a href="cloudfiles.container.Container-class.html#delete_object">delete_object()</a><br />
+<td width="33%" class="link-index"><a href="cloudfiles.container.Container-class.html#disable_object_versioning">disable_object_versioning()</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.container.Container-class.html">Container</a>)</span></td>
 <td width="33%" class="link-index">&nbsp;</td>
 </tr>
-<tr><td class="link-index">&nbsp;</td><td class="link-index">&nbsp;</td><td class="link-index">&nbsp;</td></tr>
+<tr>
+<td width="33%" class="link-index"><a href="cloudfiles.container.Container-class.html#delete_object">delete_object()</a><br />
+<span class="index-where">(in&nbsp;<a href="cloudfiles.container.Container-class.html">Container</a>)</span></td>
+<td width="33%" class="link-index"><a href="cloudfiles.container.Container-class.html#disable_static_web">disable_static_web()</a><br />
+<span class="index-where">(in&nbsp;<a href="cloudfiles.container.Container-class.html">Container</a>)</span></td>
+<td width="33%" class="link-index">&nbsp;</td>
+</tr>
 </table>
 </td></tr>
 <tr valign="top"><td valign="top" width="1%"><h2 class="epydoc"><a name="E">E</a></h2></td>
 <td valign="top">
 <table class="link-index" width="100%" border="1">
 <tr>
+<td width="33%" class="link-index"><a href="cloudfiles.container.Container-class.html#enable_object_versioning">enable_object_versioning()</a><br />
+<span class="index-where">(in&nbsp;<a href="cloudfiles.container.Container-class.html">Container</a>)</span></td>
 <td width="33%" class="link-index"><a href="cloudfiles.errors.Error-class.html">Error</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.errors-module.html">cloudfiles.errors</a>)</span></td>
-<td width="33%" class="link-index"><a href="cloudfiles.errors-module.html">errors</a><br />
-<span class="index-where">(in&nbsp;<a href="cloudfiles-module.html">cloudfiles</a>)</span></td>
 <td width="33%" class="link-index"><a href="cloudfiles.storage_object.Object-class.html#etag">etag</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.storage_object.Object-class.html">Object</a>)</span></td>
 </tr>
-<tr><td class="link-index">&nbsp;</td><td class="link-index">&nbsp;</td><td class="link-index">&nbsp;</td></tr>
+<tr>
+<td width="33%" class="link-index"><a href="cloudfiles.container.Container-class.html#enable_static_web">enable_static_web()</a><br />
+<span class="index-where">(in&nbsp;<a href="cloudfiles.container.Container-class.html">Container</a>)</span></td>
+<td width="33%" class="link-index"><a href="cloudfiles.errors-module.html">errors</a><br />
+<span class="index-where">(in&nbsp;<a href="cloudfiles-module.html">cloudfiles</a>)</span></td>
+<td width="33%" class="link-index">&nbsp;</td>
+</tr>
 </table>
 </td></tr>
 <tr valign="top"><td valign="top" width="1%"><h2 class="epydoc"><a name="F">F</a></h2></td>
@@ -326,24 +339,26 @@
 <tr>
 <td width="33%" class="link-index"><a href="cloudfiles.container.Container-class.html#public_ssl_uri">public_ssl_uri()</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.container.Container-class.html">Container</a>)</span></td>
-<td width="33%" class="link-index"><a href="cloudfiles.storage_object.Object-class.html#public_uri">public_uri()</a><br />
+<td width="33%" class="link-index"><a href="cloudfiles.storage_object.Object-class.html#public_streaming_uri">public_streaming_uri()</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.storage_object.Object-class.html">Object</a>)</span></td>
-<td width="33%" class="link-index"><a href="cloudfiles.connection.ConnectionPool-class.html#put">put()</a><br />
-<span class="index-where">(in&nbsp;<a href="cloudfiles.connection.ConnectionPool-class.html">ConnectionPool</a>)</span></td>
+<td width="33%" class="link-index"><a href="cloudfiles.container.Container-class.html#purge_from_cdn">purge_from_cdn()</a><br />
+<span class="index-where">(in&nbsp;<a href="cloudfiles.container.Container-class.html">Container</a>)</span></td>
 </tr>
 <tr>
 <td width="33%" class="link-index"><a href="cloudfiles.storage_object.Object-class.html#public_ssl_uri">public_ssl_uri()</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.storage_object.Object-class.html">Object</a>)</span></td>
-<td width="33%" class="link-index"><a href="cloudfiles.container.Container-class.html#purge_from_cdn">purge_from_cdn()</a><br />
-<span class="index-where">(in&nbsp;<a href="cloudfiles.container.Container-class.html">Container</a>)</span></td>
-<td width="33%" class="link-index">&nbsp;</td>
-</tr>
-<tr>
 <td width="33%" class="link-index"><a href="cloudfiles.container.Container-class.html#public_uri">public_uri()</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.container.Container-class.html">Container</a>)</span></td>
 <td width="33%" class="link-index"><a href="cloudfiles.storage_object.Object-class.html#purge_from_cdn">purge_from_cdn()</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.storage_object.Object-class.html">Object</a>)</span></td>
-<td width="33%" class="link-index">&nbsp;</td>
+</tr>
+<tr>
+<td width="33%" class="link-index"><a href="cloudfiles.container.Container-class.html#public_streaming_uri">public_streaming_uri()</a><br />
+<span class="index-where">(in&nbsp;<a href="cloudfiles.container.Container-class.html">Container</a>)</span></td>
+<td width="33%" class="link-index"><a href="cloudfiles.storage_object.Object-class.html#public_uri">public_uri()</a><br />
+<span class="index-where">(in&nbsp;<a href="cloudfiles.storage_object.Object-class.html">Object</a>)</span></td>
+<td width="33%" class="link-index"><a href="cloudfiles.connection.ConnectionPool-class.html#put">put()</a><br />
+<span class="index-where">(in&nbsp;<a href="cloudfiles.connection.ConnectionPool-class.html">ConnectionPool</a>)</span></td>
 </tr>
 </table>
 </td></tr>
@@ -379,6 +394,19 @@
 <td width="33%" class="link-index"><a href="cloudfiles.storage_object.Object-class.html#sync_metadata">sync_metadata()</a><br />
 <span class="index-where">(in&nbsp;<a href="cloudfiles.storage_object.Object-class.html">Object</a>)</span></td>
 </tr>
+</table>
+</td></tr>
+<tr valign="top"><td valign="top" width="1%"><h2 class="epydoc"><a name="U">U</a></h2></td>
+<td valign="top">
+<table class="link-index" width="100%" border="1">
+<tr>
+<td width="33%" class="link-index"><a href="cloudfiles.connection.Connection-class.html#update_account_metadata">update_account_metadata()</a><br />
+<span class="index-where">(in&nbsp;<a href="cloudfiles.connection.Connection-class.html">Connection</a>)</span></td>
+<td width="33%" class="link-index"><a href="cloudfiles.container.Container-class.html#update_metadata">update_metadata()</a><br />
+<span class="index-where">(in&nbsp;<a href="cloudfiles.container.Container-class.html">Container</a>)</span></td>
+<td width="33%" class="link-index">&nbsp;</td>
+</tr>
+<tr><td class="link-index">&nbsp;</td><td class="link-index">&nbsp;</td><td class="link-index">&nbsp;</td></tr>
 </table>
 </td></tr>
 <tr valign="top"><td valign="top" width="1%"><h2 class="epydoc"><a name="W">W</a></h2></td>
@@ -524,7 +552,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Mar 25 03:59:25 2011
+    Generated by Epydoc 3.0.1 on Fri Jun  1 13:14:09 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

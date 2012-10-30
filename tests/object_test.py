@@ -13,6 +13,7 @@ from fakehttp          import CustomHTTPConnection
 from misc              import printdoc
 from tempfile          import mktemp
 import os
+from StringIO import StringIO
 
 
 class ObjectTest(unittest.TestCase):
@@ -53,6 +54,32 @@ class ObjectTest(unittest.TestCase):
         Simple sanity test of Object.write()
         """
         self.storage_object.write('the rain in spain ...')
+        self.assertEqual('the rain in spain ...', self.conn.connection._wbuffer)
+
+    @printdoc
+    def test_write_with_stringio(self):
+        """
+        Ensure write() can deal with a StringIO instance
+        """
+        self.storage_object.write(StringIO('the rain in spain ...'))
+        self.assertEqual('the rain in spain ...', self.conn.connection._wbuffer)
+
+    @printdoc
+    def test_write_with_file(self):
+        """
+        Ensure write() can deal with a file instance
+        """
+        tmpnam = mktemp()
+        try:
+            fp = open(tmpnam, 'w')
+            fp.write('the rain in spain ...')
+            fp.close()
+            fp = open(tmpnam, 'r')
+            self.storage_object.write(fp)
+            fp.close()
+            self.assertEqual('the rain in spain ...', self.conn.connection._wbuffer)
+        finally:
+            os.unlink(tmpnam)
 
     @printdoc
     def test_send(self):
@@ -67,6 +94,7 @@ class ObjectTest(unittest.TestCase):
         """
         Sanity check of Object.sync_metadata()
         """
+        self.storage_object.headers['content-encoding'] = 'gzip'
         self.storage_object.metadata['unit'] = 'test'
         self.storage_object.sync_metadata()
 

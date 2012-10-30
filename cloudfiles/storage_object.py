@@ -16,7 +16,6 @@ import StringIO
 import mimetypes
 import os
 
-from urllib  import quote
 from errors  import ResponseError, NoSuchObject, \
                     InvalidObjectName, IncompleteSend, \
                     InvalidMetaName, InvalidMetaValue
@@ -75,6 +74,7 @@ class Object(object):
         self.container = container
         self.last_modified = None
         self.metadata = {}
+        self.headers = {}
         self.manifest = None
         if object_record:
             self.name = object_record['name']
@@ -212,17 +212,18 @@ class Object(object):
     @requires_name(InvalidObjectName)
     def sync_metadata(self):
         """
-        Commits the metadata to the remote storage system.
+        Commits the metadata and custom headers to the remote storage system.
 
         >>> test_object = container['paradise_lost.pdf']
         >>> test_object.metadata = {'author': 'John Milton'}
-        >>> test_object.sync_metadata()
+        >>> test_object.headers = {'content-disposition': 'foo'}
+        >>> test_objectt.sync_metadata()
 
         Object metadata can be set and retrieved through the object's
         .metadata attribute.
         """
         self._name_check()
-        if self.metadata:
+        if self.metadata or self.headers:
             headers = self._make_headers()
             headers['Content-Length'] = "0"
             response = self.container.conn.make_request(
@@ -249,7 +250,7 @@ class Object(object):
             headers = self._make_headers()
             headers['Content-Length'] = "0"
             response = self.container.conn.make_request(
-                'POST', [self.container.name, self.name], hdrs=headers,
+                'PUT', [self.container.name, self.name], hdrs=headers,
                 data='')
             response.read()
             if response.status < 200 or response.status > 299:
@@ -261,7 +262,7 @@ class Object(object):
         headers['X-Auth-Token'] = self.container.conn.token
 
         path = "/%s/%s/%s" % (self.container.conn.uri.rstrip('/'), \
-                quote(self.container.name), quote(self.name))
+                unicode_quote(self.container.name), unicode_quote(self.name))
 
         # Requests are handled a little differently for writes ...
         http = self.container.conn.connection
@@ -313,9 +314,13 @@ class Object(object):
             except IOError:
                 pass  # If the file descriptor is read-only this will fail
             self.size = int(os.fstat(data.fileno())[6])
-        else:
+        elif isinstance(data, basestring):
             data = StringIO.StringIO(data)
             self.size = data.len
+        elif isinstance(data, StringIO.StringIO):
+            self.size = data.len
+        else:
+            self.size = len(data)
 
         # If override is set (and _etag is not None), then the etag has
         # been manually assigned and we will not calculate our own.
@@ -383,7 +388,7 @@ class Object(object):
             self._etag = None
 
         headers = self._make_headers()
-        headers['Destination'] = "%s/%s" % (container_name, name)
+        headers['Destination'] = unicode_quote("%s/%s" % (container_name, name))
         headers['Content-Length'] = 0
         response = self.container.conn.make_request(
                    'COPY', [self.container.name, self.name], hdrs=headers, data='')
@@ -411,7 +416,7 @@ class Object(object):
             self._etag = None
 
         headers = self._make_headers()
-        headers['X-Copy-From'] = "%s/%s" % (container_name, name)
+        headers['X-Copy-From'] = unicode_quote("%s/%s" % (container_name, name))
         headers['Content-Length'] = 0
         response = self.container.conn.make_request(
                    'PUT', [self.container.name, self.name], hdrs=headers, data='')
@@ -456,6 +461,10 @@ class Object(object):
         @type iterable: generator or stream
         """
         self._name_check()
+
+        if isinstance(iterable, basestring):
+            # use write to buffer the string and avoid sending it 1 byte at a time
+            self.write(iterable)
 
         if hasattr(iterable, 'read'):
 
@@ -601,6 +610,7 @@ class Object(object):
             if len(self.metadata[key]) > consts.meta_value_limit:
                 raise(InvalidMetaValue(self.metadata[key]))
             headers['X-Object-Meta-' + key] = self.metadata[key]
+        headers.update(self.headers)
         return headers
 
     @classmethod
@@ -631,9 +641,8 @@ class Object(object):
         @rtype: str
         """
         return "%s/%s" % (self.container.public_uri().rstrip('/'),
-                quote(self.name))
+            unicode_quote(self.name))
 
-    @property
     def public_ssl_uri(self):
         """
         Retrieve the SSL URI for this object, if its container is public.
@@ -648,7 +657,23 @@ class Object(object):
         @rtype: str
         """
         return "%s/%s" % (self.container.public_ssl_uri().rstrip('/'),
-                quote(self.name))
+                unicode_quote(self.name))
+
+    def public_streaming_uri(self):
+        """
+        Retrieve the streaming URI for this object, if its container is public.
+
+        >>> container1 = connection['container1']
+        >>> container1.make_public()
+        >>> container1.create_object('file.txt').write('testing')
+        >>> container1['file.txt'].public_streaming_uri()
+        'https://c61.stream.rackcdn.com/file.txt'
+
+        @return: the public Streaming URI for this object
+        @rtype: str
+        """
+        return "%s/%s" % (self.container.public_streaming_uri().rstrip('/'),
+                unicode_quote(self.name))
 
     def purge_from_cdn(self, email=None):
         """
