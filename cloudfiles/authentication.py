@@ -19,7 +19,7 @@ class BaseAuthentication(object):
     """
     The base authentication class from which all others inherit.
     """
-    def __init__(self, username, api_key, authurl=us_authurl, timeout=5,
+    def __init__(self, username, api_key, authurl=us_authurl, timeout=15,
                  useragent=user_agent):
         self.authurl = authurl
         self.headers = dict()

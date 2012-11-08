@@ -39,7 +39,7 @@ class Connection(object):
     @undocumented: _check_container_name
     """
 
-    def __init__(self, username=None, api_key=None, timeout=5, **kwargs):
+    def __init__(self, username=None, api_key=None, timeout=15, **kwargs):
         """
         Accepts keyword arguments for Mosso username and api key.
         Optionally, you can omit these keywords and supply an
