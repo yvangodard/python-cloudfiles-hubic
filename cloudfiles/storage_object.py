@@ -626,7 +626,6 @@ class Object(object):
         fobj.seek(0)
         return checksum.hexdigest()
     
-    @property
     def public_uri(self):
         """
         Retrieve the URI for this object, if its container is public.
