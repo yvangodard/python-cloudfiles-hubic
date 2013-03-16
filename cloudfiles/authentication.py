@@ -134,7 +134,7 @@ class HubicAuthentication(BaseAuthentication):
         r = self._sessionHandler('getAnonymousSession')['answer']
 
         r = self._hubic('getHubics', {'sessionId': r['session']['id'], 'email': self.username})
-        if len(r['answer']) == 0:
+        if not r['answer']:
             raise AuthenticationFailed('Unknown username')
         nic = r['answer'][0]['nic']
         hubicId = r['answer'][0]['id']
