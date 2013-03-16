@@ -19,7 +19,7 @@ from    errors    import ResponseError, NoSuchContainer, ContainerNotEmpty, \
 from    Queue     import Queue, Empty, Full
 from    time      import time
 import  consts
-from    authentication import Authentication
+from    authentication import Authentication, HubicAuthentication
 from    fjson     import json_loads
 from    sys       import version_info
 # Because HTTPResponse objects *have* to have read() called on them
@@ -77,7 +77,10 @@ class Connection(object):
 
         if not self.auth:
             authurl = kwargs.get('authurl', consts.us_authurl)
-            if username and api_key and authurl:
+            if username and api_key and authurl and 'hubic' in authurl:
+                self.auth = HubicAuthentication(username, api_key,
+                            useragent=self.user_agent, timeout=self.timeout)
+            elif username and api_key and authurl:
                 self.auth = Authentication(username, api_key, authurl=authurl,
                             useragent=self.user_agent, timeout=self.timeout)
             else:

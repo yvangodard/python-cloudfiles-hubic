@@ -97,4 +97,54 @@ class Authentication(BaseAuthentication):
 
         return (storage_url, cdn_url, auth_token)
 
+class HubicAuthentication(BaseAuthentication):
+    """
+    Authentication for OVH's hubiC cloud storage service
+    """
+    SESSIONHANDLER='https://ws.ovh.com/sessionHandler/r4/'
+    HUBIC='https://ws.ovh.com/hubic/r5/'
+    def __init__(self, username, api_key, timeout=15, useragent=None):
+        self.username = username
+        self.api_key = api_key
+        self.timeout = timeout
+
+    def _rpc(self, url, method, params=None):
+        import urllib
+        import json
+        host, port, uri, is_ssl = parse_url(url)
+        conn = HTTPSConnection(host, port, timeout=self.timeout)
+        uri+='/rest.dispatcher/'+method
+        if params:
+            uri+= '?' + urllib.urlencode({'params': json.dumps(params)})
+        conn.request('GET', '/' + uri)
+        response = conn.getresponse()
+        data=response.read()
+        if response.status != 200:
+            raise AuthenticationError("Invalid response from hubiC")
+        conn.close()
+        return json.loads(data)
+
+    def _sessionHandler(self, method, params=None):
+        return self._rpc(self.SESSIONHANDLER, method, params)
+
+    def _hubic(self, method, params=None):
+        return self._rpc(self.HUBIC, method, params)
+
+    def authenticate(self):
+        r = self._sessionHandler('getAnonymousSession')['answer']
+
+        r = self._hubic('getHubics', {'sessionId': r['session']['id'], 'email': self.username})
+        if len(r['answer']) == 0:
+            raise AuthenticationFailed('Unknown username')
+        nic = r['answer'][0]['nic']
+        hubicId = r['answer'][0]['id']
+
+        r = self._sessionHandler('login', {'login': nic, 'password': self.api_key, 'context': 'hubic'})
+        if r['error'] or not r['answer']:
+            raise AuthenticationFailed('Invalid username/password')
+        r = r['answer']
+
+        r = self._hubic('getHubic', {'sessionId': r['session']['id'], 'hubicId': hubicId})['answer']
+        return r['credentials']['username'].decode('base64'), None, r['credentials']['secret']
+
 # vim:set ai ts=4 sw=4 tw=0 expandtab:
