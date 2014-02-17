@@ -77,12 +77,17 @@ Set the logs retention on CDN-enabled/public Container
 See COPYING for license information.
 """
 
+import warnings
+
 from cloudfiles.connection     import Connection, ConnectionPool
 from cloudfiles.container      import Container
 from cloudfiles.storage_object import Object
 from cloudfiles.consts         import __version__, \
 us_authurl, uk_authurl
 
+warnings.warn("python-cloudfiles has been deprecated as of August 1, 2013. "
+              "Please see https://github.com/openstack/python-swiftclient.",
+              DeprecationWarning)
 
 def get_connection(*args, **kwargs):
     """

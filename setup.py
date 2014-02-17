@@ -1,12 +1,20 @@
 #!/usr/bin/python
+
+import warnings
+
 from setuptools import setup, find_packages
 from cloudfiles.consts import __version__
+
+warnings.simplefilter('default')
+warnings.warn("python-cloudfiles has been deprecated as of August 1, 2013. "
+              "Please see https://github.com/openstack/python-swiftclient.",
+              DeprecationWarning)
 
 setup(name='python-cloudfiles',
       version=__version__,
       description='CloudFiles client library for Python',
       classifiers=[
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 7 - Inactive',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',

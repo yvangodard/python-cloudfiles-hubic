@@ -1,6 +1,11 @@
 python-cloudfiles-hubic
 =======================
 
+IMPORTANT NOTE:
+The original python-cloudfiles bindings are no longer being maintained and their
+use is deprecated in favor of pyrax. The HubiC fork will be maintained for the
+time being, until pyrax has been more widely adopted.
+
 Python language bindings for Cloud Files API, modified to add HubiC Authentication support
 
 ## Goal
