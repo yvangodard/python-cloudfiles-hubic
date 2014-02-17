@@ -114,7 +114,7 @@ class HubicAuthentication(BaseAuthentication):
         self.authurl = authurl
         infos = self.authurl.split('|')
         if len(infos) < 4:
-            raise AuthenticationError('You must give 3 colon-separated arguments after hubic:')
+            raise AuthenticationError('You must give 3 vertical-bar separated arguments after hubic|')
         self.client_id = infos[1]
         self.client_secret = infos[2]
         self.redirect_uri = infos[3]
