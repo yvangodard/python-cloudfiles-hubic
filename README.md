@@ -13,6 +13,9 @@ Being able to use tools already compatible with Cloud Files with HubiC, OVH's ow
 HubiC is based on the same underlying protocol as RackSpace's Cloud Files: OpenStack Object Storage aka [*Swift*](http://docs.openstack.org/developer/swift/). Only authentication is different.
 This is a modified version of the official Cloud Files python bindings which add support for HubiC authentication.
 
+## How to use
+The HubiC API uses OAuth 2.0 since 2014. You need to generate app credentials in your account settings and put those in the AUTHURL.
+
 ## Use Case: Duplicity
 From wikipedia:
 > Duplicity is a software suite that provides encrypted, digitally signed, versioned, remote backup of files requiring little of the remote server.
@@ -21,5 +24,5 @@ Duplicity has the ability to store encrypted backups on Cloud Files using python
 ### Example
     export CLOUDFILES_USERNAME="YOUR_HUBIC_EMAIL"
     export CLOUDFILES_APIKEY="YOUR_HUBIC_PASSWORD"
-    export CLOUDFILES_AUTHURL='hubic'
+    export CLOUDFILES_AUTHURL='hubic|YOUR_CLIENT_ID|YOUR_CLIENT_SECRET|YOUR_REDIRECT_URL'
     duplicity /local/dir/to/backup cf+http://default

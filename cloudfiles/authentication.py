@@ -9,10 +9,14 @@ See COPYING for license information.
 """
 
 from httplib  import HTTPSConnection, HTTPConnection
+from urllib   import quote, quote_plus, urlencode
 from utils    import parse_url, THTTPConnection, THTTPSConnection
 from errors   import ResponseError, AuthenticationError, AuthenticationFailed
 from consts   import user_agent, us_authurl, uk_authurl
 from sys      import version_info
+import re
+import urlparse
+import json
 
 
 class BaseAuthentication(object):
@@ -101,50 +105,139 @@ class HubicAuthentication(BaseAuthentication):
     """
     Authentication for OVH's hubiC cloud storage service
     """
-    SESSIONHANDLER='https://ws.ovh.com/sessionHandler/r4/'
-    HUBIC='https://ws.ovh.com/hubic/r5/'
-    def __init__(self, username, api_key, timeout=15, useragent=None):
-        self.username = username
-        self.api_key = api_key
+    OAUTH = "https://api.hubic.com/oauth/"
+    HUBIC_API = "https://api.hubic.com/1.0/"
+
+    def __init__(self, username, api_key, authurl, timeout=15, useragent=None):
+        self.login = username
+        self.password  = api_key
+        self.authurl = authurl
+        infos = self.authurl.split('|')
+        if len(infos) < 4:
+            raise AuthenticationError('You must give 3 colon-separated arguments after hubic:')
+        self.client_id = infos[1]
+        self.client_secret = infos[2]
+        self.redirect_uri = infos[3]
         self.timeout = timeout
 
-    def _rpc(self, url, method, params=None):
-        import urllib
-        import json
+    def _parse_error(self, resp):
+        headers = dict(resp.getheaders())
+        if not 'location' in headers:
+            return None
+        query = urlparse.urlsplit(headers['location']).query
+        qs = dict(urlparse.parse_qsl(query))
+        return {'error': qs['error'], 'error_description': qs['error_description']}
+
+    def _get(self, url, params=None, headers={}):
         host, port, uri, is_ssl = parse_url(url)
         conn = HTTPSConnection(host, port, timeout=self.timeout)
-        uri+='/rest.dispatcher/'+method
-        if params:
-            uri+= '?' + urllib.urlencode({'params': json.dumps(params)})
-        conn.request('GET', '/' + uri)
+        conn.request('GET', '/' + uri + ('?'+urlencode(params) if params else ''),
+                     headers=headers)
         response = conn.getresponse()
-        data=response.read()
-        if response.status != 200:
-            raise AuthenticationError("Invalid response from hubiC")
-        conn.close()
-        return json.loads(data)
+        return conn, response
 
-    def _sessionHandler(self, method, params=None):
-        return self._rpc(self.SESSIONHANDLER, method, params)
-
-    def _hubic(self, method, params=None):
-        return self._rpc(self.HUBIC, method, params)
+    def _post(self, url, data=None, headers={}):
+        host, port, uri, is_ssl = parse_url(url)
+        conn = HTTPSConnection(host, port, timeout=self.timeout)
+        headers.update({'Content-type': 'application/x-www-form-urlencoded'})
+        conn.request('POST', '/' + uri, urlencode(data) if data else None, headers)
+        response = conn.getresponse()
+        return conn, response
 
     def authenticate(self):
-        r = self._sessionHandler('getAnonymousSession')['answer']
+        c, r = self._get(
+            self.OAUTH+'auth/',
+            {
+                'client_id': self.client_id,
+                'redirect_uri': self.redirect_uri,
+                'scope': 'credentials.r,account.r',
+                'response_type': 'code',
+                'state': ''
+            }
+        )
+        if r.status != 200:
+            raise AuthenticationFailed("Incorrect/unauthorized "
+                    "HubiC client_id (%s)"%str(self._parse_error(r)))
 
-        r = self._hubic('getHubics', {'sessionId': r['session']['id'], 'email': self.username})
-        if not r['answer']:
-            raise AuthenticationFailed('Unknown username')
-        nic = r['answer'][0]['nic']
-        hubicId = r['answer'][0]['id']
+        rdata = r.read()
+        c.close()
 
-        r = self._sessionHandler('login', {'login': nic, 'password': self.api_key, 'context': 'hubic'})
-        if r['error'] or not r['answer']:
-            raise AuthenticationFailed('Invalid username/password')
-        r = r['answer']
+        try:
+            from lxml import html as lxml_html
+        except ImportError:
+            lxml_html = None
 
-        r = self._hubic('getHubic', {'sessionId': r['session']['id'], 'hubicId': hubicId})['answer']
-        return r['credentials']['username'].decode('base64'), None, r['credentials']['secret']
+        if lxml_html:
+            oauth = lxml_html.document_fromstring(rdata).xpath('//input[@name="oauth"]')
+            oauth = oauth[0].value if oauth else None
+        else:
+            oauth = re.search(r'<input\s+[^>]*name=[\'"]?oauth[\'"]?\s+[^>]*value=[\'"]?(\d+)[\'"]?>', rdata)
+            oauth = oauth.group(1) if oauth else None
+
+        if not oauth:
+            raise AuthenticationError("Unable to get oauth_id from authorization page")
+
+        c, r = self._post(
+            self.OAUTH+'auth/',
+            data={
+                'action': 'accepted',
+                'oauth': oauth,
+                'login': self.login,
+                'user_pwd': self.password,
+                'account': 'r',
+                'credentials': 'r',
+
+            },
+        )
+        c.close()
+
+        if r.status == 302 and r.getheader('location', '').startswith(self.redirect_uri):
+            query = urlparse.urlsplit(r.getheader('location')).query
+            code = dict(urlparse.parse_qsl(query))['code']
+        else:
+            raise AuthenticationFailed("Unable to authorize client_id, invalid login/password ?")
+
+        c, r = self._post(
+            self.OAUTH+'token/',
+            {
+                'code': code,
+                'redirect_uri': self.redirect_uri,
+                'grant_type': 'authorization_code',
+            },
+            {
+                'Authorization': 'Basic '+('{0}:{1}'.format(self.client_id, self.client_secret)
+                                                    .encode('base64').replace('\n', ''))
+            }
+        )
+
+        rdata = r.read()
+        c.close()
+
+        if r.status != 200:
+            try:
+                err = json.loads(rdata)
+                err['code'] = r.status
+            except Exception as e:
+                err = {}
+
+            raise AuthenticationFailed("Unable to get oauth access token, "
+                                       "wrong client_id or client_secret ? (%s)"%str(err))
+
+        oauth_token = json.loads(rdata)
+        if oauth_token['token_type'].lower() != 'bearer':
+            raise AuthenticationError("Unsupported access token type")
+
+        c, r = self._get(
+            self.HUBIC_API+'account/credentials/',
+            headers={
+                'Authorization': 'Bearer '+oauth_token['access_token']
+            }
+        )
+
+        swift = json.loads(r.read())
+        c.close()
+
+        return swift['endpoint'], None, swift['token']
+
 
 # vim:set ai ts=4 sw=4 tw=0 expandtab:
